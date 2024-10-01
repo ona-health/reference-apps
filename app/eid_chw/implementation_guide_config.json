@@ -1,0 +1,34 @@
+{
+  "resourceType": "ImplementationGuide",
+  "id": "4abdea5e-31d8-408c-b739-449fcc527bcb",
+  "meta": {
+    "versionId": "1",
+    "lastUpdated": "2024-05-27T14:42:53.345+00:00"
+  },
+  "url": "https://fhir.demo.smartregister.org/fhir/ImplementationGuide/eir-chw",
+  "version": "1.0.0",
+  "name": "eir-chw",
+  "title": "EIR CHW Implementation Guide",
+  "status": "draft",
+  "date": "2024-09-30",
+  "publisher": "Ona Systems, Inc.",
+  "useContext": [
+    {
+      "valueRange": {
+        "high": {
+          "value": 11
+        }
+      }
+    }
+  ],
+  "packageId": "org.smartregister.fhircore",
+  "definition": {
+    "resource": [
+      {
+        "reference": {
+          "reference": "Composition/d49e56e8-26cf-4aa3-9675-234eb99fda91"
+        }
+      }
+    ]
+  }
+}

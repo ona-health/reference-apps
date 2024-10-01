@@ -1,0 +1,1202 @@
+{
+  "resourceType": "PlanDefinition",
+  "id": "6c09a137-962b-4d57-8232-b62ea5b43168",
+  "contained": [
+    {
+      "resourceType": "ActivityDefinition",
+      "id": "careplan-init-activity",
+      "title": "Child Register Handler Activity",
+      "status": "active",
+      "description": "This action will assess careplan on registration to init careplan",
+      "kind": "CarePlan",
+      "dynamicValue": [
+        {
+          "path": "title",
+          "expression": {
+            "language": "text/fhirpath",
+            "expression": "%rootResource.title"
+          }
+        },
+        {
+          "path": "description",
+          "expression": {
+            "language": "text/fhirpath",
+            "expression": "%rootResource.description"
+          }
+        },
+        {
+          "path": "instantiatesCanonical",
+          "expression": {
+            "language": "text/fhirpath",
+            "expression": "%rootResource.id.replaceMatches('/_history/.*', '')"
+          }
+        },
+        {
+          "path": "status",
+          "expression": {
+            "language": "text/fhirpath",
+            "expression": "'active'"
+          }
+        },
+        {
+          "path": "intent",
+          "expression": {
+            "language": "text/fhirpath",
+            "expression": "'plan'"
+          }
+        },
+        {
+          "path": "created",
+          "expression": {
+            "language": "text/fhirpath",
+            "expression": "now()"
+          }
+        },
+        {
+          "path": "subject.reference",
+          "expression": {
+            "language": "text/fhirpath",
+            "expression": "$this.type().name + '/' + $this.id.replaceMatches('/_history/.*', '')"
+          }
+        },
+        {
+          "path": "author",
+          "expression": {
+            "language": "text/fhirpath",
+            "expression": "$this.generalPractitioner.first()"
+          }
+        },
+        {
+          "path": "period.start",
+          "expression": {
+            "language": "text/fhirpath",
+            "expression": "$this.birthDate"
+          }
+        },
+        {
+          "path": "period.end",
+          "expression": {
+            "language": "text/fhirpath",
+            "expression": "$this.birthDate + 168 'months'"
+          }
+        },
+        {
+          "path": "activity.detail.kind",
+          "expression": {
+            "language": "text/fhirpath",
+            "expression": "'Task'"
+          }
+        },
+        {
+          "path": "activity.detail.status",
+          "expression": {
+            "language": "text/fhirpath",
+            "expression": "'in-progress'"
+          }
+        },
+        {
+          "path": "activity.detail.description",
+          "expression": {
+            "language": "text/fhirpath",
+            "expression": "'This action will assess careplan on registration to init careplan'"
+          }
+        },
+        {
+          "path": "activity.detail.performer",
+          "expression": {
+            "language": "text/fhirpath",
+            "expression": "$this.generalPractitioner.first()"
+          }
+        }
+      ]
+    },
+    {
+      "resourceType": "ActivityDefinition",
+      "id": "careplan-bcg-task-activity",
+      "title": "Child BCG Immunization",
+      "status": "active",
+      "description": "This is the BCG scheduled immunization.",
+      "kind": "Task",
+      "code": {
+        "coding": [
+          {
+            "system": "http://smartregister.org",
+            "code": "VAC001",
+            "display": "Administration of vaccine to produce active immunity (procedure)"
+          }
+        ]
+      },
+      "productCodeableConcept": {
+        "coding": [
+          {
+            "system": "http://smartregister.org",
+            "code": "100",
+            "display": "BCG vaccination"
+          }
+        ],
+        "text": "BCG"
+      },
+      "dosage": [
+        {
+          "sequence": 0,
+          "timing": {
+            "repeat": {
+              "count": 1,
+              "duration": 10,
+              "durationUnit": "d",
+              "period": 0,
+              "periodUnit": "d"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "resourceType": "ActivityDefinition",
+      "id": "careplan-bcg-booster-task-activity",
+      "title": "Child BCG Booster Immunization",
+      "status": "active",
+      "description": "This is the BCG booster scheduled immunization.",
+      "kind": "Task",
+      "code": {
+        "coding": [
+          {
+            "system": "http://smartregister.org",
+            "code": "VAC001",
+            "display": "Administration of vaccine to produce active immunity (procedure)"
+          }
+        ]
+      },
+      "productCodeableConcept": {
+        "coding": [
+          {
+            "system": "http://smartregister.org",
+            "code": "101",
+            "display": "BCG Booster vaccination"
+          }
+        ],
+        "text": "BCG Booster"
+      },
+      "dosage": [
+        {
+          "timing": {
+            "repeat": {
+              "count": 1,
+              "duration": 94,
+              "durationUnit": "d",
+              "period": 12,
+              "periodUnit": "wk"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "resourceType": "ActivityDefinition",
+      "id": "careplan-opv-task-activity",
+      "title": "Child OPV Immunization",
+      "status": "active",
+      "description": "This is the OPV scheduled immunization.",
+      "kind": "Task",
+      "code": {
+        "coding": [
+          {
+            "system": "http://smartregister.org",
+            "code": "VAC001",
+            "display": "Administration of vaccine to produce active immunity (procedure)"
+          }
+        ]
+      },
+      "productCodeableConcept": {
+        "coding": [
+          {
+            "system": "http://smartregister.org",
+            "code": "102",
+            "display": "Poliovirus vaccine"
+          }
+        ],
+        "text": "OPV"
+      },
+      "dosage": [
+        {
+          "sequence": 0,
+          "timing": {
+            "repeat": {
+              "count": 1,
+              "duration": 10,
+              "durationUnit": "d",
+              "period": 0,
+              "periodUnit": "d"
+            }
+          }
+        },
+        {
+          "sequence": 1,
+          "timing": {
+            "repeat": {
+              "count": 1,
+              "duration": 52,
+              "durationUnit": "d",
+              "period": 6,
+              "periodUnit": "wk"
+            }
+          }
+        },
+        {
+          "sequence": 2,
+          "timing": {
+            "repeat": {
+              "count": 1,
+              "duration": 90,
+              "durationUnit": "d",
+              "period": 10,
+              "periodUnit": "wk"
+            }
+          }
+        },
+        {
+          "sequence": 3,
+          "timing": {
+            "repeat": {
+              "count": 1,
+              "duration": 128,
+              "durationUnit": "d",
+              "period": 14,
+              "periodUnit": "wk"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "resourceType": "ActivityDefinition",
+      "id": "careplan-opv-booster-task-activity",
+      "title": "Child OPV Booster Immunization",
+      "status": "active",
+      "description": "This is the OPV Booster scheduled immunization.",
+      "kind": "Task",
+      "code": {
+        "coding": [
+          {
+            "system": "http://smartregister.org",
+            "code": "VAC001",
+            "display": "Administration of vaccine to produce active immunity (procedure)"
+          }
+        ]
+      },
+      "productCodeableConcept": {
+        "coding": [
+          {
+            "system": "http://smartregister.org",
+            "code": "103",
+            "display": "Poliovirus Booster vaccine"
+          }
+        ],
+        "text": "OPV Booster"
+      },
+      "dosage": [
+        {
+          "timing": {
+            "repeat": {
+              "count": 1,
+              "duration": 140,
+              "durationUnit": "d",
+              "period": 14,
+              "periodUnit": "wk"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "resourceType": "ActivityDefinition",
+      "id": "careplan-penta-task-activity",
+      "title": "Child PENTA Immunization",
+      "status": "active",
+      "description": "This is the PENTA scheduled immunization.",
+      "kind": "Task",
+      "code": {
+        "coding": [
+          {
+            "system": "http://smartregister.org",
+            "code": "VAC001",
+            "display": "Administration of vaccine to produce active immunity (procedure)"
+          }
+        ]
+      },
+      "productCodeableConcept": {
+        "coding": [
+          {
+            "system": "http://smartregister.org",
+            "code": "104",
+            "display": "Tetanus + diphtheria + acellular pertussis vaccine"
+          }
+        ],
+        "text": "PENTA"
+      },
+      "dosage": [
+        {
+          "sequence": 1,
+          "timing": {
+            "repeat": {
+              "count": 1,
+              "duration": 52,
+              "durationUnit": "d",
+              "period": 6,
+              "periodUnit": "wk"
+            }
+          }
+        },
+        {
+          "sequence": 2,
+          "timing": {
+            "repeat": {
+              "count": 1,
+              "duration": 90,
+              "durationUnit": "d",
+              "period": 10,
+              "periodUnit": "wk"
+            }
+          }
+        },
+        {
+          "sequence": 3,
+          "timing": {
+            "repeat": {
+              "count": 1,
+              "duration": 128,
+              "durationUnit": "d",
+              "period": 14,
+              "periodUnit": "wk"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "resourceType": "ActivityDefinition",
+      "id": "careplan-penta-booster-task-activity",
+      "title": "Child PENTA Booster Immunization",
+      "status": "active",
+      "description": "This is the PENTA Booster scheduled immunization.",
+      "kind": "Task",
+      "code": {
+        "coding": [
+          {
+            "system": "http://smartregister.org",
+            "code": "VAC001",
+            "display": "Administration of vaccine to produce active immunity (procedure)"
+          }
+        ]
+      },
+      "productCodeableConcept": {
+        "coding": [
+          {
+            "system": "http://smartregister.org",
+            "code": "105",
+            "display": "Tetanus + diphtheria + acellular pertussis booster vaccine"
+          }
+        ],
+        "text": "PENTA Booster"
+      },
+      "dosage": [
+        {
+          "timing": {
+            "repeat": {
+              "count": 1,
+              "duration": 132,
+              "durationUnit": "d",
+              "period": 14,
+              "periodUnit": "wk"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "resourceType": "ActivityDefinition",
+      "id": "careplan-rota-task-activity",
+      "title": "Child ROTA Immunization",
+      "status": "active",
+      "description": "This is the ROTA scheduled immunization.",
+      "kind": "Task",
+      "code": {
+        "coding": [
+          {
+            "system": "http://smartregister.org",
+            "code": "VAC001",
+            "display": "Administration of vaccine to produce active immunity (procedure)"
+          }
+        ]
+      },
+      "productCodeableConcept": {
+        "coding": [
+          {
+            "system": "http://smartregister.org",
+            "code": "106",
+            "display": "Rotavirus vaccination"
+          }
+        ],
+        "text": "ROTA"
+      },
+      "dosage": [
+        {
+          "sequence": 1,
+          "timing": {
+            "repeat": {
+              "count": 1,
+              "duration": 52,
+              "durationUnit": "d",
+              "period": 6,
+              "periodUnit": "wk"
+            }
+          }
+        },
+        {
+          "sequence": 2,
+          "timing": {
+            "repeat": {
+              "count": 1,
+              "duration": 90,
+              "durationUnit": "d",
+              "period": 10,
+              "periodUnit": "wk"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "resourceType": "ActivityDefinition",
+      "id": "careplan-rota-booster-task-activity",
+      "title": "Child ROTA Booster Immunization",
+      "status": "active",
+      "description": "This is the ROTA Booster scheduled immunization.",
+      "kind": "Task",
+      "code": {
+        "coding": [
+          {
+            "system": "http://smartregister.org",
+            "code": "VAC001",
+            "display": "Administration of vaccine to produce active immunity (procedure)"
+          }
+        ]
+      },
+      "productCodeableConcept": {
+        "coding": [
+          {
+            "system": "http://smartregister.org",
+            "code": "107",
+            "display": "Rotavirus booster vaccination"
+          }
+        ],
+        "text": "ROTA Booster"
+      },
+      "dosage": [
+        {
+          "timing": {
+            "repeat": {
+              "count": 1,
+              "duration": 94,
+              "durationUnit": "d",
+              "period": 10,
+              "periodUnit": "wk"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "resourceType": "ActivityDefinition",
+      "id": "careplan-pcv-task-activity",
+      "title": "Child PCV Immunization",
+      "status": "active",
+      "description": "This is the PCV scheduled immunization.",
+      "kind": "Task",
+      "code": {
+        "coding": [
+          {
+            "system": "http://smartregister.org",
+            "code": "VAC001",
+            "display": "Administration of vaccine to produce active immunity (procedure)"
+          }
+        ]
+      },
+      "productCodeableConcept": {
+        "coding": [
+          {
+            "system": "http://smartregister.org",
+            "code": "108",
+            "display": "Pneumococcal vaccination"
+          }
+        ],
+        "text": "PCV"
+      },
+      "dosage": [
+        {
+          "sequence": 1,
+          "timing": {
+            "repeat": {
+              "count": 1,
+              "duration": 52,
+              "durationUnit": "d",
+              "period": 6,
+              "periodUnit": "wk"
+            }
+          }
+        },
+        {
+          "sequence": 2,
+          "timing": {
+            "repeat": {
+              "count": 1,
+              "duration": 90,
+              "durationUnit": "d",
+              "period": 10,
+              "periodUnit": "wk"
+            }
+          }
+        },
+        {
+          "sequence": 3,
+          "timing": {
+            "repeat": {
+              "count": 1,
+              "duration": 128,
+              "durationUnit": "d",
+              "period": 14,
+              "periodUnit": "wk"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "resourceType": "ActivityDefinition",
+      "id": "careplan-pcv-booster-task-activity",
+      "title": "Child PCV Booster Immunization",
+      "status": "active",
+      "description": "This is the PCV Booster scheduled immunization.",
+      "kind": "Task",
+      "code": {
+        "coding": [
+          {
+            "system": "http://smartregister.org",
+            "code": "VAC001",
+            "display": "Administration of vaccine to produce active immunity (procedure)"
+          }
+        ]
+      },
+      "productCodeableConcept": {
+        "coding": [
+          {
+            "system": "http://smartregister.org",
+            "code": "109",
+            "display": "Pneumococcal booster vaccination"
+          }
+        ],
+        "text": "PCV Booster"
+      },
+      "dosage": [
+        {
+          "timing": {
+            "repeat": {
+              "count": 1,
+              "duration": 132,
+              "durationUnit": "d",
+              "period": 14,
+              "periodUnit": "wk"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "resourceType": "ActivityDefinition",
+      "id": "careplan-ipv-task-activity",
+      "title": "Child IPV Immunization",
+      "status": "active",
+      "description": "This is the IPV scheduled immunization.",
+      "kind": "Task",
+      "code": {
+        "coding": [
+          {
+            "system": "http://smartregister.org",
+            "code": "VAC001",
+            "display": "Administration of vaccine to produce active immunity (procedure)"
+          }
+        ]
+      },
+      "productCodeableConcept": {
+        "coding": [
+          {
+            "system": "http://smartregister.org",
+            "code": "110",
+            "display": "Inactivated Poliovirus vaccine"
+          }
+        ],
+        "text": "IPV"
+      },
+      "dosage": [
+        {
+          "timing": {
+            "repeat": {
+              "count": 1,
+              "duration": 108,
+              "durationUnit": "d",
+              "period": 14,
+              "periodUnit": "wk"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "resourceType": "ActivityDefinition",
+      "id": "careplan-ipv-booster-task-activity",
+      "title": "Child IPV Booster Immunization",
+      "status": "active",
+      "description": "This is the IPV booster scheduled immunization.",
+      "kind": "Task",
+      "code": {
+        "coding": [
+          {
+            "system": "http://smartregister.org",
+            "code": "VAC001",
+            "display": "Administration of vaccine to produce active immunity (procedure)"
+          }
+        ]
+      },
+      "productCodeableConcept": {
+        "coding": [
+          {
+            "system": "http://smartregister.org",
+            "code": "111",
+            "display": "Inactivated Poliovirus booster vaccine"
+          }
+        ],
+        "text": "IPV Booster"
+      },
+      "dosage": [
+        {
+          "timing": {
+            "repeat": {
+              "count": 1,
+              "duration": 112,
+              "durationUnit": "d",
+              "period": 14,
+              "periodUnit": "wk"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "resourceType": "ActivityDefinition",
+      "id": "careplan-measles-task-activity",
+      "title": "Child MEASLES Immunization",
+      "status": "active",
+      "description": "This is the MEASLES scheduled immunization.",
+      "kind": "Task",
+      "code": {
+        "coding": [
+          {
+            "system": "http://smartregister.org",
+            "code": "VAC001",
+            "display": "Administration of vaccine to produce active immunity (procedure)"
+          }
+        ]
+      },
+      "productCodeableConcept": {
+        "coding": [
+          {
+            "system": "http://smartregister.org",
+            "code": "112",
+            "display": "Measles-mumps-rubella vaccination"
+          }
+        ],
+        "text": "MR"
+      },
+      "dosage": [
+        {
+          "sequence": 1,
+          "timing": {
+            "repeat": {
+              "count": 1,
+              "duration": 280,
+              "durationUnit": "d",
+              "period": 9,
+              "periodUnit": "mo"
+            }
+          }
+        },
+        {
+          "sequence": 2,
+          "timing": {
+            "repeat": {
+              "count": 1,
+              "duration": 560,
+              "durationUnit": "d",
+              "period": 18,
+              "periodUnit": "mo"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "resourceType": "ActivityDefinition",
+      "id": "careplan-measles-booster-task-activity",
+      "title": "Child MEASLES Booster Immunization",
+      "status": "active",
+      "description": "This is the MEASLES booster scheduled immunization.",
+      "kind": "Task",
+      "code": {
+        "coding": [
+          {
+            "system": "http://smartregister.org",
+            "code": "VAC001",
+            "display": "Administration of vaccine to produce active immunity (procedure)"
+          }
+        ]
+      },
+      "productCodeableConcept": {
+        "coding": [
+          {
+            "system": "http://smartregister.org",
+            "code": "113",
+            "display": "Measles-mumps-rubella booster vaccination"
+          }
+        ],
+        "text": "MR Booster"
+      },
+      "dosage": [
+        {
+          "timing": {
+            "repeat": {
+              "count": 1,
+              "duration": 564,
+              "durationUnit": "d",
+              "period": 18,
+              "periodUnit": "mo"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "resourceType": "ActivityDefinition",
+      "id": "careplan-hpv-task-activity",
+      "title": "Child HPV Immunization",
+      "status": "active",
+      "description": "This is the HPV scheduled immunization.",
+      "kind": "Task",
+      "code": {
+        "coding": [
+          {
+            "system": "http://smartregister.org",
+            "code": "VAC001",
+            "display": "Administration of vaccine to produce active immunity (procedure)"
+          }
+        ]
+      },
+      "productCodeableConcept": {
+        "coding": [
+          {
+            "system": "http://smartregister.org",
+            "code": "114",
+            "display": "Human papillomavirus antigen-containing vaccine product"
+          }
+        ],
+        "text": "HPV"
+      },
+      "dosage": [
+        {
+          "sequence": 1,
+          "timing": {
+            "repeat": {
+              "count": 1,
+              "period": 108,
+              "periodUnit": "mo"
+            }
+          }
+        },
+        {
+          "sequence": 2,
+          "timing": {
+            "repeat": {
+              "count": 1,
+              "period": 3420,
+              "periodUnit": "d"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "name": "Child Immunization",
+  "title": "Child Immunization",
+  "status": "active",
+  "description": "This scheduled will be used to track the child's immunization.",
+  "action": [
+    {
+      "prefix": "1",
+      "priority": "routine",
+      "condition": [
+        {
+          "kind": "applicability",
+          "expression": {
+            "language": "text/fhirpath",
+            "expression": "$this is Patient and (today() - 168 'months') <= $this.birthDate"
+          }
+        }
+      ],
+      "definitionCanonical": "#careplan-init-activity"
+    },
+    {
+      "prefix": "1",
+      "priority": "routine",
+      "condition": [
+        {
+          "kind": "applicability",
+          "expression": {
+            "language": "text/fhirpath",
+            "expression": "$this is Patient and (today() - 60 'months') <= $this.birthDate"
+          }
+        }
+      ],
+      "type": {
+        "coding": [
+          {
+            "code": "clinical-protocol",
+            "display": "Clinical Protocol"
+          }
+        ]
+      },
+      "definitionCanonical": "#careplan-bcg-task-activity",
+      "transform": "https://fhir.demo.smartregister.org/fhir/StructureMap/ecd7339d-1279-4661-b6f6-e6a058f5fed2"
+    },
+    {
+      "prefix": "1",
+      "priority": "routine",
+      "condition": [
+        {
+          "kind": "applicability",
+          "expression": {
+            "language": "text/fhirpath",
+            "expression": "$this is Patient and (today() - 60 'months') <= $this.birthDate"
+          }
+        }
+      ],
+      "type": {
+        "coding": [
+          {
+            "code": "clinical-protocol",
+            "display": "Clinical Protocol"
+          }
+        ]
+      },
+      "definitionCanonical": "#careplan-bcg-booster-task-activity",
+      "transform": "https://fhir.demo.smartregister.org/fhir/StructureMap/ecd7339d-1279-4661-b6f6-e6a058f5fed2"
+    },
+    {
+      "prefix": "1",
+      "priority": "routine",
+      "condition": [
+        {
+          "kind": "applicability",
+          "expression": {
+            "language": "text/fhirpath",
+            "expression": "$this is Patient and (today() - 60 'months') <= $this.birthDate"
+          }
+        }
+      ],
+      "type": {
+        "coding": [
+          {
+            "code": "clinical-protocol",
+            "display": "Clinical Protocol"
+          }
+        ]
+      },
+      "definitionCanonical": "#careplan-opv-task-activity",
+      "transform": "https://fhir.demo.smartregister.org/fhir/StructureMap/ecd7339d-1279-4661-b6f6-e6a058f5fed2"
+    },
+    {
+      "prefix": "1",
+      "priority": "routine",
+      "condition": [
+        {
+          "kind": "applicability",
+          "expression": {
+            "language": "text/fhirpath",
+            "expression": "$this is Patient and (today() - 60 'months') <= $this.birthDate"
+          }
+        }
+      ],
+      "type": {
+        "coding": [
+          {
+            "code": "clinical-protocol",
+            "display": "Clinical Protocol"
+          }
+        ]
+      },
+      "definitionCanonical": "#careplan-opv-booster-task-activity",
+      "transform": "https://fhir.demo.smartregister.org/fhir/StructureMap/ecd7339d-1279-4661-b6f6-e6a058f5fed2"
+    },
+    {
+      "prefix": "1",
+      "priority": "routine",
+      "condition": [
+        {
+          "kind": "applicability",
+          "expression": {
+            "language": "text/fhirpath",
+            "expression": "$this is Patient and (today() - 60 'months') <= $this.birthDate"
+          }
+        }
+      ],
+      "type": {
+        "coding": [
+          {
+            "code": "clinical-protocol",
+            "display": "Clinical Protocol"
+          }
+        ]
+      },
+      "definitionCanonical": "#careplan-penta-task-activity",
+      "transform": "https://fhir.demo.smartregister.org/fhir/StructureMap/ecd7339d-1279-4661-b6f6-e6a058f5fed2"
+    },
+    {
+      "prefix": "1",
+      "priority": "routine",
+      "condition": [
+        {
+          "kind": "applicability",
+          "expression": {
+            "language": "text/fhirpath",
+            "expression": "$this is Patient and (today() - 60 'months') <= $this.birthDate"
+          }
+        }
+      ],
+      "type": {
+        "coding": [
+          {
+            "code": "clinical-protocol",
+            "display": "Clinical Protocol"
+          }
+        ]
+      },
+      "definitionCanonical": "#careplan-penta-booster-task-activity",
+      "transform": "https://fhir.demo.smartregister.org/fhir/StructureMap/ecd7339d-1279-4661-b6f6-e6a058f5fed2"
+    },
+    {
+      "prefix": "1",
+      "priority": "routine",
+      "condition": [
+        {
+          "kind": "applicability",
+          "expression": {
+            "language": "text/fhirpath",
+            "expression": "$this is Patient and (today() - 60 'months') <= $this.birthDate"
+          }
+        }
+      ],
+      "type": {
+        "coding": [
+          {
+            "code": "clinical-protocol",
+            "display": "Clinical Protocol"
+          }
+        ]
+      },
+      "definitionCanonical": "#careplan-rota-task-activity",
+      "transform": "https://fhir.demo.smartregister.org/fhir/StructureMap/ecd7339d-1279-4661-b6f6-e6a058f5fed2"
+    },
+    {
+      "prefix": "1",
+      "priority": "routine",
+      "condition": [
+        {
+          "kind": "applicability",
+          "expression": {
+            "language": "text/fhirpath",
+            "expression": "$this is Patient and (today() - 60 'months') <= $this.birthDate"
+          }
+        }
+      ],
+      "type": {
+        "coding": [
+          {
+            "code": "clinical-protocol",
+            "display": "Clinical Protocol"
+          }
+        ]
+      },
+      "definitionCanonical": "#careplan-rota-booster-task-activity",
+      "transform": "https://fhir.demo.smartregister.org/fhir/StructureMap/ecd7339d-1279-4661-b6f6-e6a058f5fed2"
+    },
+    {
+      "prefix": "1",
+      "priority": "routine",
+      "condition": [
+        {
+          "kind": "applicability",
+          "expression": {
+            "language": "text/fhirpath",
+            "expression": "$this is Patient and (today() - 60 'months') <= $this.birthDate"
+          }
+        }
+      ],
+      "type": {
+        "coding": [
+          {
+            "code": "clinical-protocol",
+            "display": "Clinical Protocol"
+          }
+        ]
+      },
+      "definitionCanonical": "#careplan-pcv-task-activity",
+      "transform": "https://fhir.demo.smartregister.org/fhir/StructureMap/ecd7339d-1279-4661-b6f6-e6a058f5fed2"
+    },
+    {
+      "prefix": "1",
+      "priority": "routine",
+      "condition": [
+        {
+          "kind": "applicability",
+          "expression": {
+            "language": "text/fhirpath",
+            "expression": "$this is Patient and (today() - 60 'months') <= $this.birthDate"
+          }
+        }
+      ],
+      "type": {
+        "coding": [
+          {
+            "code": "clinical-protocol",
+            "display": "Clinical Protocol"
+          }
+        ]
+      },
+      "definitionCanonical": "#careplan-pcv-booster-task-activity",
+      "transform": "https://fhir.demo.smartregister.org/fhir/StructureMap/ecd7339d-1279-4661-b6f6-e6a058f5fed2"
+    },
+    {
+      "prefix": "1",
+      "priority": "routine",
+      "condition": [
+        {
+          "kind": "applicability",
+          "expression": {
+            "language": "text/fhirpath",
+            "expression": "$this is Patient and (today() - 60 'months') <= $this.birthDate"
+          }
+        }
+      ],
+      "type": {
+        "coding": [
+          {
+            "code": "clinical-protocol",
+            "display": "Clinical Protocol"
+          }
+        ]
+      },
+      "definitionCanonical": "#careplan-ipv-task-activity",
+      "transform": "https://fhir.demo.smartregister.org/fhir/StructureMap/ecd7339d-1279-4661-b6f6-e6a058f5fed2"
+    },
+    {
+      "prefix": "1",
+      "priority": "routine",
+      "condition": [
+        {
+          "kind": "applicability",
+          "expression": {
+            "language": "text/fhirpath",
+            "expression": "$this is Patient and (today() - 60 'months') <= $this.birthDate"
+          }
+        }
+      ],
+      "type": {
+        "coding": [
+          {
+            "code": "clinical-protocol",
+            "display": "Clinical Protocol"
+          }
+        ]
+      },
+      "definitionCanonical": "#careplan-ipv-booster-task-activity",
+      "transform": "https://fhir.demo.smartregister.org/fhir/StructureMap/ecd7339d-1279-4661-b6f6-e6a058f5fed2"
+    },
+    {
+      "prefix": "1",
+      "priority": "routine",
+      "condition": [
+        {
+          "kind": "applicability",
+          "expression": {
+            "language": "text/fhirpath",
+            "expression": "$this is Patient and (today() - 60 'months') <= $this.birthDate"
+          }
+        }
+      ],
+      "type": {
+        "coding": [
+          {
+            "code": "clinical-protocol",
+            "display": "Clinical Protocol"
+          }
+        ]
+      },
+      "definitionCanonical": "#careplan-measles-task-activity",
+      "transform": "https://fhir.demo.smartregister.org/fhir/StructureMap/ecd7339d-1279-4661-b6f6-e6a058f5fed2"
+    },
+    {
+      "prefix": "1",
+      "priority": "routine",
+      "condition": [
+        {
+          "kind": "applicability",
+          "expression": {
+            "language": "text/fhirpath",
+            "expression": "$this is Patient and (today() - 60 'months') <= $this.birthDate"
+          }
+        }
+      ],
+      "type": {
+        "coding": [
+          {
+            "code": "clinical-protocol",
+            "display": "Clinical Protocol"
+          }
+        ]
+      },
+      "definitionCanonical": "#careplan-measles-booster-task-activity",
+      "transform": "https://fhir.demo.smartregister.org/fhir/StructureMap/ecd7339d-1279-4661-b6f6-e6a058f5fed2"
+    },
+    {
+      "prefix": "1",
+      "priority": "routine",
+      "condition": [
+        {
+          "kind": "applicability",
+          "expression": {
+            "language": "text/fhirpath",
+            "expression": "$this is Patient and $this.gender = 'female' and (today() - 168 'months') <= $this.birthDate"
+          }
+        }
+      ],
+      "type": {
+        "coding": [
+          {
+            "code": "clinical-protocol",
+            "display": "Clinical Protocol"
+          }
+        ]
+      },
+      "definitionCanonical": "#careplan-hpv-task-activity",
+      "transform": "https://fhir.demo.smartregister.org/fhir/StructureMap/ecd7339d-1279-4661-b6f6-e6a058f5fed2"
+    }
+  ]
+}

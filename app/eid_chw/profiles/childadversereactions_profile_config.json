@@ -1,0 +1,241 @@
+{
+  "appId": "eir-chw",
+  "configType": "profile",
+  "id": "childadversereactionsProfile",
+  "contentBackgroundColor": "#F2F4F7",
+  "topAppBar": {
+    "title": {
+      "viewType": "COMPOUND_TEXT",
+      "primaryText": "{{ adverse.reactions }}",
+      "primaryTextColor": "#FFFFFF",
+      "fontSize": 16.0,
+      "maxLines": 1,
+      "primaryTextFontWeight": "BOLD"
+    },
+    "collapsible": false
+  },
+  "fhirResource": {
+    "baseResource": {
+      "resource": "Patient"
+    },
+    "relatedResources": [
+      {
+        "id": "availableAdverseEvents",
+        "resource": "AdverseEvent",
+        "searchParameter": "subject",
+        "sortConfigs": [
+          {
+            "paramName": "recordedDate",
+            "dataType": "DATE",
+            "order": "DESCENDING"
+          }
+        ]
+      },
+      {
+        "id": "availableImmunization",
+        "resource": "Immunization",
+        "searchParameter": "patient"
+      },
+      {
+        "id": "availableConditions",
+        "resource": "Condition",
+        "searchParameter": "subject"
+      }
+    ]
+  },
+  "rules": [],
+  "views": [
+    {
+      "viewType": "COLUMN",
+      "backgroundColor": "#F2F4F7",
+      "children": [
+        {
+          "id": "adverseEvents",
+          "viewType": "LIST",
+          "backgroundColor": "#F2F4F7",
+          "showDivider": false,
+          "resources": [
+            {
+              "id": "availableAdverseEvents",
+              "relatedResourceId": "availableAdverseEvents",
+              "resourceType": "AdverseEvent",
+              "relatedResources": [
+                {
+                  "id": "availableImmunization",
+                  "relatedResourceId": "availableImmunization",
+                  "resourceType": "Immunization"
+                },
+                {
+                  "id": "availableConditions",
+                  "relatedResourceId": "availableConditions",
+                  "resourceType": "Condition"
+                }
+              ]
+            }
+          ],
+          "emptyList": {
+            "message": "No adverse reactions available for this patient at the moment"
+          },
+          "registerCard": {
+            "rules": [
+              {
+                "name": "recordedDate",
+                "condition": "true",
+                "priority": 1,
+                "actions": [
+                  "data.put('recordedDate', fhirPath.extractValue(AdverseEvent, 'AdverseEvent.recordedDate'))"
+                ]
+              },
+              {
+                "name": "recordedDateFormatted",
+                "condition": "true",
+                "priority": 2,
+                "actions": [
+                  "data.put('recordedDateFormatted', service.formatDate(data.get('recordedDate'), \"yyyy-MM-dd'T'HH:mm:ss\", \"dd MMM, yyyy\"))"
+                ]
+              },
+              {
+                "name": "immunizationId",
+                "condition": "true",
+                "priority": 1,
+                "actions": [
+                  "data.put('immunizationId', fhirPath.extractValue(AdverseEvent, 'AdverseEvent.suspectEntity.instance.reference').replace('Immunization/', ''))"
+                ]
+              },
+              {
+                "name": "immunization",
+                "condition": "true",
+                "priority": 2,
+                "actions": [
+                  "data.put('immunization', service.filterResources(availableImmunization, 'Immunization.id = \"' + data.get('immunizationId') + '\"').get(0))"
+                ]
+              },
+              {
+                "name": "vaccineName",
+                "condition": "true",
+                "priority": 3,
+                "actions": [
+                  "data.put('vaccineName', fhirPath.extractValue(data.get('immunization'), 'Immunization.vaccineCode.text'))"
+                ]
+              },
+              {
+                "name": "typeOfReaction",
+                "condition": "true",
+                "priority": 1,
+                "actions": [
+                  "data.put('typeOfReaction', fhirPath.extractValue(AdverseEvent, 'AdverseEvent.suspectEntity.causality.assessment.text'))"
+                ]
+              },
+              {
+                "name": "reactionOutcome",
+                "condition": "true",
+                "priority": 1,
+                "actions": [
+                  "data.put('reactionOutcome', fhirPath.extractValue(AdverseEvent, 'AdverseEvent.severity.text'))"
+                ]
+              },
+              {
+                "name": "conditionId",
+                "condition": "true",
+                "priority": 1,
+                "actions": [
+                  "data.put('conditionId', fhirPath.extractValue(AdverseEvent, 'AdverseEvent.resultingCondition.reference').replace('Condition/', ''))"
+                ]
+              },
+              {
+                "name": "condition",
+                "condition": "true",
+                "priority": 2,
+                "actions": [
+                  "data.put('condition', service.filterResources(availableConditions, 'Condition.id = \"' + data.get('conditionId') + '\"').get(0))"
+                ]
+              },
+              {
+                "name": "reactionManifestation",
+                "condition": "true",
+                "priority": 3,
+                "actions": [
+                  "data.put('reactionManifestation', fhirPath.extractValue(data.get('condition'), 'Condition.code.text'))"
+                ]
+              }
+            ],
+            "views": [
+              {
+                "viewType": "COLUMN",
+                "children": [
+                  {
+                    "viewType": "COLUMN",
+                    "backgroundColor": "#F2F4F7",
+                    "padding": 12,
+                    "children": [
+                      {
+                        "viewType": "COMPOUND_TEXT",
+                        "primaryText": "@{recordedDateFormatted}",
+                        "primaryTextColor": "@{patientTextColor}",
+                        "fontSize": 14.0,
+                        "primaryTextFontWeight": "BOLD"
+                      }
+                    ]
+                  },
+                  {
+                    "viewType": "CARD",
+                    "backgroundColor": "#FFFFFF",
+                    "content": [
+                      {
+                        "viewType": "COLUMN",
+                        "backgroundColor": "#FFFFFF",
+                        "children": [
+                          {
+                            "viewType": "COMPOUND_TEXT",
+                            "primaryText": "{{ vaccine.name }} : @{vaccineName}",
+                            "primaryTextColor": "@{patientTextColor}",
+                            "fontSize": 14.0,
+                            "primaryTextFontWeight": "BOLD"
+                          },
+                          {
+                            "viewType": "SPACER",
+                            "height": 2
+                          },
+                          {
+                            "viewType": "COMPOUND_TEXT",
+                            "primaryText": "{{ reaction.type }} : @{typeOfReaction}",
+                            "primaryTextColor": "@{patientTextColor}",
+                            "fontSize": 14.0
+                          },
+                          {
+                            "viewType": "SPACER",
+                            "height": 2
+                          },
+                          {
+                            "viewType": "COMPOUND_TEXT",
+                            "primaryText": "{{ reaction.outcome }} : @{reactionOutcome}",
+                            "primaryTextColor": "@{patientTextColor}",
+                            "fontSize": 14.0
+                          },
+                          {
+                            "viewType": "SPACER",
+                            "height": 2
+                          },
+                          {
+                            "viewType": "COMPOUND_TEXT",
+                            "primaryText": "{{ reaction.manifestation }} : @{reactionManifestation}",
+                            "primaryTextColor": "@{patientTextColor}",
+                            "fontSize": 14.0
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "viewType": "SPACER",
+      "height": 8
+    }
+  ]
+}
