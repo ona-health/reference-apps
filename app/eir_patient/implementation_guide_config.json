@@ -1,0 +1,34 @@
+{
+  "resourceType": "ImplementationGuide",
+  "id": "13057302",
+  "meta": {
+    "versionId": "1",
+    "lastUpdated": "2024-05-27T14:42:53.345+00:00"
+  },
+  "url": "https://fhir.eir.smartregister.org/fhir/ImplementationGuide/eir-patient",
+  "version": "1.0.0",
+  "name": "eir-patient",
+  "title": "GIZ/PATH EIR Implementation Guide",
+  "status": "draft",
+  "date": "2024-05-27",
+  "publisher": "Ona Systems, Inc.",
+  "useContext": [
+    {
+      "valueRange": {
+        "high": {
+          "value": 11
+        }
+      }
+    }
+  ],
+  "packageId": "org.smartregister.fhircore",
+  "definition": {
+    "resource": [
+      {
+        "reference": {
+          "reference": "Composition/12965652"
+        }
+      }
+    ]
+  }
+}
