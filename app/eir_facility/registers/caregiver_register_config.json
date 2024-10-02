@@ -1,0 +1,189 @@
+{
+  "appId": "eir-facility",
+  "configType": "register",
+  "id": "caregiverRegister",
+  "fhirResource": {
+    "baseResource": {
+      "resource": "RelatedPerson",
+      "sortConfigs": [
+        {
+          "paramName": "_lastUpdated",
+          "dataType": "DATE",
+          "order": "DESCENDING"
+        }
+      ]
+    },
+    "relatedResources": [
+      {
+        "id": "availablePatients",
+        "resource": "Patient",
+        "searchParameter": "link",
+        "isRevInclude": true,
+        "relatedResources": [
+          {
+            "id": "availableTasks",
+            "resource": "Task",
+            "searchParameter": "subject",
+            "isRevInclude": true
+          }
+        ]
+      }
+    ]
+  },
+  "registerCard": {
+    "rules": [
+      {
+        "name": "relatedPersonId",
+        "condition": "true",
+        "actions": [
+          "data.put('relatedPersonId', fhirPath.extractValue(RelatedPerson, 'RelatedPerson.id'))"
+        ]
+      },
+      {
+        "name": "relatedPersonFirstName",
+        "condition": "true",
+        "actions": [
+          "data.put('relatedPersonFirstName', fhirPath.extractValue(RelatedPerson, \"RelatedPerson.name.where(use='official').given.first()\"))"
+        ]
+      },
+      {
+        "name": "relatedPersonMiddleName",
+        "condition": "true",
+        "actions": [
+          "data.put('relatedPersonMiddleName', fhirPath.extractValue(RelatedPerson, \"RelatedPerson.name.where(use='official').given.text()\"))"
+        ]
+      },
+      {
+        "name": "relatedPersonLastName",
+        "condition": "true",
+        "actions": [
+          "data.put('relatedPersonLastName', fhirPath.extractValue(RelatedPerson, \"RelatedPerson.name.where(use='official').family\"))"
+        ]
+      },
+      {
+        "name": "relatedPersonGender",
+        "condition": "true",
+        "actions": [
+          "data.put('relatedPersonGender', service.extractGender(RelatedPerson))"
+        ]
+      },
+      {
+        "name": "relatedPersonAge",
+        "condition": "true",
+        "actions": [
+          "data.put('relatedPersonAge', service.extractAge(RelatedPerson))"
+        ]
+      },
+      {
+        "name": "formattedRelatedPersonInfo",
+        "condition": "true",
+        "priority": 3,
+        "actions": [
+          "data.put('formattedRelatedPersonInfo', (data.get('relatedPersonFirstName') + ' ' + data.get('relatedPersonLastName')).trim() + ', ' + (data.get('relatedPersonGender') == 'Female' ? 'F' : (data.get('relatedPersonGender') == 'Male' ? 'M' : data.get('relatedPersonGender'))) + ', ' + data.get('relatedPersonAge'))"
+        ]
+      },
+      {
+        "name": "relatedPersonIdentifier",
+        "condition": "true",
+        "actions": [
+          "data.put('relatedPersonIdentifier', fhirPath.extractValue(RelatedPerson, \"RelatedPerson.identifier[0].value\"))"
+        ]
+      },
+      {
+        "name": "numberOfChildren",
+        "condition": "true",
+        "actions": [
+          "data.put('numberOfChildren', availablePatients == null ? 0 : size(availablePatients))"
+        ]
+      },
+      {
+        "name": "visitStatus",
+        "condition": "true",
+        "actions": [
+          "data.put('visitStatus', service.taskServiceStatusExist(availableTasks, 'OVERDUE') == true ? 'OVERDUE': service.taskServiceStatusExist(availableTasks, 'DUE') == true ? 'DUE' : 'UPCOMING')"
+        ]
+      }
+    ],
+    "views": [
+      {
+        "viewType": "COLUMN",
+        "children": [
+          {
+            "viewType": "SERVICE_CARD",
+            "details": [
+              {
+                "viewType": "COMPOUND_TEXT",
+                "primaryText": "{{ 44cf790aae7e0faa1ec3c95c14031d80 }}",
+                "primaryTextColor": "#000000"
+              },
+              {
+                "viewType": "COMPOUND_TEXT",
+                "primaryText": "{{ 7a1d818c428fb7ea95e704cfc24dc845 }}",
+                "fontSize": 14.0,
+                "primaryTextColor": "#000000"
+              }
+            ],
+            "showVerticalDivider": false,
+            "serviceButton": {
+              "visible": true,
+              "text": "@{numberOfChildren}",
+              "status": "@{visitStatus}",
+              "buttonType": "BIG",
+              "actions": [
+                {
+                  "trigger": "ON_CLICK",
+                  "workflow": "LAUNCH_PROFILE",
+                  "id": "caregiverProfile"
+                }
+              ]
+            },
+            "actions": [
+              {
+                "trigger": "ON_CLICK",
+                "workflow": "LAUNCH_PROFILE",
+                "id": "caregiverProfile"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "searchBar": {
+    "visible": true,
+    "display": "{{ search.name.or.id }}",
+    "computedRules": [
+      "relatedPersonIdentifier",
+      "relatedPersonFirstName",
+      "relatedPersonMiddleName",
+      "relatedPersonLastName"
+    ]
+  },
+  "topScreenSection": {
+    "title": "{{ 6a31766a4a17ff69f259bc76f812ecfa }}",
+    "searchBar": {
+      "visible": true,
+      "display": "{{ search.by.location.name }}",
+      "computedRules": [
+        "servicePointName"
+      ]
+    },
+    "menuIcons": [
+      {
+        "viewType": "IMAGE",
+        "size": 10,
+        "imageConfig": {
+          "type": "local",
+          "reference": "ic_toggle_map_view"
+        },
+        "actions": [
+          {
+            "trigger": "ON_CLICK",
+            "workflow": "LAUNCH_MAP",
+            "id": "locationMap"
+          }
+        ]
+      }
+    ]
+  }
+}

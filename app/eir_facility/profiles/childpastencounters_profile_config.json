@@ -1,0 +1,232 @@
+{
+  "appId": "eir-facility",
+  "configType": "profile",
+  "id": "childpastencountersProfile",
+  "contentBackgroundColor": "#F2F4F7",
+  "topAppBar": {
+    "title": {
+      "viewType": "COMPOUND_TEXT",
+      "primaryText": "{{ 49f79a468a4c4badd34e20a3b0fd5c66 }}",
+      "primaryTextColor": "#FFFFFF",
+      "fontSize": 16.0,
+      "maxLines": 1,
+      "primaryTextFontWeight": "BOLD"
+    },
+    "collapsible": false
+  },
+  "fhirResource": {
+    "baseResource": {
+      "resource": "Patient"
+    },
+    "relatedResources": [
+      {
+        "id": "availableEncounters",
+        "resource": "Encounter",
+        "searchParameter": "subject",
+        "sortConfigs": [
+          {
+            "paramName": "period",
+            "dataType": "DATE"
+          }
+        ]
+      },
+      {
+        "id": "availableTasks",
+        "resource": "Task",
+        "searchParameter": "subject",
+        "sortConfigs": [
+          {
+            "paramName": "period",
+            "dataType": "DATE"
+          }
+        ]
+      }
+    ]
+  },
+  "rules": [],
+  "views": [
+    {
+      "viewType": "LIST",
+      "id": "previousScreeningsList",
+      "resources": [
+        {
+          "id": "availableTasks",
+          "relatedResourceId": "availableTasks",
+          "resourceType": "Task",
+          "conditionalFhirPathExpression": "((Task.status = 'completed') or (Task.status = 'failed') or (Task.status = 'cancelled'))"
+        }
+      ],
+      "emptyList": {
+        "message": "{{ 2f262834ff4e3fd647d3fd8c3382aa1a }}"
+      },
+      "registerCard": {
+        "rules": [
+          {
+            "name": "taskStatus",
+            "condition": "true",
+            "actions": [
+              "data.put('taskStatus', fhirPath.extractValue(Task, 'Task.status'))"
+            ]
+          },
+          {
+            "name": "taskStatusColorCode",
+            "condition": "true",
+            "actions": [
+              "data.put('taskStatusColorCode', service.generateTaskServiceStatus(Task))"
+            ]
+          },
+          {
+            "name": "taskExecutionStartDate",
+            "condition": "true",
+            "actions": [
+              "data.put('taskExecutionStartDate', fhirPath.extractValue(Task, 'Task.executionPeriod.start'))"
+            ]
+          },
+          {
+            "name": "taskPeriodDueDate",
+            "condition": "true",
+            "actions": [
+              "data.put('taskPeriodDueDate', service.formatDate(data.get('taskExecutionStartDate'), \"yyyy-MM-dd'T'HH:mm:ss\", \"dd MMM yyyy\"))"
+            ]
+          },
+          {
+            "name": "taskDescription",
+            "condition": "true",
+            "actions": [
+              "data.put('taskDescription', fhirPath.extractValue(Task, 'Task.description'))"
+            ]
+          },
+          {
+            "name": "taskGroupIdentifier",
+            "condition": "true",
+            "actions": [
+              "data.put('taskGroupIdentifier', fhirPath.extractValue(Task, 'Task.groupIdentifier.value'))"
+            ]
+          },
+          {
+            "name": "taskDescriptionWithStartDate",
+            "condition": "true",
+            "priority": 2,
+            "actions": [
+              "data.put('taskDescriptionWithStartDate', data.get('taskDescription') + ' - ' + data.get('taskPeriodDueDate'))"
+            ]
+          },
+          {
+            "name": "immunizationDate",
+            "condition": "true",
+            "actions": [
+              "data.put('immunizationDate', service.formatDate(fhirPath.extractValue(Task, \"Task.output.where(type.coding.select(code) = '35123003').value\"), \"yyyy-MM-dd\", \"dd MMM yyyy\"))"
+            ]
+          },
+          {
+            "name": "taskDate",
+            "condition": "true",
+            "priority": 2,
+            "actions": [
+              "data.put('taskDate', data.get('taskStatus') == 'completed' ? data.get('immunizationDate').empty().not() ? data.get('immunizationDate') : data.get('taskPeriodDueDate') : data.get('taskPeriodDueDate'))"
+            ]
+          },
+          {
+            "name": "taskDescriptionWithGroupIdentifier",
+            "condition": "true",
+            "priority": 2,
+            "actions": [
+              "data.put('taskDescriptionWithGroupIdentifier', data.get('taskDescription') + ' at ' + data.get('taskGroupIdentifier').replace('_', ' '))"
+            ]
+          },
+          {
+            "name": "taskId",
+            "condition": "true",
+            "actions": [
+              "data.put('taskId', fhirPath.extractValue(Task, 'Task.id'))"
+            ]
+          },
+          {
+            "name": "taskFor",
+            "condition": "true",
+            "actions": [
+              "data.put('taskFor', fhirPath.extractValue(Task, 'Task.for.reference'))"
+            ]
+          },
+          {
+            "name": "taskQuestionnaireId",
+            "condition": "true",
+            "actions": [
+              "data.put('taskQuestionnaireId', fhirPath.extractValue(Task, 'Task.reasonReference.reference'))"
+            ]
+          },
+          {
+            "name": "taskStatusIcon",
+            "condition": "true",
+            "actions": [
+              "data.put('taskStatusIcon', data.get('taskStatus').equals('ready') ? 'ic_add' : data.get('taskStatus').equals('failed') || data.get('taskStatus').equals('cancelled') ? 'ic_cancel' : data.get('taskStatus').equals('requested') ? 'ic_add' : data.get('taskStatus').equals('completed') ? 'ic_check' : 'ic_add')"
+            ]
+          },
+          {
+            "name": "taskStatusColorCodeToTint",
+            "condition": "true",
+            "actions": [
+              "data.put('taskStatusColorCodeToTint',  data.get('taskStatus').equals('ready') ? 'warningColor' : data.get('taskStatus').equals('failed') || data.get('taskStatus').equals('cancelled') ? 'dangerColor' : data.get('taskStatus').equals('requested') ? 'warningColor' : data.get('taskStatus').equals('completed') ? 'successColor' : 'warningColor')"
+            ]
+          }
+        ],
+        "views": [
+          {
+            "viewType": "ROW",
+            "fillMaxWidth": true,
+            "padding": 16,
+            "children": [
+              {
+                "viewType": "IMAGE",
+                "tint": "#FFFFFF",
+                "size": 28,
+                "imageConfig": {
+                  "type": "local",
+                  "reference": "@{taskStatusIcon}"
+                },
+                "shape": "CIRCLE",
+                "backgroundColor": "@{taskStatusColorCodeToTint}"
+              },
+              {
+                "viewType": "SPACER",
+                "width": 8
+              },
+              {
+                "viewType": "COLUMN",
+                "fillMaxWidth": true,
+                "children": [
+                  {
+                    "viewType": "ROW",
+                    "fillMaxWidth": true,
+                    "arrangement": "SPACE_BETWEEN",
+                    "children": [
+                      {
+                        "viewType": "COMPOUND_TEXT",
+                        "primaryText": "{{ 2c2d8dc92bbb8883ed0c242807482143 }}",
+                        "primaryTextColor": "#6F7274",
+                        "fontSize": 14.0
+                      },
+                      {
+                        "viewType": "COMPOUND_TEXT",
+                        "primaryText": "{{ ca156fa3737787c556e859fa3312691e }}",
+                        "primaryTextColor": "#6F7274",
+                        "fontSize": 14.0,
+                        "textCase": "TITLE_CASE"
+                      }
+                    ]
+                  },
+                  {
+                    "viewType": "COMPOUND_TEXT",
+                    "primaryText": "{{ 1ff40f490f1bceb91ce34308b5a14e10 }}",
+                    "primaryTextColor": "#000000",
+                    "fontSize": 16.0
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}

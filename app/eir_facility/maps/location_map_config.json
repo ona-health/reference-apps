@@ -1,0 +1,326 @@
+{
+  "appId": "eir-facility",
+  "id": "locationMap",
+  "configType": "geoWidget",
+  "profileId": "caregiverProfile",
+  "mapLayers": [
+    {
+      "layer": "STREET",
+      "active": true
+    },
+    {
+      "layer": "SATELLITE",
+      "active": false
+    },
+    {
+      "layer": "STREET_SATELLITE",
+      "active": false
+    }
+  ],
+  "registrationQuestionnaire": {
+    "id": "5cb30374-6b3d-46a7-858b-803cb0dcecc5",
+    "title": "{{ a3401a36929da1f4e0ee28f9d5d52ba7 }}",
+    "saveButtonText": "{{ a3401a36929da1f4e0ee28f9d5d52ba7 }}",
+    "setPractitionerDetails": true,
+    "setOrganizationDetails": true
+  },
+  "resourceConfig": {
+    "baseResource": {
+      "resource": "Location",
+      "dataQueries": [
+        {
+          "paramName": "type",
+          "filterCriteria": [
+            {
+              "dataType": "CODE",
+              "value": {
+                "system": "http://terminology.hl7.org/CodeSystem/v3-RoleCode",
+                "code": "238497"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "relatedResources": [
+      {
+        "id": "servicePointInventoryItems",
+        "resource": "List",
+        "searchParameter": "subject",
+        "relatedResources": [
+          {
+            "id": "availableRelatedPersons",
+            "resource": "RelatedPerson",
+            "searchParameter": "item",
+            "isRevInclude": false,
+            "relatedResources": [
+              {
+                "id": "availablePatients",
+                "resource": "Patient",
+                "searchParameter": "link",
+                "isRevInclude": true,
+                "relatedResources": [
+                  {
+                    "id": "availableTasks",
+                    "resource": "Task",
+                    "searchParameter": "subject",
+                    "isRevInclude": true
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "servicePointConfig": {
+    "rules": [
+      {
+        "name": "childCount",
+        "condition": "true",
+        "priority": 2,
+        "actions": [
+          "data.put('childCount', availablePatients == null ? 0 : size(availablePatients))"
+        ]
+      },
+      {
+        "name": "dueTaskList",
+        "condition": "true",
+        "priority": 2,
+        "actions": [
+          "data.put('dueTaskList', service.filterResources(availableTasks, 'Task.status = \"ready\"'))"
+        ]
+      },
+      {
+        "name": "overdueTaskList",
+        "condition": "true",
+        "priority": 2,
+        "actions": [
+          "data.put('overdueTaskList', service.filterResources(availableTasks, '(Task.status = \"ready\" or Task.status = \"in-progress\") and today() > Task.executionPeriod.end'))"
+        ]
+      },
+      {
+        "name": "dueTaskCount",
+        "condition": "true",
+        "priority": 3,
+        "actions": [
+          "data.put('dueTaskCount', size(data.get('dueTaskList')) == null ? 0 : size(data.get('dueTaskList')))"
+        ]
+      },
+      {
+        "name": "overdueTaskCount",
+        "condition": "true",
+        "priority": 3,
+        "actions": [
+          "data.put('overdueTaskCount', size(data.get('overdueTaskList')) == null ? 0 : size(data.get('overdueTaskList')))"
+        ]
+      },
+      {
+        "name": "taskStatus",
+        "condition": "true",
+        "actions": [
+          "data.put('taskStatus',  service.taskServiceStatusExist(availableTasks, 'OVERDUE') ? 'overdue' : service.taskServiceStatusExist(availableTasks, 'DUE') == true ? 'due' :'due')"
+        ]
+      },
+      {
+        "name": "servicePointId",
+        "condition": "true",
+        "priority": 1,
+        "actions": [
+          "data.put('servicePointId',servicePointInventoryItems.get(0).entry.get(0).item.referenceElement.idPart)"
+        ]
+      },
+      {
+        "name": "name",
+        "condition": "true",
+        "actions": [
+          "data.put('name', fhirPath.extractValue(Location, \"Location.name\"))"
+        ]
+      },
+      {
+        "name": "locationId",
+        "condition": "true",
+        "actions": [
+          "data.put('name', fhirPath.extractValue(Location, \"Location.id\"))"
+        ]
+      },
+      {
+        "name": "status",
+        "condition": "true",
+        "actions": [
+          "data.put('status', 'active')"
+        ]
+      },
+      {
+        "name": "type",
+        "condition": "true",
+        "actions": [
+          "data.put('type', fhirPath.extractValue(Location, \"Location.type.where(coding[0].where(system = 'http://terminology.hl7.org/CodeSystem/v3-RoleCode')).where(coding[0].where(code != 'work')).coding[0].code\"))"
+        ]
+      },
+      {
+        "name": "servicePointType",
+        "condition": "true",
+        "actions": [
+          "data.put('servicePointType', fhirPath.extractValue(Location, \"Location.type.where(coding[0].where(system = 'http://terminology.hl7.org/CodeSystem/v3-RoleCode')).where(coding[0].where(code != 'work')).coding[0].display\"))"
+        ]
+      },
+      {
+        "name": "typeImage",
+        "condition": "true",
+        "priority": 1,
+        "actions": [
+          "data.put('typeImage', 'ic_csb_service_point')"
+        ]
+      }
+    ],
+    "servicePointProperties": {
+      "taskStatus": "@{taskStatus}",
+      "name": "@{name}",
+      "status": "@{status}",
+      "servicePointType": "@{servicePointType}",
+      "type": "@{type}",
+      "typeImage": "@{typeImage}",
+      "servicePointId": "@{servicePointId}",
+      "number": "@{childCount}",
+      "dueTaskCount": "@{dueTaskCount}",
+      "overdueTaskCount": "@{overdueTaskCount}"
+    }
+  },
+  "summaryBottomSheetConfig": {
+    "views": [
+      {
+        "viewType": "CARD",
+        "visible": "true",
+        "contentPadding": 0,
+        "content": [
+          {
+            "viewType": "CARD",
+            "contentPadding": 16,
+            "visible": "true",
+            "content": [
+              {
+                "viewType": "ROW",
+                "alignment": "START",
+                "fillMaxWidth": true,
+                "clickable": false,
+                "children": [
+                  {
+                    "viewType": "COLUMN",
+                    "fillMaxWidth": true,
+                    "alignment": "CENTER",
+                    "children": [
+                      {
+                        "viewType": "COMPOUND_TEXT",
+                        "primaryText": "{{ e33f59057e277d066cd60214842c920c }}",
+                        "primaryTextFontWeight": "BOLD",
+                        "fontSize": 17.0,
+                        "primaryTextColor": "#000000"
+                      },
+                      {
+                        "viewType": "SPACER",
+                        "height": 8
+                      },
+                      {
+                        "viewType": "COMPOUND_TEXT",
+                        "primaryText": "{{ 9d5784152764460be4d42860726ca4e5 }}",
+                        "fontSize": 14.0,
+                        "primaryTextColor": "#000000"
+                      },
+                      {
+                        "viewType": "SPACER",
+                        "height": 4
+                      },
+                      {
+                        "viewType": "COMPOUND_TEXT",
+                        "primaryText": "{{ 4c9725b4ee2c1dd25615b0ad607f364f }}",
+                        "fontSize": 14.0,
+                        "primaryTextColor": "#000000"
+                      },
+                      {
+                        "viewType": "SPACER",
+                        "height": 8
+                      },
+                      {
+                        "viewType": "BUTTON",
+                        "smallSized": true,
+                        "text": "View Profile",
+                        "status": "DUE",
+                        "startIcon": {
+                          "type": "local",
+                          "reference": "@{ic_home}"
+                        },
+                        "clickable": true,
+                        "fillMaxWidth": false,
+                        "actions": [
+                          {
+                            "trigger": "ON_CLICK",
+                            "workflow": "LAUNCH_PROFILE",
+                            "id": "caregiverProfile",
+                            "params": [
+                              {
+                                "paramType": "RESOURCE_ID",
+                                "key": "servicePointId",
+                                "value": "@{servicePointId}"
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "showAddLocation": false,
+  "showPlaneSwitcher": true,
+  "showLocation": true,
+  "actions": [
+    {
+      "trigger": "ON_CLICK",
+      "workflow": "SUMMARY_BOTTOM_SHEET",
+      "id": "summaryBottomSheet",
+      "display": "{{ b67beb4a12a4e4b665cf240088feb5c1 }}",
+      "params": [
+        {
+          "paramType": "PARAMDATA",
+          "key": "servicePointId",
+          "value": "@{servicePointId}"
+        }
+      ]
+    }
+  ],
+  "topScreenSection": {
+    "title": "{{ 6a31766a4a17ff69f259bc76f812ecfa }}",
+    "searchBar": {
+      "visible": true,
+      "display": "{{ 707c2f2e55f8d787c671ada6cb252795 }}",
+      "computedRules": [
+        "name"
+      ]
+    },
+    "menuIcons": [
+      {
+        "viewType": "IMAGE",
+        "size": 10,
+        "imageConfig": {
+          "type": "local",
+          "reference": "ic_service_points"
+        },
+        "actions": [
+          {
+            "trigger": "ON_CLICK",
+            "workflow": "LAUNCH_REGISTER",
+            "id": "caregiverRegister"
+          }
+        ]
+      }
+    ]
+  }
+}

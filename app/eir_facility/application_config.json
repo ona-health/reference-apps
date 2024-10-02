@@ -1,0 +1,28 @@
+{
+  "appId": "eir-facility",
+  "configType": "application",
+  "theme": "DEFAULT",
+  "appTitle": "EIR",
+  "remoteSyncPageSize": 250,
+  "languages": [
+    "en",
+    "es",
+    "fr"
+  ],
+  "useDarkTheme": false,
+  "syncInterval": 30,
+  "syncStrategy": [
+    "CareTeam"
+  ],
+  "loginConfig": {
+    "showLogo": true,
+    "enablePin": true,
+    "pinLength": 4
+  },
+  "settingsScreenMenuOptions": [
+    "MANUAL_SYNC",
+    "SWITCH_LANGUAGES",
+    "RESET_DATA",
+    "INSIGHTS"
+  ]
+}

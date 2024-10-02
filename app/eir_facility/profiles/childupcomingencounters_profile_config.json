@@ -1,0 +1,1766 @@
+{
+  "appId": "eir-facility",
+  "configType": "profile",
+  "id": "childupcomingencountersProfile",
+  "contentBackgroundColor": "#F2F4F7",
+  "topAppBar": {
+    "title": {
+      "viewType": "COMPOUND_TEXT",
+      "primaryText": "{{ 768422eb1a0f7b4f6b396d30b97f1006 }}",
+      "primaryTextColor": "#FFFFFF",
+      "fontSize": 16.0,
+      "maxLines": 1,
+      "primaryTextFontWeight": "BOLD"
+    },
+    "collapsible": false
+  },
+  "fhirResource": {
+    "baseResource": {
+      "resource": "Patient"
+    },
+    "relatedResources": [
+      {
+        "id": "availableConditions",
+        "resource": "Condition",
+        "searchParameter": "subject"
+      },
+      {
+        "resource": "CarePlan",
+        "searchParameter": "subject"
+      },
+      {
+        "id": "availableTasks",
+        "resource": "Task",
+        "searchParameter": "subject",
+        "sortConfigs": [
+          {
+            "paramName": "period",
+            "dataType": "DATE"
+          }
+        ]
+      }
+    ]
+  },
+  "rules": [
+    {
+      "name": "patientActive",
+      "condition": "true",
+      "actions": [
+        "data.put('patientActive', fhirPath.extractValue(Patient, 'Patient.active'))"
+      ]
+    },
+    {
+      "name": "birthDate",
+      "condition": "true",
+      "actions": [
+        "data.put('birthDate', fhirPath.extractValue(Patient, 'Patient.birthDate'))"
+      ]
+    },
+    {
+      "name": "patientIdentifier",
+      "condition": "true",
+      "actions": [
+        "data.put('patientIdentifier', fhirPath.extractValue(Patient, 'Patient.identifier[0].value'))"
+      ]
+    },
+    {
+      "name": "patientId",
+      "condition": "true",
+      "actions": [
+        "data.put('patientId', fhirPath.extractValue(Patient, 'Patient.id'))"
+      ]
+    },
+    {
+      "name": "showAtBirthTasks",
+      "condition": "true",
+      "actions": [
+        "data.put('showAtBirthTasks', service.filterResources(availableTasks, \" Task.code.coding.code='VAC001' and Task.executionPeriod.end >= today() and Task.groupIdentifier.value = '0_d'\").size() > 0)"
+      ]
+    },
+    {
+      "name": "showAtSixWeeksTasks",
+      "condition": "true",
+      "actions": [
+        "data.put('showAtSixWeeksTasks', service.filterResources(availableTasks, \" Task.code.coding.code='VAC001' and Task.executionPeriod.end >= today() and Task.groupIdentifier.value = '6_wk'\").size() > 0)"
+      ]
+    },
+    {
+      "name": "showAtTenWeeksTasks",
+      "condition": "true",
+      "actions": [
+        "data.put('showAtTenWeeksTasks', service.filterResources(availableTasks, \" Task.code.coding.code='VAC001' and Task.executionPeriod.end >= today() and Task.groupIdentifier.value = '10_wk'\").size() > 0)"
+      ]
+    },
+    {
+      "name": "showAtTwelveWeeksTasks",
+      "condition": "true",
+      "actions": [
+        "data.put('showAtTwelveWeeksTasks', service.filterResources(availableTasks, \" Task.code.coding.code='VAC001' and Task.executionPeriod.end >= today() and Task.groupIdentifier.value = '12_wk'\").size() > 0)"
+      ]
+    },
+    {
+      "name": "showAtFourteenWeeksTasks",
+      "condition": "true",
+      "actions": [
+        "data.put('showAtFourteenWeeksTasks', service.filterResources(availableTasks, \" Task.code.coding.code='VAC001' and Task.executionPeriod.end >= today() and Task.groupIdentifier.value = '14_wk'\").size() > 0)"
+      ]
+    },
+    {
+      "name": "showAtNineMonthsTasks",
+      "condition": "true",
+      "actions": [
+        "data.put('showAtNineMonthsTasks', service.filterResources(availableTasks, \" Task.code.coding.code='VAC001' and Task.executionPeriod.end >= today() and Task.groupIdentifier.value = '9_mo'\").size() > 0)"
+      ]
+    },
+    {
+      "name": "showAtEighteenMonthsTasks",
+      "condition": "true",
+      "actions": [
+        "data.put('showAtEighteenMonthsTasks', service.filterResources(availableTasks, \" Task.code.coding.code='VAC001' and Task.executionPeriod.end >= today() and Task.groupIdentifier.value = '18_mo'\").size() > 0)"
+      ]
+    },
+    {
+      "name": "showAtNineYearsTasks",
+      "condition": "true",
+      "actions": [
+        "data.put('showAtNineYearsTasks', service.filterResources(availableTasks, \" Task.code.coding.code='VAC001' and Task.executionPeriod.end >= today() and (Task.groupIdentifier.value = '108_mo' or Task.groupIdentifier.value = '3420_d')\").size() > 0)"
+      ]
+    },
+    {
+      "name": "showRecurringTasks",
+      "condition": "true",
+      "actions": [
+        "data.put('showRecurringTasks', service.filterResources(availableTasks, \"Task.code.coding.code='33879012' and Task.status != 'completed' and Task.executionPeriod.end >= today()\").size() > 0)"
+      ]
+    }
+  ],
+  "views": [
+    {
+      "viewType": "COLUMN",
+      "children": [
+        {
+          "viewType": "CARD",
+          "visible": "@{showAtBirthTasks}",
+          "padding": 16,
+          "header": {
+            "viewType": "COMPOUND_TEXT",
+            "primaryText": "{{ da23d9c75ea9abda2eaa7b50a49a3912 }}",
+            "primaryTextColor": "#717171",
+            "fontSize": 14.0,
+            "padding": 16
+          },
+          "content": [
+            {
+              "viewType": "LIST",
+              "id": "atBirthTaskList",
+              "resources": [
+                {
+                  "id": "availableTasks",
+                  "relatedResourceId": "availableTasks",
+                  "resourceType": "Task",
+                  "conditionalFhirPathExpression": " Task.code.coding.code='VAC001' and Task.executionPeriod.end >= today() and Task.groupIdentifier.value = '0_d'",
+                  "sortConfig": {
+                    "dataType": "DATETIME",
+                    "fhirPathExpression": "Task.executionPeriod.start",
+                    "order": "ASCENDING"
+                  }
+                }
+              ],
+              "emptyList": {
+                "message": "{{ 8186f62359b2991d7b51275a7dff173c }}"
+              },
+              "registerCard": {
+                "rules": [
+                  {
+                    "name": "taskStatus",
+                    "condition": "true",
+                    "actions": [
+                      "data.put('taskStatus', fhirPath.extractValue(Task, 'Task.status'))"
+                    ]
+                  },
+                  {
+                    "name": "taskStatusColorCode",
+                    "condition": "true",
+                    "actions": [
+                      "data.put('taskStatusColorCode', service.generateTaskServiceStatus(Task))"
+                    ]
+                  },
+                  {
+                    "name": "taskExecutionStartDate",
+                    "condition": "true",
+                    "actions": [
+                      "data.put('taskExecutionStartDate', fhirPath.extractValue(Task, 'Task.executionPeriod.start'))"
+                    ]
+                  },
+                  {
+                    "name": "taskPeriodDueDate",
+                    "condition": "true",
+                    "actions": [
+                      "data.put('taskPeriodDueDate', service.formatDate(data.get('taskExecutionStartDate'), \"yyyy-MM-dd'T'HH:mm:ss\", \"dd MMM yyyy\"))"
+                    ]
+                  },
+                  {
+                    "name": "taskDescription",
+                    "condition": "true",
+                    "actions": [
+                      "data.put('taskDescription', fhirPath.extractValue(Task, 'Task.description'))"
+                    ]
+                  },
+                  {
+                    "name": "taskDescriptionWithStartDate",
+                    "condition": "true",
+                    "priority": 2,
+                    "actions": [
+                      "data.put('taskDescriptionWithStartDate', data.get('taskDescription') + ' - ' + data.get('taskPeriodDueDate'))"
+                    ]
+                  },
+                  {
+                    "name": "taskId",
+                    "condition": "true",
+                    "actions": [
+                      "data.put('taskId', fhirPath.extractValue(Task, 'Task.id'))"
+                    ]
+                  },
+                  {
+                    "name": "taskFor",
+                    "condition": "true",
+                    "actions": [
+                      "data.put('taskFor', fhirPath.extractValue(Task, 'Task.for.reference'))"
+                    ]
+                  },
+                  {
+                    "name": "taskQuestionnaireId",
+                    "condition": "true",
+                    "actions": [
+                      "data.put('taskQuestionnaireId', fhirPath.extractValue(Task, 'Task.reasonReference.reference'))"
+                    ]
+                  },
+                  {
+                    "name": "taskName",
+                    "condition": "true",
+                    "actions": [
+                      "data.put('taskName', fhirPath.extractValue(Task, 'Task.reasonCode.coding.display'))"
+                    ]
+                  },
+                  {
+                    "name": "taskCode",
+                    "condition": "true",
+                    "actions": [
+                      "data.put('taskCode', fhirPath.extractValue(Task, 'Task.reasonCode.coding.code'))"
+                    ]
+                  }
+                ],
+                "views": [
+                  {
+                    "viewType": "BUTTON",
+                    "buttonType": "MEDIUM",
+                    "text": "@{taskDescriptionWithStartDate}",
+                    "status": "@{taskStatusColorCode}",
+                    "visible": "true",
+                    "clickable": "true",
+                    "enabled": "@{patientActive}",
+                    "actions": [
+                      {
+                        "trigger": "ON_CLICK",
+                        "workflow": "LAUNCH_QUESTIONNAIRE",
+                        "questionnaire": {
+                          "id": "@{taskQuestionnaireId}",
+                          "title": "{{ b5b2dad2eda089b9695c3fa8f648beeb }}",
+                          "saveButtonText": "{{ a4d3b161ce1309df1c4e25df28694b7b }}",
+                          "taskId": "@{taskId}",
+                          "resourceIdentifier": "@{taskFor}"
+                        },
+                        "params": [
+                          {
+                            "paramType": "PREPOPULATE",
+                            "linkId": "patient-dob",
+                            "dataType": "STRING",
+                            "key": "birthDate",
+                            "value": "@{birthDate}"
+                          },
+                          {
+                            "paramType": "PREPOPULATE",
+                            "linkId": "task-name",
+                            "dataType": "STRING",
+                            "key": "taskName",
+                            "value": "@{taskName}"
+                          },
+                          {
+                            "paramType": "PREPOPULATE",
+                            "linkId": "task-code",
+                            "dataType": "STRING",
+                            "key": "taskCode",
+                            "value": "@{taskCode}"
+                          },
+                          {
+                            "paramType": "PREPOPULATE",
+                            "linkId": "patient-id",
+                            "dataType": "STRING",
+                            "key": "patientId",
+                            "value": "@{patientId}"
+                          },
+                          {
+                            "paramType": "PREPOPULATE",
+                            "linkId": "task-description",
+                            "dataType": "STRING",
+                            "key": "taskDesc",
+                            "value": "@{taskDescription}"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "viewType": "CARD",
+          "visible": "@{showAtSixWeeksTasks}",
+          "padding": 16,
+          "header": {
+            "viewType": "COMPOUND_TEXT",
+            "primaryText": "{{ 9dc9d316a77ba18ba7c722fc109855fb }}",
+            "primaryTextColor": "#717171",
+            "fontSize": 14.0,
+            "padding": 16
+          },
+          "content": [
+            {
+              "viewType": "LIST",
+              "id": "at6WeeksTaskList",
+              "resources": [
+                {
+                  "id": "availableTasks",
+                  "relatedResourceId": "availableTasks",
+                  "resourceType": "Task",
+                  "conditionalFhirPathExpression": " Task.code.coding.code='VAC001' and Task.executionPeriod.end >= today() and Task.groupIdentifier.value = '6_wk'",
+                  "sortConfig": {
+                    "dataType": "DATETIME",
+                    "fhirPathExpression": "Task.executionPeriod.start",
+                    "order": "ASCENDING"
+                  }
+                }
+              ],
+              "emptyList": {
+                "message": "{{ c7a9a028c3a0d655ce6eed569aa76a84 }}"
+              },
+              "registerCard": {
+                "rules": [
+                  {
+                    "name": "taskStatus",
+                    "condition": "true",
+                    "actions": [
+                      "data.put('taskStatus', fhirPath.extractValue(Task, 'Task.status'))"
+                    ]
+                  },
+                  {
+                    "name": "taskStatusColorCode",
+                    "condition": "true",
+                    "actions": [
+                      "data.put('taskStatusColorCode', service.generateTaskServiceStatus(Task))"
+                    ]
+                  },
+                  {
+                    "name": "taskExecutionStartDate",
+                    "condition": "true",
+                    "actions": [
+                      "data.put('taskExecutionStartDate', fhirPath.extractValue(Task, 'Task.executionPeriod.start'))"
+                    ]
+                  },
+                  {
+                    "name": "taskPeriodDueDate",
+                    "condition": "true",
+                    "actions": [
+                      "data.put('taskPeriodDueDate', service.formatDate(data.get('taskExecutionStartDate'), \"yyyy-MM-dd'T'HH:mm:ss\", \"dd MMM yyyy\"))"
+                    ]
+                  },
+                  {
+                    "name": "taskDescription",
+                    "condition": "true",
+                    "actions": [
+                      "data.put('taskDescription', fhirPath.extractValue(Task, 'Task.description'))"
+                    ]
+                  },
+                  {
+                    "name": "taskDescriptionWithStartDate",
+                    "condition": "true",
+                    "priority": 2,
+                    "actions": [
+                      "data.put('taskDescriptionWithStartDate', data.get('taskDescription') + ' - ' + data.get('taskPeriodDueDate'))"
+                    ]
+                  },
+                  {
+                    "name": "taskId",
+                    "condition": "true",
+                    "actions": [
+                      "data.put('taskId', fhirPath.extractValue(Task, 'Task.id'))"
+                    ]
+                  },
+                  {
+                    "name": "taskFor",
+                    "condition": "true",
+                    "actions": [
+                      "data.put('taskFor', fhirPath.extractValue(Task, 'Task.for.reference'))"
+                    ]
+                  },
+                  {
+                    "name": "taskQuestionnaireId",
+                    "condition": "true",
+                    "actions": [
+                      "data.put('taskQuestionnaireId', fhirPath.extractValue(Task, 'Task.reasonReference.reference'))"
+                    ]
+                  },
+                  {
+                    "name": "taskName",
+                    "condition": "true",
+                    "actions": [
+                      "data.put('taskName', fhirPath.extractValue(Task, 'Task.reasonCode.coding.display'))"
+                    ]
+                  },
+                  {
+                    "name": "taskCode",
+                    "condition": "true",
+                    "actions": [
+                      "data.put('taskCode', fhirPath.extractValue(Task, 'Task.reasonCode.coding.code'))"
+                    ]
+                  }
+                ],
+                "views": [
+                  {
+                    "viewType": "BUTTON",
+                    "buttonType": "MEDIUM",
+                    "text": "@{taskDescriptionWithStartDate}",
+                    "status": "@{taskStatusColorCode}",
+                    "visible": "true",
+                    "clickable": "true",
+                    "enabled": "@{patientActive}",
+                    "actions": [
+                      {
+                        "trigger": "ON_CLICK",
+                        "workflow": "LAUNCH_QUESTIONNAIRE",
+                        "questionnaire": {
+                          "id": "@{taskQuestionnaireId}",
+                          "title": "{{ b5b2dad2eda089b9695c3fa8f648beeb }}",
+                          "saveButtonText": "{{ a4d3b161ce1309df1c4e25df28694b7b }}",
+                          "taskId": "@{taskId}",
+                          "resourceIdentifier": "@{taskFor}"
+                        },
+                        "params": [
+                          {
+                            "paramType": "PREPOPULATE",
+                            "linkId": "patient-dob",
+                            "dataType": "STRING",
+                            "key": "birthDate",
+                            "value": "@{birthDate}"
+                          },
+                          {
+                            "paramType": "PREPOPULATE",
+                            "linkId": "task-name",
+                            "dataType": "STRING",
+                            "key": "taskName",
+                            "value": "@{taskName}"
+                          },
+                          {
+                            "paramType": "PREPOPULATE",
+                            "linkId": "task-code",
+                            "dataType": "STRING",
+                            "key": "taskCode",
+                            "value": "@{taskCode}"
+                          },
+                          {
+                            "paramType": "PREPOPULATE",
+                            "linkId": "patient-id",
+                            "dataType": "STRING",
+                            "key": "patientId",
+                            "value": "@{patientId}"
+                          },
+                          {
+                            "paramType": "PREPOPULATE",
+                            "linkId": "task-description",
+                            "dataType": "STRING",
+                            "key": "taskDesc",
+                            "value": "@{taskDescription}"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "viewType": "CARD",
+          "visible": "@{showAtTenWeeksTasks}",
+          "padding": 16,
+          "header": {
+            "viewType": "COMPOUND_TEXT",
+            "primaryText": "{{ ca1b0677ea85f313d387a007b672f62d }}",
+            "primaryTextColor": "#717171",
+            "fontSize": 14.0,
+            "padding": 16
+          },
+          "content": [
+            {
+              "viewType": "LIST",
+              "id": "at10WeeksTaskList",
+              "resources": [
+                {
+                  "id": "availableTasks",
+                  "relatedResourceId": "availableTasks",
+                  "resourceType": "Task",
+                  "conditionalFhirPathExpression": " Task.code.coding.code='VAC001' and Task.executionPeriod.end >= today() and Task.groupIdentifier.value = '10_wk'",
+                  "sortConfig": {
+                    "dataType": "DATETIME",
+                    "fhirPathExpression": "Task.executionPeriod.start",
+                    "order": "ASCENDING"
+                  }
+                }
+              ],
+              "emptyList": {
+                "message": "{{ bddb8cbb0cf5edc942e9c73dabfc9cdc }}"
+              },
+              "registerCard": {
+                "rules": [
+                  {
+                    "name": "taskStatus",
+                    "condition": "true",
+                    "actions": [
+                      "data.put('taskStatus', fhirPath.extractValue(Task, 'Task.status'))"
+                    ]
+                  },
+                  {
+                    "name": "taskStatusColorCode",
+                    "condition": "true",
+                    "actions": [
+                      "data.put('taskStatusColorCode', service.generateTaskServiceStatus(Task))"
+                    ]
+                  },
+                  {
+                    "name": "taskExecutionStartDate",
+                    "condition": "true",
+                    "actions": [
+                      "data.put('taskExecutionStartDate', fhirPath.extractValue(Task, 'Task.executionPeriod.start'))"
+                    ]
+                  },
+                  {
+                    "name": "taskPeriodDueDate",
+                    "condition": "true",
+                    "actions": [
+                      "data.put('taskPeriodDueDate', service.formatDate(data.get('taskExecutionStartDate'), \"yyyy-MM-dd'T'HH:mm:ss\", \"dd MMM yyyy\"))"
+                    ]
+                  },
+                  {
+                    "name": "taskDescription",
+                    "condition": "true",
+                    "actions": [
+                      "data.put('taskDescription', fhirPath.extractValue(Task, 'Task.description'))"
+                    ]
+                  },
+                  {
+                    "name": "taskDescriptionWithStartDate",
+                    "condition": "true",
+                    "priority": 2,
+                    "actions": [
+                      "data.put('taskDescriptionWithStartDate', data.get('taskDescription') + ' - ' + data.get('taskPeriodDueDate'))"
+                    ]
+                  },
+                  {
+                    "name": "taskId",
+                    "condition": "true",
+                    "actions": [
+                      "data.put('taskId', fhirPath.extractValue(Task, 'Task.id'))"
+                    ]
+                  },
+                  {
+                    "name": "taskFor",
+                    "condition": "true",
+                    "actions": [
+                      "data.put('taskFor', fhirPath.extractValue(Task, 'Task.for.reference'))"
+                    ]
+                  },
+                  {
+                    "name": "taskQuestionnaireId",
+                    "condition": "true",
+                    "actions": [
+                      "data.put('taskQuestionnaireId', fhirPath.extractValue(Task, 'Task.reasonReference.reference'))"
+                    ]
+                  },
+                  {
+                    "name": "taskName",
+                    "condition": "true",
+                    "actions": [
+                      "data.put('taskName', fhirPath.extractValue(Task, 'Task.reasonCode.coding.display'))"
+                    ]
+                  },
+                  {
+                    "name": "taskCode",
+                    "condition": "true",
+                    "actions": [
+                      "data.put('taskCode', fhirPath.extractValue(Task, 'Task.reasonCode.coding.code'))"
+                    ]
+                  }
+                ],
+                "views": [
+                  {
+                    "viewType": "BUTTON",
+                    "buttonType": "MEDIUM",
+                    "text": "@{taskDescriptionWithStartDate}",
+                    "status": "@{taskStatusColorCode}",
+                    "visible": "true",
+                    "clickable": "true",
+                    "enabled": "@{patientActive}",
+                    "actions": [
+                      {
+                        "trigger": "ON_CLICK",
+                        "workflow": "LAUNCH_QUESTIONNAIRE",
+                        "questionnaire": {
+                          "id": "@{taskQuestionnaireId}",
+                          "title": "{{ b5b2dad2eda089b9695c3fa8f648beeb }}",
+                          "saveButtonText": "{{ a4d3b161ce1309df1c4e25df28694b7b }}",
+                          "taskId": "@{taskId}",
+                          "resourceIdentifier": "@{taskFor}"
+                        },
+                        "params": [
+                          {
+                            "paramType": "PREPOPULATE",
+                            "linkId": "patient-dob",
+                            "dataType": "STRING",
+                            "key": "birthDate",
+                            "value": "@{birthDate}"
+                          },
+                          {
+                            "paramType": "PREPOPULATE",
+                            "linkId": "task-name",
+                            "dataType": "STRING",
+                            "key": "taskName",
+                            "value": "@{taskName}"
+                          },
+                          {
+                            "paramType": "PREPOPULATE",
+                            "linkId": "task-code",
+                            "dataType": "STRING",
+                            "key": "taskCode",
+                            "value": "@{taskCode}"
+                          },
+                          {
+                            "paramType": "PREPOPULATE",
+                            "linkId": "patient-id",
+                            "dataType": "STRING",
+                            "key": "patientId",
+                            "value": "@{patientId}"
+                          },
+                          {
+                            "paramType": "PREPOPULATE",
+                            "linkId": "task-description",
+                            "dataType": "STRING",
+                            "key": "taskDesc",
+                            "value": "@{taskDescription}"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "viewType": "CARD",
+          "visible": "@{showAtTwelveWeeksTasks}",
+          "padding": 16,
+          "header": {
+            "viewType": "COMPOUND_TEXT",
+            "primaryText": "{{ 0626a9c4ecb3a0bc1170073c7d5d1404 }}",
+            "primaryTextColor": "#717171",
+            "fontSize": 14.0,
+            "padding": 16
+          },
+          "content": [
+            {
+              "viewType": "LIST",
+              "id": "at12WeeksTaskList",
+              "resources": [
+                {
+                  "id": "availableTasks",
+                  "relatedResourceId": "availableTasks",
+                  "resourceType": "Task",
+                  "conditionalFhirPathExpression": " Task.code.coding.code='VAC001' and Task.executionPeriod.end >= today() and Task.groupIdentifier.value = '12_wk'",
+                  "sortConfig": {
+                    "dataType": "DATETIME",
+                    "fhirPathExpression": "Task.executionPeriod.start",
+                    "order": "ASCENDING"
+                  }
+                }
+              ],
+              "emptyList": {
+                "message": "{{ bddb8cbb0cf5edc942e9c73dabfc9cdc }}"
+              },
+              "registerCard": {
+                "rules": [
+                  {
+                    "name": "taskStatus",
+                    "condition": "true",
+                    "actions": [
+                      "data.put('taskStatus', fhirPath.extractValue(Task, 'Task.status'))"
+                    ]
+                  },
+                  {
+                    "name": "taskStatusColorCode",
+                    "condition": "true",
+                    "actions": [
+                      "data.put('taskStatusColorCode', service.generateTaskServiceStatus(Task))"
+                    ]
+                  },
+                  {
+                    "name": "taskExecutionStartDate",
+                    "condition": "true",
+                    "actions": [
+                      "data.put('taskExecutionStartDate', fhirPath.extractValue(Task, 'Task.executionPeriod.start'))"
+                    ]
+                  },
+                  {
+                    "name": "taskPeriodDueDate",
+                    "condition": "true",
+                    "actions": [
+                      "data.put('taskPeriodDueDate', service.formatDate(data.get('taskExecutionStartDate'), \"yyyy-MM-dd'T'HH:mm:ss\", \"dd MMM yyyy\"))"
+                    ]
+                  },
+                  {
+                    "name": "taskDescription",
+                    "condition": "true",
+                    "actions": [
+                      "data.put('taskDescription', fhirPath.extractValue(Task, 'Task.description'))"
+                    ]
+                  },
+                  {
+                    "name": "taskDescriptionWithStartDate",
+                    "condition": "true",
+                    "priority": 2,
+                    "actions": [
+                      "data.put('taskDescriptionWithStartDate', data.get('taskDescription') + ' - ' + data.get('taskPeriodDueDate'))"
+                    ]
+                  },
+                  {
+                    "name": "taskId",
+                    "condition": "true",
+                    "actions": [
+                      "data.put('taskId', fhirPath.extractValue(Task, 'Task.id'))"
+                    ]
+                  },
+                  {
+                    "name": "taskFor",
+                    "condition": "true",
+                    "actions": [
+                      "data.put('taskFor', fhirPath.extractValue(Task, 'Task.for.reference'))"
+                    ]
+                  },
+                  {
+                    "name": "taskQuestionnaireId",
+                    "condition": "true",
+                    "actions": [
+                      "data.put('taskQuestionnaireId', fhirPath.extractValue(Task, 'Task.reasonReference.reference'))"
+                    ]
+                  },
+                  {
+                    "name": "taskName",
+                    "condition": "true",
+                    "actions": [
+                      "data.put('taskName', fhirPath.extractValue(Task, 'Task.reasonCode.coding.display'))"
+                    ]
+                  },
+                  {
+                    "name": "taskCode",
+                    "condition": "true",
+                    "actions": [
+                      "data.put('taskCode', fhirPath.extractValue(Task, 'Task.reasonCode.coding.code'))"
+                    ]
+                  }
+                ],
+                "views": [
+                  {
+                    "viewType": "BUTTON",
+                    "buttonType": "MEDIUM",
+                    "text": "@{taskDescriptionWithStartDate}",
+                    "status": "@{taskStatusColorCode}",
+                    "visible": "true",
+                    "clickable": "true",
+                    "enabled": "@{patientActive}",
+                    "actions": [
+                      {
+                        "trigger": "ON_CLICK",
+                        "workflow": "LAUNCH_QUESTIONNAIRE",
+                        "questionnaire": {
+                          "id": "@{taskQuestionnaireId}",
+                          "title": "{{ b5b2dad2eda089b9695c3fa8f648beeb }}",
+                          "saveButtonText": "{{ a4d3b161ce1309df1c4e25df28694b7b }}",
+                          "taskId": "@{taskId}",
+                          "resourceIdentifier": "@{taskFor}"
+                        },
+                        "params": [
+                          {
+                            "paramType": "PREPOPULATE",
+                            "linkId": "patient-dob",
+                            "dataType": "STRING",
+                            "key": "birthDate",
+                            "value": "@{birthDate}"
+                          },
+                          {
+                            "paramType": "PREPOPULATE",
+                            "linkId": "task-name",
+                            "dataType": "STRING",
+                            "key": "taskName",
+                            "value": "@{taskName}"
+                          },
+                          {
+                            "paramType": "PREPOPULATE",
+                            "linkId": "task-code",
+                            "dataType": "STRING",
+                            "key": "taskCode",
+                            "value": "@{taskCode}"
+                          },
+                          {
+                            "paramType": "PREPOPULATE",
+                            "linkId": "patient-id",
+                            "dataType": "STRING",
+                            "key": "patientId",
+                            "value": "@{patientId}"
+                          },
+                          {
+                            "paramType": "PREPOPULATE",
+                            "linkId": "task-description",
+                            "dataType": "STRING",
+                            "key": "taskDesc",
+                            "value": "@{taskDescription}"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "viewType": "CARD",
+          "visible": "@{showAtFourteenWeeksTasks}",
+          "padding": 16,
+          "header": {
+            "viewType": "COMPOUND_TEXT",
+            "primaryText": "{{ 5d01650d8e6282d6807224976338c8c7 }}",
+            "primaryTextColor": "#717171",
+            "fontSize": 14.0,
+            "padding": 16
+          },
+          "content": [
+            {
+              "viewType": "LIST",
+              "id": "at14WeeksTaskList",
+              "resources": [
+                {
+                  "id": "availableTasks",
+                  "relatedResourceId": "availableTasks",
+                  "resourceType": "Task",
+                  "conditionalFhirPathExpression": " Task.code.coding.code='VAC001' and Task.executionPeriod.end >= today() and Task.groupIdentifier.value = '14_wk'",
+                  "sortConfig": {
+                    "dataType": "DATETIME",
+                    "fhirPathExpression": "Task.executionPeriod.start",
+                    "order": "ASCENDING"
+                  }
+                }
+              ],
+              "emptyList": {
+                "message": "{{ c7a9a028c3a0d655ce6eed569aa76a84 }}"
+              },
+              "registerCard": {
+                "rules": [
+                  {
+                    "name": "taskStatus",
+                    "condition": "true",
+                    "actions": [
+                      "data.put('taskStatus', fhirPath.extractValue(Task, 'Task.status'))"
+                    ]
+                  },
+                  {
+                    "name": "taskStatusColorCode",
+                    "condition": "true",
+                    "actions": [
+                      "data.put('taskStatusColorCode', service.generateTaskServiceStatus(Task))"
+                    ]
+                  },
+                  {
+                    "name": "taskExecutionStartDate",
+                    "condition": "true",
+                    "actions": [
+                      "data.put('taskExecutionStartDate', fhirPath.extractValue(Task, 'Task.executionPeriod.start'))"
+                    ]
+                  },
+                  {
+                    "name": "taskPeriodDueDate",
+                    "condition": "true",
+                    "actions": [
+                      "data.put('taskPeriodDueDate', service.formatDate(data.get('taskExecutionStartDate'), \"yyyy-MM-dd'T'HH:mm:ss\", \"dd MMM yyyy\"))"
+                    ]
+                  },
+                  {
+                    "name": "taskDescription",
+                    "condition": "true",
+                    "actions": [
+                      "data.put('taskDescription', fhirPath.extractValue(Task, 'Task.description'))"
+                    ]
+                  },
+                  {
+                    "name": "taskDescriptionWithStartDate",
+                    "condition": "true",
+                    "priority": 2,
+                    "actions": [
+                      "data.put('taskDescriptionWithStartDate', data.get('taskDescription') + ' - ' + data.get('taskPeriodDueDate'))"
+                    ]
+                  },
+                  {
+                    "name": "taskId",
+                    "condition": "true",
+                    "actions": [
+                      "data.put('taskId', fhirPath.extractValue(Task, 'Task.id'))"
+                    ]
+                  },
+                  {
+                    "name": "taskFor",
+                    "condition": "true",
+                    "actions": [
+                      "data.put('taskFor', fhirPath.extractValue(Task, 'Task.for.reference'))"
+                    ]
+                  },
+                  {
+                    "name": "taskQuestionnaireId",
+                    "condition": "true",
+                    "actions": [
+                      "data.put('taskQuestionnaireId', fhirPath.extractValue(Task, 'Task.reasonReference.reference'))"
+                    ]
+                  },
+                  {
+                    "name": "taskName",
+                    "condition": "true",
+                    "actions": [
+                      "data.put('taskName', fhirPath.extractValue(Task, 'Task.reasonCode.coding.display'))"
+                    ]
+                  },
+                  {
+                    "name": "taskCode",
+                    "condition": "true",
+                    "actions": [
+                      "data.put('taskCode', fhirPath.extractValue(Task, 'Task.reasonCode.coding.code'))"
+                    ]
+                  }
+                ],
+                "views": [
+                  {
+                    "viewType": "BUTTON",
+                    "buttonType": "MEDIUM",
+                    "text": "@{taskDescriptionWithStartDate}",
+                    "status": "@{taskStatusColorCode}",
+                    "visible": "true",
+                    "clickable": "true",
+                    "enabled": "@{patientActive}",
+                    "actions": [
+                      {
+                        "trigger": "ON_CLICK",
+                        "workflow": "LAUNCH_QUESTIONNAIRE",
+                        "questionnaire": {
+                          "id": "@{taskQuestionnaireId}",
+                          "title": "{{ b5b2dad2eda089b9695c3fa8f648beeb }}",
+                          "saveButtonText": "{{ a4d3b161ce1309df1c4e25df28694b7b }}",
+                          "taskId": "@{taskId}",
+                          "resourceIdentifier": "@{taskFor}"
+                        },
+                        "params": [
+                          {
+                            "paramType": "PREPOPULATE",
+                            "linkId": "patient-dob",
+                            "dataType": "STRING",
+                            "key": "birthDate",
+                            "value": "@{birthDate}"
+                          },
+                          {
+                            "paramType": "PREPOPULATE",
+                            "linkId": "task-name",
+                            "dataType": "STRING",
+                            "key": "taskName",
+                            "value": "@{taskName}"
+                          },
+                          {
+                            "paramType": "PREPOPULATE",
+                            "linkId": "task-code",
+                            "dataType": "STRING",
+                            "key": "taskCode",
+                            "value": "@{taskCode}"
+                          },
+                          {
+                            "paramType": "PREPOPULATE",
+                            "linkId": "patient-id",
+                            "dataType": "STRING",
+                            "key": "patientId",
+                            "value": "@{patientId}"
+                          },
+                          {
+                            "paramType": "PREPOPULATE",
+                            "linkId": "task-description",
+                            "dataType": "STRING",
+                            "key": "taskDesc",
+                            "value": "@{taskDescription}"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "viewType": "CARD",
+          "visible": "@{showAtNineMonthsTasks}",
+          "padding": 16,
+          "header": {
+            "viewType": "COMPOUND_TEXT",
+            "primaryText": "{{ c41e812be82d682aac57c2e3ccd49a78 }}",
+            "primaryTextColor": "#717171",
+            "fontSize": 14.0,
+            "padding": 16
+          },
+          "content": [
+            {
+              "viewType": "LIST",
+              "id": "at9MonthsTaskList",
+              "resources": [
+                {
+                  "id": "availableTasks",
+                  "relatedResourceId": "availableTasks",
+                  "resourceType": "Task",
+                  "conditionalFhirPathExpression": " Task.code.coding.code='VAC001' and Task.executionPeriod.end >= today() and Task.groupIdentifier.value = '9_mo'",
+                  "sortConfig": {
+                    "dataType": "DATETIME",
+                    "fhirPathExpression": "Task.executionPeriod.start",
+                    "order": "ASCENDING"
+                  }
+                }
+              ],
+              "emptyList": {
+                "message": "{{ c7a9a028c3a0d655ce6eed569aa76a84 }}"
+              },
+              "registerCard": {
+                "rules": [
+                  {
+                    "name": "taskStatus",
+                    "condition": "true",
+                    "actions": [
+                      "data.put('taskStatus', fhirPath.extractValue(Task, 'Task.status'))"
+                    ]
+                  },
+                  {
+                    "name": "taskStatusColorCode",
+                    "condition": "true",
+                    "actions": [
+                      "data.put('taskStatusColorCode', service.generateTaskServiceStatus(Task))"
+                    ]
+                  },
+                  {
+                    "name": "taskExecutionStartDate",
+                    "condition": "true",
+                    "actions": [
+                      "data.put('taskExecutionStartDate', fhirPath.extractValue(Task, 'Task.executionPeriod.start'))"
+                    ]
+                  },
+                  {
+                    "name": "taskPeriodDueDate",
+                    "condition": "true",
+                    "actions": [
+                      "data.put('taskPeriodDueDate', service.formatDate(data.get('taskExecutionStartDate'), \"yyyy-MM-dd'T'HH:mm:ss\", \"dd MMM yyyy\"))"
+                    ]
+                  },
+                  {
+                    "name": "isTaskUpcoming",
+                    "condition": "true",
+                    "actions": [
+                      "data.put('isTaskUpcoming', fhirPath.extractValue(Task, \"Task.executionPeriod.end >= today()\"))"
+                    ]
+                  },
+                  {
+                    "name": "taskDescription",
+                    "condition": "true",
+                    "actions": [
+                      "data.put('taskDescription', fhirPath.extractValue(Task, 'Task.description'))"
+                    ]
+                  },
+                  {
+                    "name": "taskDescriptionWithStartDate",
+                    "condition": "true",
+                    "priority": 2,
+                    "actions": [
+                      "data.put('taskDescriptionWithStartDate', data.get('taskDescription') + ' - ' + data.get('taskPeriodDueDate'))"
+                    ]
+                  },
+                  {
+                    "name": "taskId",
+                    "condition": "true",
+                    "actions": [
+                      "data.put('taskId', fhirPath.extractValue(Task, 'Task.id'))"
+                    ]
+                  },
+                  {
+                    "name": "taskFor",
+                    "condition": "true",
+                    "actions": [
+                      "data.put('taskFor', fhirPath.extractValue(Task, 'Task.for.reference'))"
+                    ]
+                  },
+                  {
+                    "name": "taskQuestionnaireId",
+                    "condition": "true",
+                    "actions": [
+                      "data.put('taskQuestionnaireId', fhirPath.extractValue(Task, 'Task.reasonReference.reference'))"
+                    ]
+                  },
+                  {
+                    "name": "taskName",
+                    "condition": "true",
+                    "actions": [
+                      "data.put('taskName', fhirPath.extractValue(Task, 'Task.reasonCode.coding.display'))"
+                    ]
+                  },
+                  {
+                    "name": "taskCode",
+                    "condition": "true",
+                    "actions": [
+                      "data.put('taskCode', fhirPath.extractValue(Task, 'Task.reasonCode.coding.code'))"
+                    ]
+                  }
+                ],
+                "views": [
+                  {
+                    "viewType": "BUTTON",
+                    "buttonType": "MEDIUM",
+                    "text": "@{taskDescriptionWithStartDate}",
+                    "status": "@{taskStatusColorCode}",
+                    "visible": "true",
+                    "clickable": "true",
+                    "enabled": "@{patientActive}",
+                    "actions": [
+                      {
+                        "trigger": "ON_CLICK",
+                        "workflow": "LAUNCH_QUESTIONNAIRE",
+                        "questionnaire": {
+                          "id": "@{taskQuestionnaireId}",
+                          "title": "{{ b5b2dad2eda089b9695c3fa8f648beeb }}",
+                          "saveButtonText": "{{ a4d3b161ce1309df1c4e25df28694b7b }}",
+                          "taskId": "@{taskId}",
+                          "resourceIdentifier": "@{taskFor}"
+                        },
+                        "params": [
+                          {
+                            "paramType": "PREPOPULATE",
+                            "linkId": "patient-dob",
+                            "dataType": "STRING",
+                            "key": "birthDate",
+                            "value": "@{birthDate}"
+                          },
+                          {
+                            "paramType": "PREPOPULATE",
+                            "linkId": "task-name",
+                            "dataType": "STRING",
+                            "key": "taskName",
+                            "value": "@{taskName}"
+                          },
+                          {
+                            "paramType": "PREPOPULATE",
+                            "linkId": "task-code",
+                            "dataType": "STRING",
+                            "key": "taskCode",
+                            "value": "@{taskCode}"
+                          },
+                          {
+                            "paramType": "PREPOPULATE",
+                            "linkId": "patient-id",
+                            "dataType": "STRING",
+                            "key": "patientId",
+                            "value": "@{patientId}"
+                          },
+                          {
+                            "paramType": "PREPOPULATE",
+                            "linkId": "task-description",
+                            "dataType": "STRING",
+                            "key": "taskDesc",
+                            "value": "@{taskDescription}"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "viewType": "CARD",
+          "visible": "@{showAtEighteenMonthsTasks}",
+          "padding": 16,
+          "header": {
+            "viewType": "COMPOUND_TEXT",
+            "primaryText": "{{ 9cc310a92ddbf1ec0d467a13ae230c1b }}",
+            "primaryTextColor": "#717171",
+            "fontSize": 14.0,
+            "padding": 16
+          },
+          "content": [
+            {
+              "viewType": "LIST",
+              "id": "at18MonthsTaskList",
+              "resources": [
+                {
+                  "id": "availableTasks",
+                  "relatedResourceId": "availableTasks",
+                  "resourceType": "Task",
+                  "conditionalFhirPathExpression": " Task.code.coding.code='VAC001' and Task.executionPeriod.end >= today() and Task.groupIdentifier.value = '18_mo'",
+                  "sortConfig": {
+                    "dataType": "DATETIME",
+                    "fhirPathExpression": "Task.executionPeriod.start",
+                    "order": "ASCENDING"
+                  }
+                }
+              ],
+              "emptyList": {
+                "message": "{{ c7a9a028c3a0d655ce6eed569aa76a84 }}"
+              },
+              "registerCard": {
+                "rules": [
+                  {
+                    "name": "taskStatus",
+                    "condition": "true",
+                    "actions": [
+                      "data.put('taskStatus', fhirPath.extractValue(Task, 'Task.status'))"
+                    ]
+                  },
+                  {
+                    "name": "taskStatusColorCode",
+                    "condition": "true",
+                    "actions": [
+                      "data.put('taskStatusColorCode', service.generateTaskServiceStatus(Task))"
+                    ]
+                  },
+                  {
+                    "name": "taskExecutionStartDate",
+                    "condition": "true",
+                    "actions": [
+                      "data.put('taskExecutionStartDate', fhirPath.extractValue(Task, 'Task.executionPeriod.start'))"
+                    ]
+                  },
+                  {
+                    "name": "taskPeriodDueDate",
+                    "condition": "true",
+                    "actions": [
+                      "data.put('taskPeriodDueDate', service.formatDate(data.get('taskExecutionStartDate'), \"yyyy-MM-dd'T'HH:mm:ss\", \"dd MMM yyyy\"))"
+                    ]
+                  },
+                  {
+                    "name": "isTaskUpcoming",
+                    "condition": "true",
+                    "actions": [
+                      "data.put('isTaskUpcoming', fhirPath.extractValue(Task, \"Task.executionPeriod.end >= today()\"))"
+                    ]
+                  },
+                  {
+                    "name": "taskDescription",
+                    "condition": "true",
+                    "actions": [
+                      "data.put('taskDescription', fhirPath.extractValue(Task, 'Task.description'))"
+                    ]
+                  },
+                  {
+                    "name": "taskDescriptionWithStartDate",
+                    "condition": "true",
+                    "priority": 2,
+                    "actions": [
+                      "data.put('taskDescriptionWithStartDate', data.get('taskDescription') + ' - ' + data.get('taskPeriodDueDate'))"
+                    ]
+                  },
+                  {
+                    "name": "taskId",
+                    "condition": "true",
+                    "actions": [
+                      "data.put('taskId', fhirPath.extractValue(Task, 'Task.id'))"
+                    ]
+                  },
+                  {
+                    "name": "taskFor",
+                    "condition": "true",
+                    "actions": [
+                      "data.put('taskFor', fhirPath.extractValue(Task, 'Task.for.reference'))"
+                    ]
+                  },
+                  {
+                    "name": "taskQuestionnaireId",
+                    "condition": "true",
+                    "actions": [
+                      "data.put('taskQuestionnaireId', fhirPath.extractValue(Task, 'Task.reasonReference.reference'))"
+                    ]
+                  },
+                  {
+                    "name": "taskName",
+                    "condition": "true",
+                    "actions": [
+                      "data.put('taskName', fhirPath.extractValue(Task, 'Task.reasonCode.coding.display'))"
+                    ]
+                  },
+                  {
+                    "name": "taskCode",
+                    "condition": "true",
+                    "actions": [
+                      "data.put('taskCode', fhirPath.extractValue(Task, 'Task.reasonCode.coding.code'))"
+                    ]
+                  }
+                ],
+                "views": [
+                  {
+                    "viewType": "BUTTON",
+                    "buttonType": "MEDIUM",
+                    "text": "@{taskDescriptionWithStartDate}",
+                    "status": "@{taskStatusColorCode}",
+                    "visible": "true",
+                    "clickable": "true",
+                    "enabled": "@{patientActive}",
+                    "actions": [
+                      {
+                        "trigger": "ON_CLICK",
+                        "workflow": "LAUNCH_QUESTIONNAIRE",
+                        "questionnaire": {
+                          "id": "@{taskQuestionnaireId}",
+                          "title": "{{ b5b2dad2eda089b9695c3fa8f648beeb }}",
+                          "saveButtonText": "{{ a4d3b161ce1309df1c4e25df28694b7b }}",
+                          "taskId": "@{taskId}",
+                          "resourceIdentifier": "@{taskFor}"
+                        },
+                        "params": [
+                          {
+                            "paramType": "PREPOPULATE",
+                            "linkId": "patient-dob",
+                            "dataType": "STRING",
+                            "key": "birthDate",
+                            "value": "@{birthDate}"
+                          },
+                          {
+                            "paramType": "PREPOPULATE",
+                            "linkId": "task-name",
+                            "dataType": "STRING",
+                            "key": "taskName",
+                            "value": "@{taskName}"
+                          },
+                          {
+                            "paramType": "PREPOPULATE",
+                            "linkId": "task-code",
+                            "dataType": "STRING",
+                            "key": "taskCode",
+                            "value": "@{taskCode}"
+                          },
+                          {
+                            "paramType": "PREPOPULATE",
+                            "linkId": "patient-id",
+                            "dataType": "STRING",
+                            "key": "patientId",
+                            "value": "@{patientId}"
+                          },
+                          {
+                            "paramType": "PREPOPULATE",
+                            "linkId": "task-description",
+                            "dataType": "STRING",
+                            "key": "taskDesc",
+                            "value": "@{taskDescription}"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "viewType": "CARD",
+          "visible": "@{showAtNineYearsTasks}",
+          "padding": 16,
+          "header": {
+            "viewType": "COMPOUND_TEXT",
+            "primaryText": "{{ 7d2b1addb461f38a3cfb5d3e27ded5b7 }}",
+            "primaryTextColor": "#717171",
+            "fontSize": 14.0,
+            "padding": 16
+          },
+          "content": [
+            {
+              "viewType": "LIST",
+              "id": "atNineYearsTaskList",
+              "resources": [
+                {
+                  "id": "availableTasks",
+                  "relatedResourceId": "availableTasks",
+                  "resourceType": "Task",
+                  "conditionalFhirPathExpression": " Task.code.coding.code='VAC001' and Task.executionPeriod.end >= today() and (Task.groupIdentifier.value = '108_mo' or Task.groupIdentifier.value = '3420_d')",
+                  "sortConfig": {
+                    "dataType": "DATETIME",
+                    "fhirPathExpression": "Task.executionPeriod.start",
+                    "order": "ASCENDING"
+                  }
+                }
+              ],
+              "emptyList": {
+                "message": "{{ c7a9a028c3a0d655ce6eed569aa76a84 }}"
+              },
+              "registerCard": {
+                "rules": [
+                  {
+                    "name": "taskStatus",
+                    "condition": "true",
+                    "actions": [
+                      "data.put('taskStatus', fhirPath.extractValue(Task, 'Task.status'))"
+                    ]
+                  },
+                  {
+                    "name": "taskStatusColorCode",
+                    "condition": "true",
+                    "actions": [
+                      "data.put('taskStatusColorCode', service.generateTaskServiceStatus(Task))"
+                    ]
+                  },
+                  {
+                    "name": "taskExecutionStartDate",
+                    "condition": "true",
+                    "actions": [
+                      "data.put('taskExecutionStartDate', fhirPath.extractValue(Task, 'Task.executionPeriod.start'))"
+                    ]
+                  },
+                  {
+                    "name": "taskPeriodDueDate",
+                    "condition": "true",
+                    "actions": [
+                      "data.put('taskPeriodDueDate', service.formatDate(data.get('taskExecutionStartDate'), \"yyyy-MM-dd'T'HH:mm:ss\", \"dd MMM yyyy\"))"
+                    ]
+                  },
+                  {
+                    "name": "isTaskUpcoming",
+                    "condition": "true",
+                    "actions": [
+                      "data.put('isTaskUpcoming', fhirPath.extractValue(Task, \"Task.executionPeriod.end >= today()\"))"
+                    ]
+                  },
+                  {
+                    "name": "taskDescription",
+                    "condition": "true",
+                    "actions": [
+                      "data.put('taskDescription', fhirPath.extractValue(Task, 'Task.description'))"
+                    ]
+                  },
+                  {
+                    "name": "taskDescriptionWithStartDate",
+                    "condition": "true",
+                    "priority": 2,
+                    "actions": [
+                      "data.put('taskDescriptionWithStartDate', data.get('taskDescription') + ' - ' + data.get('taskPeriodDueDate'))"
+                    ]
+                  },
+                  {
+                    "name": "taskId",
+                    "condition": "true",
+                    "actions": [
+                      "data.put('taskId', fhirPath.extractValue(Task, 'Task.id'))"
+                    ]
+                  },
+                  {
+                    "name": "taskFor",
+                    "condition": "true",
+                    "actions": [
+                      "data.put('taskFor', fhirPath.extractValue(Task, 'Task.for.reference'))"
+                    ]
+                  },
+                  {
+                    "name": "taskQuestionnaireId",
+                    "condition": "true",
+                    "actions": [
+                      "data.put('taskQuestionnaireId', fhirPath.extractValue(Task, 'Task.reasonReference.reference'))"
+                    ]
+                  },
+                  {
+                    "name": "taskName",
+                    "condition": "true",
+                    "actions": [
+                      "data.put('taskName', fhirPath.extractValue(Task, 'Task.reasonCode.coding.display'))"
+                    ]
+                  },
+                  {
+                    "name": "taskCode",
+                    "condition": "true",
+                    "actions": [
+                      "data.put('taskCode', fhirPath.extractValue(Task, 'Task.reasonCode.coding.code'))"
+                    ]
+                  }
+                ],
+                "views": [
+                  {
+                    "viewType": "BUTTON",
+                    "buttonType": "MEDIUM",
+                    "text": "@{taskDescriptionWithStartDate}",
+                    "status": "@{taskStatusColorCode}",
+                    "visible": "true",
+                    "clickable": "true",
+                    "enabled": "@{patientActive}",
+                    "actions": [
+                      {
+                        "trigger": "ON_CLICK",
+                        "workflow": "LAUNCH_QUESTIONNAIRE",
+                        "questionnaire": {
+                          "id": "@{taskQuestionnaireId}",
+                          "title": "{{ b5b2dad2eda089b9695c3fa8f648beeb }}",
+                          "saveButtonText": "{{ a4d3b161ce1309df1c4e25df28694b7b }}",
+                          "taskId": "@{taskId}",
+                          "resourceIdentifier": "@{taskFor}"
+                        },
+                        "params": [
+                          {
+                            "paramType": "PREPOPULATE",
+                            "linkId": "patient-dob",
+                            "dataType": "STRING",
+                            "key": "birthDate",
+                            "value": "@{birthDate}"
+                          },
+                          {
+                            "paramType": "PREPOPULATE",
+                            "linkId": "task-name",
+                            "dataType": "STRING",
+                            "key": "taskName",
+                            "value": "@{taskName}"
+                          },
+                          {
+                            "paramType": "PREPOPULATE",
+                            "linkId": "task-code",
+                            "dataType": "STRING",
+                            "key": "taskCode",
+                            "value": "@{taskCode}"
+                          },
+                          {
+                            "paramType": "PREPOPULATE",
+                            "linkId": "patient-id",
+                            "dataType": "STRING",
+                            "key": "patientId",
+                            "value": "@{patientId}"
+                          },
+                          {
+                            "paramType": "PREPOPULATE",
+                            "linkId": "task-description",
+                            "dataType": "STRING",
+                            "key": "taskDesc",
+                            "value": "@{taskDescription}"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "viewType": "CARD",
+          "visible": "@{showRecurringTasks}",
+          "padding": 16,
+          "header": {
+            "viewType": "COMPOUND_TEXT",
+            "primaryText": "{{ 0804420727423b8bb55e8b5ab54d5aab }}",
+            "primaryTextColor": "#6F7274",
+            "fontSize": 18.0,
+            "padding": 16
+          },
+          "content": [
+            {
+              "viewType": "LIST",
+              "id": "readyTasksList",
+              "resources": [
+                {
+                  "id": "availableTasks",
+                  "relatedResourceId": "availableTasks",
+                  "resourceType": "Task",
+                  "conditionalFhirPathExpression": "Task.code.coding.code='33879012' and Task.status != 'completed' and Task.executionPeriod.end >= today()",
+                  "sortConfig": {
+                    "dataType": "DATETIME",
+                    "fhirPathExpression": "Task.executionPeriod.start",
+                    "order": "ASCENDING"
+                  }
+                }
+              ],
+              "emptyList": {
+                "message": "{{ 5e32b05b90b0e068fb019076d5fd6f70 }}"
+              },
+              "registerCard": {
+                "rules": [
+                  {
+                    "name": "taskStatus",
+                    "condition": "true",
+                    "actions": [
+                      "data.put('taskStatus', fhirPath.extractValue(Task, 'Task.status'))"
+                    ]
+                  },
+                  {
+                    "name": "taskStatusColorCode",
+                    "condition": "true",
+                    "actions": [
+                      "data.put('taskStatusColorCode', service.generateTaskServiceStatus(Task))"
+                    ]
+                  },
+                  {
+                    "name": "taskExecutionStartDate",
+                    "condition": "true",
+                    "actions": [
+                      "data.put('taskExecutionStartDate', fhirPath.extractValue(Task, 'Task.executionPeriod.start'))"
+                    ]
+                  },
+                  {
+                    "name": "taskPeriodDueDate",
+                    "condition": "true",
+                    "actions": [
+                      "data.put('taskPeriodDueDate', service.formatDate(data.get('taskExecutionStartDate'), \"yyyy-MM-dd'T'HH:mm:ss\", \"dd MMM yyyy\"))"
+                    ]
+                  },
+                  {
+                    "name": "taskDescription",
+                    "condition": "true",
+                    "actions": [
+                      "data.put('taskDescription', fhirPath.extractValue(Task, 'Task.description'))"
+                    ]
+                  },
+                  {
+                    "name": "taskDescriptionWithStartDate",
+                    "condition": "true",
+                    "priority": 2,
+                    "actions": [
+                      "data.put('taskDescriptionWithStartDate', data.get('taskDescription') + ' - ' + data.get('taskPeriodDueDate'))"
+                    ]
+                  },
+                  {
+                    "name": "taskId",
+                    "condition": "true",
+                    "actions": [
+                      "data.put('taskId', fhirPath.extractValue(Task, 'Task.id'))"
+                    ]
+                  },
+                  {
+                    "name": "taskFor",
+                    "condition": "true",
+                    "actions": [
+                      "data.put('taskFor', fhirPath.extractValue(Task, 'Task.for.reference'))"
+                    ]
+                  },
+                  {
+                    "name": "taskQuestionnaireId",
+                    "condition": "true",
+                    "actions": [
+                      "data.put('taskQuestionnaireId', fhirPath.extractValue(Task, 'Task.reasonReference.reference'))"
+                    ]
+                  },
+                  {
+                    "name": "taskName",
+                    "condition": "true",
+                    "actions": [
+                      "data.put('taskName', fhirPath.extractValue(Task, 'Task.reasonCode.coding.display'))"
+                    ]
+                  },
+                  {
+                    "name": "taskCode",
+                    "condition": "true",
+                    "actions": [
+                      "data.put('taskCode', fhirPath.extractValue(Task, 'Task.reasonCode.coding.code'))"
+                    ]
+                  },
+                  {
+                    "name": "taskClickable",
+                    "condition": "true",
+                    "priority": 2,
+                    "actions": [
+                      "data.put('taskClickable', data.get('taskStatus') != 'requested' && data.get('taskStatus') != 'failed')"
+                    ]
+                  }
+                ],
+                "views": [
+                  {
+                    "viewType": "BUTTON",
+                    "buttonType": "MEDIUM",
+                    "text": "@{taskDescriptionWithStartDate}",
+                    "status": "@{taskStatusColorCode}",
+                    "visible": "true",
+                    "clickable": "@{taskClickable}",
+                    "enabled": "@{patientActive}",
+                    "actions": [
+                      {
+                        "trigger": "ON_CLICK",
+                        "workflow": "LAUNCH_QUESTIONNAIRE",
+                        "questionnaire": {
+                          "id": "@{taskQuestionnaireId}",
+                          "title": "{{ b5b2dad2eda089b9695c3fa8f648beeb }}",
+                          "saveButtonText": "{{ a4d3b161ce1309df1c4e25df28694b7b }}",
+                          "taskId": "@{taskId}",
+                          "resourceIdentifier": "@{taskFor}"
+                        },
+                        "params": [
+                          {
+                            "paramType": "PREPOPULATE",
+                            "linkId": "patient-dob",
+                            "dataType": "STRING",
+                            "key": "birthDate",
+                            "value": "@{birthDate}"
+                          },
+                          {
+                            "paramType": "PREPOPULATE",
+                            "linkId": "task-name",
+                            "dataType": "STRING",
+                            "key": "taskName",
+                            "value": "@{taskName}"
+                          },
+                          {
+                            "paramType": "PREPOPULATE",
+                            "linkId": "task-code",
+                            "dataType": "STRING",
+                            "key": "taskCode",
+                            "value": "@{taskCode}"
+                          },
+                          {
+                            "paramType": "PREPOPULATE",
+                            "linkId": "patient-id",
+                            "dataType": "STRING",
+                            "key": "patientId",
+                            "value": "@{patientId}"
+                          },
+                          {
+                            "paramType": "PREPOPULATE",
+                            "linkId": "task-description",
+                            "dataType": "STRING",
+                            "key": "taskDesc",
+                            "value": "@{taskDescription}"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
