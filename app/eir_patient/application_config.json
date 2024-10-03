@@ -2,7 +2,7 @@
   "appId": "eir-patient",
   "configType": "application",
   "theme": "DEFAULT",
-  "appTitle": "EIR",
+  "appTitle": "EIR Patient",
   "remoteSyncPageSize": 250,
   "languages": [
     "en",

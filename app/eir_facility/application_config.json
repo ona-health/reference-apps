@@ -2,7 +2,7 @@
   "appId": "eir-facility",
   "configType": "application",
   "theme": "DEFAULT",
-  "appTitle": "EIR",
+  "appTitle": "EIR Facility",
   "remoteSyncPageSize": 250,
   "languages": [
     "en",

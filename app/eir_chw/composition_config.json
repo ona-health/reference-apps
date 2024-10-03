@@ -1,444 +1,444 @@
 {
-    "resourceType": "Composition",
-    "id": "d49e56e8-26cf-4aa3-9675-234eb99fda91",
-    "meta": {
-        "versionId": "22",
-        "lastUpdated": "2024-09-10T12:33:34.976+00:00"
-    },
-    "identifier": {
-        "use": "official",
-        "value": "eir-chw"
-    },
-    "status": "final",
-    "type": {
-        "coding": [
-            {
-                "system": "http://snomed.info/sct",
-                "code": "1156600005",
-                "display": "Device setting parameter"
-            }
-        ]
-    },
-    "date": "2024-09-30",
-    "title": "Device configurations",
-    "confidentiality": "L",
-    "section": [
-        {
-            "title": "Profile configurations",
-            "mode": "working",
-            "section": [
-                {
-                    "title": "Child profile configuration",
-                    "focus": {
-                        "reference": "Binary/486f1acb-17b8-446a-8b30-dff7f42ecfb3",
-                        "identifier": {
-                            "value": "childProfile"
-                        }
-                    }
-                },
-                {
-                    "title": "Child Past Encounters profile configuration",
-                    "focus": {
-                        "reference": "Binary/d8226be3-3a53-4806-8920-6a406e6ed78b",
-                        "identifier": {
-                            "value": "childpastencountersProfile"
-                        }
-                    }
-                },
-                {
-                    "title": "Child Upcoming Encounters profile configuration",
-                    "focus": {
-                        "reference": "Binary/636c3621-9d7f-446f-9e29-0964ccab6ff2",
-                        "identifier": {
-                            "value": "childupcomingencountersProfile"
-                        }
-                    }
-                },
-                {
-                    "title": "Caregiver profile configuration",
-                    "focus": {
-                        "reference": "Binary/a727a048-7e78-4b42-836d-18b3cdc58ef6",
-                        "identifier": {
-                            "value": "caregiverProfile"
-                        }
-                    }
-                },
-                {
-                    "title": "Child adverse reactions profile configuration",
-                    "focus": {
-                        "reference": "Binary/4767c165-c02d-4c41-a417-71ccd27f138b",
-                        "identifier": {
-                            "value": "childadversereactionsProfile"
-                        }
-                    }
-                }
-            ]
-        },
-        {
-            "title": "Register configurations",
-            "mode": "working",
-            "section": [
-                {
-                    "title": "Children register configuration",
-                    "focus": {
-                        "reference": "Binary/66a729c5-a142-4149-9815-af4fdf24d052",
-                        "identifier": {
-                            "value": "childRegister"
-                        }
-                    }
-                },
-                {
-                    "title": "Caregiver register configuration",
-                    "focus": {
-                        "reference": "Binary/c32d2312-711b-40c2-be18-e69539c19c7a",
-                        "identifier": {
-                            "value": "caregiverRegister"
-                        }
-                    }
-                }
-            ]
-        },
-        {
-            "title": "Translation configurations",
-            "mode": "working",
-            "section": [
-                {
-                    "title": "Translation English",
-                    "focus": {
-                        "reference": "Binary/0eb8917e-d807-4cd9-842e-994c97bd7309",
-                        "identifier": {
-                            "value": "strings"
-                        }
-                    }
-                },
-                {
-                    "title": "Translation Spanish",
-                    "focus": {
-                        "reference": "Binary/43f5a98b-1a08-4cfe-a783-4ce5ad90f977",
-                        "identifier": {
-                            "value": "stringsEs"
-                        }
-                    }
-                },
-                {
-                    "title": "Translation French",
-                    "focus": {
-                        "reference": "Binary/24e0d7b2-cd79-4cc0-8960-9f70a2a329de",
-                        "identifier": {
-                            "value": "stringsFr"
-                        }
-                    }
-                }
-            ]
-        },
-        {
-            "title": "Application configuration",
-            "focus": {
-                "reference": "Binary/e8ba4c45-ee57-418a-97c5-0274465fcc73",
-                "identifier": {
-                    "value": "application"
-                }
-            },
-            "mode": "working"
-        },
-        {
-            "title": "Navigation configuration",
-            "focus": {
-                "reference": "Binary/3748c2fc-1a24-4e08-a4e8-f6bf03720893",
-                "identifier": {
-                    "value": "navigation"
-                }
-            },
-            "mode": "working"
-        },
-        {
-            "title": "Sync configuration",
-            "focus": {
-                "reference": "Binary/03df067b-4354-4e5e-b703-7c31faf5e5e3",
-                "identifier": {
-                    "value": "sync"
-                }
-            },
-            "mode": "working"
-        },
-        {
-            "title": "Health Facility Locations",
-            "mode": "working",
-            "section": [
-                {
-                    "title": "Health Facilities",
-                    "focus": {
-                        "reference": "List/7cc19773-5ccc-4356-a060-921fc132cbd8",
-                        "identifier": {
-                            "value": "health-facility-locations"
-                        }
-                    },
-                    "mode": "working"
-                }
-            ]
-        },
-        {
-            "title": "PlanDefinitions",
-            "mode": "working",
-            "section": [
-                {
-                    "title": "Child Immunization",
-                    "focus": {
-                        "reference": "PlanDefinition/6c09a137-962b-4d57-8232-b62ea5b43168",
-                        "identifier": {
-                            "value": "child-immunization"
-                        }
-                    },
-                    "mode": "working"
-                },
-                {
-                    "title": "Child Recurring Services",
-                    "focus": {
-                        "reference": "PlanDefinition/eb71729a-805a-4bdd-a478-e3b3d4f91c77",
-                        "identifier": {
-                            "value": "child-recurring-services"
-                        }
-                    },
-                    "mode": "working"
-                }
-            ]
-        },
-        {
-            "title": "Questionnaires",
-            "mode": "working",
-            "section": [
-                {
-                    "title": "Add Patient",
-                    "focus": {
-                        "reference": "Questionnaire/5cb30374-6b3d-46a7-858b-803cb0dcecc5",
-                        "identifier": {
-                            "value": "add-patient"
-                        }
-                    },
-                    "mode": "working"
-                },
-                {
-                    "title": "Add Child",
-                    "focus": {
-                        "reference": "Questionnaire/7cd88e5a-f553-4d6e-9c78-d533b99d54bd",
-                        "identifier": {
-                            "value": "add-child"
-                        }
-                    },
-                    "mode": "working"
-                },
-                {
-                    "title": "Record Single Dose",
-                    "focus": {
-                        "reference": "Questionnaire/9e6b308d-2d4c-4098-910b-dc2749599d9e",
-                        "identifier": {
-                            "value": "record-single-dose"
-                        }
-                    },
-                    "mode": "working"
-                },
-                {
-                    "title": "Record All Doses",
-                    "focus": {
-                        "reference": "Questionnaire/60d23244-3de2-4ee5-8bea-830eaf156068",
-                        "identifier": {
-                            "value": "record-all-doses"
-                        }
-                    },
-                    "mode": "working"
-                },
-                {
-                    "title": "Record Adverse Event",
-                    "focus": {
-                        "reference": "Questionnaire/061e24f4-5c9b-477f-8062-249dd43bc20f",
-                        "identifier": {
-                            "value": "record-adverse-event"
-                        }
-                    },
-                    "mode": "working"
-                },
-                {
-                    "title": "Mute Patient",
-                    "focus": {
-                        "reference": "Questionnaire/5af846be-292c-4790-a3c7-a07b067d4652",
-                        "identifier": {
-                            "value": "mute-patient"
-                        }
-                    },
-                    "mode": "working"
-                },
-                {
-                    "title": "Unmute Patient",
-                    "focus": {
-                        "reference": "Questionnaire/a07bf8dc-97cd-4c6d-a55f-86e1970772af",
-                        "identifier": {
-                            "value": "unmute-patient"
-                        }
-                    },
-                    "mode": "working"
-                },
-                {
-                    "title": "Remove Patient",
-                    "focus": {
-                        "reference": "Questionnaire/45bfe729-d9d9-4c69-a05c-f99cd293a1c3",
-                        "identifier": {
-                            "value": "remove-patient"
-                        }
-                    },
-                    "mode": "working"
-                },
-                {
-                    "title": "Register Filter",
-                    "focus": {
-                        "reference": "Questionnaire/aeb205e9-e76e-4fc9-877c-28ceac831f00",
-                        "identifier": {
-                            "value": "register-filter"
-                        }
-                    },
-                    "mode": "working"
-                },
-                {
-                    "title": "Record Recurring Service",
-                    "focus": {
-                        "reference": "Questionnaire/911c67be-9196-4eb2-b122-5bfeb7d8fb5f",
-                        "identifier": {
-                            "value": "recurring-service"
-                        }
-                    },
-                    "mode": "working"
-                }
-            ]
-        },
-        {
-            "title": "StructureMaps",
-            "mode": "working",
-            "section": [
-                {
-                    "title": "Patient Registration",
-                    "focus": {
-                        "reference": "StructureMap/1167492f-bdd6-46d4-8a8d-7dd8d5ad3d3a",
-                        "identifier": {
-                            "value": "patient-registration"
-                        }
-                    },
-                    "mode": "working"
-                },
-                {
-                    "title": "Child Registration",
-                    "focus": {
-                        "reference": "StructureMap/dc80c875-95ea-4cc7-923e-73c41e0312d6",
-                        "identifier": {
-                            "value": "child-registration"
-                        }
-                    },
-                    "mode": "working"
-                },
-                {
-                    "title": "Record Single Dose",
-                    "focus": {
-                        "reference": "StructureMap/8aa91198-0b9c-4622-ba30-04d1f3775fd8",
-                        "identifier": {
-                            "value": "record-single-dose"
-                        }
-                    },
-                    "mode": "working"
-                },
-                {
-                    "title": "Record All Doses",
-                    "focus": {
-                        "reference": "StructureMap/e98ad422-136f-4783-ad7d-4513626bb01d",
-                        "identifier": {
-                            "value": "record-all-doses"
-                        }
-                    },
-                    "mode": "working"
-                },
-                {
-                    "title": "Child Immunizations PD SM",
-                    "focus": {
-                        "reference": "StructureMap/ecd7339d-1279-4661-b6f6-e6a058f5fed2",
-                        "identifier": {
-                            "value": "child-immunizations-pd-sm"
-                        }
-                    },
-                    "mode": "working"
-                },
-                {
-                    "title": "Record Adverse Event SM",
-                    "focus": {
-                        "reference": "StructureMap/f1a25251-d70f-4c6d-a517-98acdeda6a21",
-                        "identifier": {
-                            "value": "record-adverse-event-sm"
-                        }
-                    },
-                    "mode": "working"
-                },
-                {
-                    "title": "Mute Patient SM",
-                    "focus": {
-                        "reference": "StructureMap/fe5fe0c8-3e8c-4199-ae15-6601f01e4501",
-                        "identifier": {
-                            "value": "mute-patient-sm"
-                        }
-                    },
-                    "mode": "working"
-                },
-                {
-                    "title": "Unmute Patient SM",
-                    "focus": {
-                        "reference": "StructureMap/9ad15b32-45e6-4de6-ab28-122b948af93f",
-                        "identifier": {
-                            "value": "unmute-patient-sm"
-                        }
-                    },
-                    "mode": "working"
-                },
-                {
-                    "title": "Remove Patient SM",
-                    "focus": {
-                        "reference": "StructureMap/e6d949ee-405c-4d41-88d1-af815559cb9f",
-                        "identifier": {
-                            "value": "remove-patient-sm"
-                        }
-                    },
-                    "mode": "working"
-                },
-                {
-                    "title": "Child Recurring Services PD SM",
-                    "focus": {
-                        "reference": "StructureMap/5e7e8f96-a332-4b4d-8643-a9873046f59e",
-                        "identifier": {
-                            "value": "child-recurring-services-pd-sm"
-                        }
-                    },
-                    "mode": "working"
-                },
-                {
-                    "title": "Record Recurring Service",
-                    "focus": {
-                        "reference": "StructureMap/2b637847-3948-4b82-9864-dbfb347cd84d",
-                        "identifier": {
-                            "value": "record-recurring-service"
-                        }
-                    },
-                    "mode": "working"
-                }
-            ]
-        },
-        {
-            "title": "Geo Widget configurations",
-            "mode": "working",
-            "section": [
-                {
-                    "title": "Geo Widget configuration",
-                    "focus": {
-                        "reference": "Binary/b52487d3-b442-4553-a815-4bee0cc32974",
-                        "identifier": {
-                            "value": "locationMap"
-                        }
-                    }
-                }
-            ]
-        }
+  "resourceType": "Composition",
+  "id": "d49e56e8-26cf-4aa3-9675-234eb99fda91",
+  "meta": {
+    "versionId": "22",
+    "lastUpdated": "2024-09-10T12:33:34.976+00:00"
+  },
+  "identifier": {
+    "use": "official",
+    "value": "eir-chw"
+  },
+  "status": "final",
+  "type": {
+    "coding": [
+      {
+        "system": "http://snomed.info/sct",
+        "code": "1156600005",
+        "display": "Device setting parameter"
+      }
     ]
+  },
+  "date": "2024-09-30",
+  "title": "Device configurations",
+  "confidentiality": "L",
+  "section": [
+    {
+      "title": "Profile configurations",
+      "mode": "working",
+      "section": [
+        {
+          "title": "Child profile configuration",
+          "focus": {
+            "reference": "Binary/486f1acb-17b8-446a-8b30-dff7f42ecfb3",
+            "identifier": {
+              "value": "childProfile"
+            }
+          }
+        },
+        {
+          "title": "Child Past Encounters profile configuration",
+          "focus": {
+            "reference": "Binary/d8226be3-3a53-4806-8920-6a406e6ed78b",
+            "identifier": {
+              "value": "childpastencountersProfile"
+            }
+          }
+        },
+        {
+          "title": "Child Upcoming Encounters profile configuration",
+          "focus": {
+            "reference": "Binary/636c3621-9d7f-446f-9e29-0964ccab6ff2",
+            "identifier": {
+              "value": "childupcomingencountersProfile"
+            }
+          }
+        },
+        {
+          "title": "Caregiver profile configuration",
+          "focus": {
+            "reference": "Binary/a727a048-7e78-4b42-836d-18b3cdc58ef6",
+            "identifier": {
+              "value": "caregiverProfile"
+            }
+          }
+        },
+        {
+          "title": "Child adverse reactions profile configuration",
+          "focus": {
+            "reference": "Binary/4767c165-c02d-4c41-a417-71ccd27f138b",
+            "identifier": {
+              "value": "childadversereactionsProfile"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "title": "Register configurations",
+      "mode": "working",
+      "section": [
+        {
+          "title": "Children register configuration",
+          "focus": {
+            "reference": "Binary/66a729c5-a142-4149-9815-af4fdf24d052",
+            "identifier": {
+              "value": "childRegister"
+            }
+          }
+        },
+        {
+          "title": "Caregiver register configuration",
+          "focus": {
+            "reference": "Binary/c32d2312-711b-40c2-be18-e69539c19c7a",
+            "identifier": {
+              "value": "caregiverRegister"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "title": "Translation configurations",
+      "mode": "working",
+      "section": [
+        {
+          "title": "Translation English",
+          "focus": {
+            "reference": "Binary/0eb8917e-d807-4cd9-842e-994c97bd7309",
+            "identifier": {
+              "value": "strings"
+            }
+          }
+        },
+        {
+          "title": "Translation Spanish",
+          "focus": {
+            "reference": "Binary/43f5a98b-1a08-4cfe-a783-4ce5ad90f977",
+            "identifier": {
+              "value": "stringsEs"
+            }
+          }
+        },
+        {
+          "title": "Translation French",
+          "focus": {
+            "reference": "Binary/24e0d7b2-cd79-4cc0-8960-9f70a2a329de",
+            "identifier": {
+              "value": "stringsFr"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "title": "Application configuration",
+      "focus": {
+        "reference": "Binary/e8ba4c45-ee57-418a-97c5-0274465fcc73",
+        "identifier": {
+          "value": "application"
+        }
+      },
+      "mode": "working"
+    },
+    {
+      "title": "Navigation configuration",
+      "focus": {
+        "reference": "Binary/3748c2fc-1a24-4e08-a4e8-f6bf03720893",
+        "identifier": {
+          "value": "navigation"
+        }
+      },
+      "mode": "working"
+    },
+    {
+      "title": "Sync configuration",
+      "focus": {
+        "reference": "Binary/03df067b-4354-4e5e-b703-7c31faf5e5e3",
+        "identifier": {
+          "value": "sync"
+        }
+      },
+      "mode": "working"
+    },
+    {
+      "title": "Health Facility Locations",
+      "mode": "working",
+      "section": [
+        {
+          "title": "Health Facilities",
+          "focus": {
+            "reference": "List/7cc19773-5ccc-4356-a060-921fc132cbd8",
+            "identifier": {
+              "value": "health-facility-locations"
+            }
+          },
+          "mode": "working"
+        }
+      ]
+    },
+    {
+      "title": "PlanDefinitions",
+      "mode": "working",
+      "section": [
+        {
+          "title": "Child Immunization",
+          "focus": {
+            "reference": "PlanDefinition/6c09a137-962b-4d57-8232-b62ea5b43168",
+            "identifier": {
+              "value": "child-immunization"
+            }
+          },
+          "mode": "working"
+        },
+        {
+          "title": "Child Recurring Services",
+          "focus": {
+            "reference": "PlanDefinition/eb71729a-805a-4bdd-a478-e3b3d4f91c77",
+            "identifier": {
+              "value": "child-recurring-services"
+            }
+          },
+          "mode": "working"
+        }
+      ]
+    },
+    {
+      "title": "Questionnaires",
+      "mode": "working",
+      "section": [
+        {
+          "title": "Add Patient",
+          "focus": {
+            "reference": "Questionnaire/5cb30374-6b3d-46a7-858b-803cb0dcecc5",
+            "identifier": {
+              "value": "add-patient"
+            }
+          },
+          "mode": "working"
+        },
+        {
+          "title": "Add Child",
+          "focus": {
+            "reference": "Questionnaire/7cd88e5a-f553-4d6e-9c78-d533b99d54bd",
+            "identifier": {
+              "value": "add-child"
+            }
+          },
+          "mode": "working"
+        },
+        {
+          "title": "Record Single Dose",
+          "focus": {
+            "reference": "Questionnaire/9e6b308d-2d4c-4098-910b-dc2749599d9e",
+            "identifier": {
+              "value": "record-single-dose"
+            }
+          },
+          "mode": "working"
+        },
+        {
+          "title": "Record All Doses",
+          "focus": {
+            "reference": "Questionnaire/60d23244-3de2-4ee5-8bea-830eaf156068",
+            "identifier": {
+              "value": "record-all-doses"
+            }
+          },
+          "mode": "working"
+        },
+        {
+          "title": "Record Adverse Event",
+          "focus": {
+            "reference": "Questionnaire/061e24f4-5c9b-477f-8062-249dd43bc20f",
+            "identifier": {
+              "value": "record-adverse-event"
+            }
+          },
+          "mode": "working"
+        },
+        {
+          "title": "Mute Patient",
+          "focus": {
+            "reference": "Questionnaire/5af846be-292c-4790-a3c7-a07b067d4652",
+            "identifier": {
+              "value": "mute-patient"
+            }
+          },
+          "mode": "working"
+        },
+        {
+          "title": "Unmute Patient",
+          "focus": {
+            "reference": "Questionnaire/a07bf8dc-97cd-4c6d-a55f-86e1970772af",
+            "identifier": {
+              "value": "unmute-patient"
+            }
+          },
+          "mode": "working"
+        },
+        {
+          "title": "Remove Patient",
+          "focus": {
+            "reference": "Questionnaire/45bfe729-d9d9-4c69-a05c-f99cd293a1c3",
+            "identifier": {
+              "value": "remove-patient"
+            }
+          },
+          "mode": "working"
+        },
+        {
+          "title": "Register Filter",
+          "focus": {
+            "reference": "Questionnaire/aeb205e9-e76e-4fc9-877c-28ceac831f00",
+            "identifier": {
+              "value": "register-filter"
+            }
+          },
+          "mode": "working"
+        },
+        {
+          "title": "Record Recurring Service",
+          "focus": {
+            "reference": "Questionnaire/911c67be-9196-4eb2-b122-5bfeb7d8fb5f",
+            "identifier": {
+              "value": "recurring-service"
+            }
+          },
+          "mode": "working"
+        }
+      ]
+    },
+    {
+      "title": "StructureMaps",
+      "mode": "working",
+      "section": [
+        {
+          "title": "Patient Registration",
+          "focus": {
+            "reference": "StructureMap/1167492f-bdd6-46d4-8a8d-7dd8d5ad3d3a",
+            "identifier": {
+              "value": "patient-registration"
+            }
+          },
+          "mode": "working"
+        },
+        {
+          "title": "Child Registration",
+          "focus": {
+            "reference": "StructureMap/dc80c875-95ea-4cc7-923e-73c41e0312d6",
+            "identifier": {
+              "value": "child-registration"
+            }
+          },
+          "mode": "working"
+        },
+        {
+          "title": "Record Single Dose",
+          "focus": {
+            "reference": "StructureMap/8aa91198-0b9c-4622-ba30-04d1f3775fd8",
+            "identifier": {
+              "value": "record-single-dose"
+            }
+          },
+          "mode": "working"
+        },
+        {
+          "title": "Record All Doses",
+          "focus": {
+            "reference": "StructureMap/e98ad422-136f-4783-ad7d-4513626bb01d",
+            "identifier": {
+              "value": "record-all-doses"
+            }
+          },
+          "mode": "working"
+        },
+        {
+          "title": "Child Immunizations PD SM",
+          "focus": {
+            "reference": "StructureMap/ecd7339d-1279-4661-b6f6-e6a058f5fed2",
+            "identifier": {
+              "value": "child-immunizations-pd-sm"
+            }
+          },
+          "mode": "working"
+        },
+        {
+          "title": "Record Adverse Event SM",
+          "focus": {
+            "reference": "StructureMap/f1a25251-d70f-4c6d-a517-98acdeda6a21",
+            "identifier": {
+              "value": "record-adverse-event-sm"
+            }
+          },
+          "mode": "working"
+        },
+        {
+          "title": "Mute Patient SM",
+          "focus": {
+            "reference": "StructureMap/fe5fe0c8-3e8c-4199-ae15-6601f01e4501",
+            "identifier": {
+              "value": "mute-patient-sm"
+            }
+          },
+          "mode": "working"
+        },
+        {
+          "title": "Unmute Patient SM",
+          "focus": {
+            "reference": "StructureMap/9ad15b32-45e6-4de6-ab28-122b948af93f",
+            "identifier": {
+              "value": "unmute-patient-sm"
+            }
+          },
+          "mode": "working"
+        },
+        {
+          "title": "Remove Patient SM",
+          "focus": {
+            "reference": "StructureMap/e6d949ee-405c-4d41-88d1-af815559cb9f",
+            "identifier": {
+              "value": "remove-patient-sm"
+            }
+          },
+          "mode": "working"
+        },
+        {
+          "title": "Child Recurring Services PD SM",
+          "focus": {
+            "reference": "StructureMap/5e7e8f96-a332-4b4d-8643-a9873046f59e",
+            "identifier": {
+              "value": "child-recurring-services-pd-sm"
+            }
+          },
+          "mode": "working"
+        },
+        {
+          "title": "Record Recurring Service",
+          "focus": {
+            "reference": "StructureMap/2b637847-3948-4b82-9864-dbfb347cd84d",
+            "identifier": {
+              "value": "record-recurring-service"
+            }
+          },
+          "mode": "working"
+        }
+      ]
+    },
+    {
+      "title": "Geo Widget configurations",
+      "mode": "working",
+      "section": [
+        {
+          "title": "Geo Widget configuration",
+          "focus": {
+            "reference": "Binary/b52487d3-b442-4553-a815-4bee0cc32974",
+            "identifier": {
+              "value": "locationMap"
+            }
+          }
+        }
+      ]
+    }
+  ]
 }

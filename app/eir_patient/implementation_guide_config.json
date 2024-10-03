@@ -8,9 +8,9 @@
   "url": "https://fhir.eir.smartregister.org/fhir/ImplementationGuide/eir-patient",
   "version": "1.0.0",
   "name": "eir-patient",
-  "title": "GIZ/PATH EIR Implementation Guide",
+  "title": "EIR Patient Implementation Guide",
   "status": "draft",
-  "date": "2024-05-27",
+  "date": "2024-09-30",
   "publisher": "Ona Systems, Inc.",
   "useContext": [
     {
@@ -26,7 +26,7 @@
     "resource": [
       {
         "reference": {
-          "reference": "Composition/12965652"
+          "reference": "Composition/5df00868-34c2-4765-96d1-e906e9709e1e"
         }
       }
     ]
