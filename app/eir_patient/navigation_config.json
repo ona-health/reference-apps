@@ -1,72 +1,7 @@
 {
   "appId": "eir-patient",
   "configType": "navigation",
-  "menuActionButton": {
-    "id": "mainActionButton",
-    "visible": true,
-    "display": "{{ dece90802392bb0289660c633eddd5e4 }}",
-    "actions": [
-      {
-        "trigger": "ON_CLICK",
-        "workflow": "LAUNCH_QUESTIONNAIRE",
-        "questionnaire": {
-          "id": "13030180",
-          "title": "{{ dece90802392bb0289660c633eddd5e4 }}",
-          "saveButtonText": "{{ c9cc8cce247e49bae79f15173ce97354 }}",
-          "groupResource": {
-            "groupIdentifier": "@{familyLogicalId}",
-            "memberResourceType": "Patient"
-          },
-          "snackBarMessage": {
-            "message": "{{ 8b41faf441db854f6c4066bbbb6837f2 }}",
-            "actionLabel": "UNDO",
-            "duration": "Short"
-          },
-          "configRules": [
-            {
-              "name": "humanReadableId",
-              "condition": "true",
-              "actions": [
-                "data.put('humanReadableId', service.generateRandomSixDigitInt())"
-              ]
-            }
-          ],
-          "extraParams": [
-            {
-              "paramType": "PREPOPULATE",
-              "linkId": "0d77d40f-098b-4329-9199-33b6e77aa864",
-              "dataType": "INTEGER",
-              "key": "opensrpId",
-              "value": "@{humanReadableId}"
-            }
-          ],
-          "setPractitionerDetails": true,
-          "setOrganizationDetails": true
-        }
-      }
-    ]
-  },
   "clientRegisters": [
-    {
-      "id": "caregiverRegister",
-      "display": "{{ 34fc9c26c4ad487a175c2e7b85eb9b6d }}",
-      "showCount": true,
-      "menuIconConfig": {
-        "type": "local",
-        "reference": "ic_baby_mother"
-      },
-      "actions": [
-        {
-          "trigger": "ON_CLICK",
-          "workflow": "LAUNCH_REGISTER",
-          "id": "caregiverRegister"
-        },
-        {
-          "trigger": "ON_COUNT",
-          "id": "caregiverRegister"
-        }
-      ]
-    },
     {
       "id": "childRegister",
       "display": "{{ 64e4aca4297806247f62a7b5f8cbd3df }}",

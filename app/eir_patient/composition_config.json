@@ -30,7 +30,7 @@
         {
           "title": "Child profile configuration",
           "focus": {
-            "reference": "Binary/a1b2c3d4-e5f6-7g8h-9i0j-1k2l3m4n5o6p",
+            "reference": "Binary/f2e1d0c9-b8a7-6543-2109-8765f4e3d2c1",
             "identifier": {
               "value": "childProfile"
             }
@@ -39,7 +39,7 @@
         {
           "title": "Child Past Encounters profile configuration",
           "focus": {
-            "reference": "Binary/b2c3d4e5-f6g7-8h9i-0j1k-2l3m4n5o6p7q",
+            "reference": "Binary/a1b2c3d4-e5f6-7890-1234-5678g9h0i1j2",
             "identifier": {
               "value": "childpastencountersProfile"
             }
@@ -48,25 +48,16 @@
         {
           "title": "Child Upcoming Encounters profile configuration",
           "focus": {
-            "reference": "Binary/c3d4e5f6-g7h8-9i0j-1k2l-3m4n5o6p7q8r",
+            "reference": "Binary/k3l4m5n6-o7p8-q9r0-s1t2-u3v4w5x6y7z8",
             "identifier": {
               "value": "childupcomingencountersProfile"
             }
           }
         },
         {
-          "title": "Caregiver profile configuration",
-          "focus": {
-            "reference": "Binary/d4e5f6g7-h8i9-0j1k-2l3m-4n5o6p7q8r9s",
-            "identifier": {
-              "value": "caregiverProfile"
-            }
-          }
-        },
-        {
           "title": "Child adverse reactions profile configuration",
           "focus": {
-            "reference": "Binary/e5f6g7h8-i9j0-1k2l-3m4n-5o6p7q8r9s0t",
+            "reference": "Binary/b2c3d4e5-f6g7-h8i9-j0k1-l2m3n4o5p6q7",
             "identifier": {
               "value": "childadversereactionsProfile"
             }
@@ -81,18 +72,9 @@
         {
           "title": "Children register configuration",
           "focus": {
-            "reference": "Binary/f6g7h8i9-j0k1-2l3m-4n5o-6p7q8r9s0t1u",
+            "reference": "Binary/r8s9t0u1-v2w3-x4y5-z6a7-b8c9d0e1f2g3",
             "identifier": {
               "value": "childRegister"
-            }
-          }
-        },
-        {
-          "title": "Caregiver register configuration",
-          "focus": {
-            "reference": "Binary/g7h8i9j0-k1l2-3m4n-5o6p-7q8r9s0t1u2v",
-            "identifier": {
-              "value": "caregiverRegister"
             }
           }
         }
@@ -105,7 +87,7 @@
         {
           "title": "Translation English",
           "focus": {
-            "reference": "Binary/h8i9j0k1-l2m3-4n5o-6p7q-8r9s0t1u2v3w",
+            "reference": "Binary/h4i5j6k7-l8m9-n0o1-p2q3-r4s5t6u7v8w9",
             "identifier": {
               "value": "strings"
             }
@@ -114,7 +96,7 @@
         {
           "title": "Translation Spanish",
           "focus": {
-            "reference": "Binary/i9j0k1l2-m3n4-5o6p-7q8r-9s0t1u2v3w4x",
+            "reference": "Binary/x0y1z2a3-b4c5-d6e7-f8g9-h0i1j2k3l4m5",
             "identifier": {
               "value": "stringsEs"
             }
@@ -123,7 +105,7 @@
         {
           "title": "Translation French",
           "focus": {
-            "reference": "Binary/j0k1l2m3-n4o5-6p7q-8r9s-0t1u2v3w4x5y",
+            "reference": "Binary/n6o7p8q9-r0s1-t2u3-v4w5-x6y7z8a9b0c1",
             "identifier": {
               "value": "stringsFr"
             }
@@ -134,7 +116,7 @@
     {
       "title": "Application configuration",
       "focus": {
-        "reference": "Binary/k1l2m3n4-o5p6-7q8r-9s0t-1u2v3w4x5y6z",
+        "reference": "Binary/d2e3f4g5-h6i7-j8k9-l0m1-n2o3p4q5r6s7",
         "identifier": {
           "value": "application"
         }
@@ -144,7 +126,7 @@
     {
       "title": "Navigation configuration",
       "focus": {
-        "reference": "Binary/l2m3n4o5-p6q7-8r9s-0t1u-2v3w4x5y6z7a",
+        "reference": "Binary/t8u9v0w1-x2y3-z4a5-b6c7-d8e9f0g1h2i3",
         "identifier": {
           "value": "navigation"
         }
@@ -154,28 +136,12 @@
     {
       "title": "Sync configuration",
       "focus": {
-        "reference": "Binary/m3n4o5p6-q7r8-9s0t-1u2v-3w4x5y6z7a8b",
+        "reference": "Binary/j4k5l6m7-n8o9-p0q1-r2s3-t4u5v6w7x8y9",
         "identifier": {
           "value": "sync"
         }
       },
       "mode": "working"
-    },
-    {
-      "title": "Health Facility Locations",
-      "mode": "working",
-      "section": [
-        {
-          "title": "Health Facilities",
-          "focus": {
-            "reference": "List/0571e685-362e-4d8b-b227-a3678ad5420c-420",
-            "identifier": {
-              "value": "health-facility-locations"
-            }
-          },
-          "mode": "working"
-        }
-      ]
     },
     {
       "title": "PlanDefinitions",
@@ -184,7 +150,7 @@
         {
           "title": "Child Immunization",
           "focus": {
-            "reference": "PlanDefinition/13038618",
+            "reference": "PlanDefinition/6c09a137-962b-4d57-8232-b62ea5b43168",
             "identifier": {
               "value": "child-immunization"
             }
@@ -194,7 +160,7 @@
         {
           "title": "Child Recurring Services",
           "focus": {
-            "reference": "PlanDefinition/13038619",
+            "reference": "PlanDefinition/eb71729a-805a-4bdd-a478-e3b3d4f91c77",
             "identifier": {
               "value": "child-recurring-services"
             }
@@ -210,7 +176,7 @@
         {
           "title": "Add Patient",
           "focus": {
-            "reference": "Questionnaire/13030180",
+            "reference": "Questionnaire/5cb30374-6b3d-46a7-858b-803cb0dcecc5",
             "identifier": {
               "value": "add-patient"
             }
@@ -220,7 +186,7 @@
         {
           "title": "Add Child",
           "focus": {
-            "reference": "Questionnaire/08d44fcf-e78d-44e6-9b64-7fa260216ab9",
+            "reference": "Questionnaire/7cd88e5a-f553-4d6e-9c78-d533b99d54bd",
             "identifier": {
               "value": "add-child"
             }
@@ -230,7 +196,7 @@
         {
           "title": "Record Single Dose",
           "focus": {
-            "reference": "Questionnaire/13034952",
+            "reference": "Questionnaire/9e6b308d-2d4c-4098-910b-dc2749599d9e",
             "identifier": {
               "value": "record-single-dose"
             }
@@ -240,7 +206,7 @@
         {
           "title": "Record All Doses",
           "focus": {
-            "reference": "Questionnaire/13038617-01",
+            "reference": "Questionnaire/60d23244-3de2-4ee5-8bea-830eaf156068",
             "identifier": {
               "value": "record-all-doses"
             }
@@ -250,7 +216,7 @@
         {
           "title": "Record Adverse Event",
           "focus": {
-            "reference": "Questionnaire/13038616",
+            "reference": "Questionnaire/061e24f4-5c9b-477f-8062-249dd43bc20f",
             "identifier": {
               "value": "record-adverse-event"
             }
@@ -260,7 +226,7 @@
         {
           "title": "Mute Patient",
           "focus": {
-            "reference": "Questionnaire/13038612",
+            "reference": "Questionnaire/5af846be-292c-4790-a3c7-a07b067d4652",
             "identifier": {
               "value": "mute-patient"
             }
@@ -270,7 +236,7 @@
         {
           "title": "Unmute Patient",
           "focus": {
-            "reference": "Questionnaire/13038615",
+            "reference": "Questionnaire/a07bf8dc-97cd-4c6d-a55f-86e1970772af",
             "identifier": {
               "value": "unmute-patient"
             }
@@ -280,7 +246,7 @@
         {
           "title": "Remove Patient",
           "focus": {
-            "reference": "Questionnaire/13038614",
+            "reference": "Questionnaire/45bfe729-d9d9-4c69-a05c-f99cd293a1c3",
             "identifier": {
               "value": "remove-patient"
             }
@@ -290,7 +256,7 @@
         {
           "title": "Register Filter",
           "focus": {
-            "reference": "Questionnaire/13066257",
+            "reference": "Questionnaire/aeb205e9-e76e-4fc9-877c-28ceac831f00",
             "identifier": {
               "value": "register-filter"
             }
@@ -300,7 +266,7 @@
         {
           "title": "Record Recurring Service",
           "focus": {
-            "reference": "Questionnaire/13036618",
+            "reference": "Questionnaire/911c67be-9196-4eb2-b122-5bfeb7d8fb5f",
             "identifier": {
               "value": "recurring-service"
             }
@@ -316,7 +282,7 @@
         {
           "title": "Patient Registration",
           "focus": {
-            "reference": "StructureMap/13031694",
+            "reference": "StructureMap/1167492f-bdd6-46d4-8a8d-7dd8d5ad3d3a",
             "identifier": {
               "value": "patient-registration"
             }
@@ -326,7 +292,7 @@
         {
           "title": "Child Registration",
           "focus": {
-            "reference": "StructureMap/405673f8-1a4a-4ea7-ad28-365b06a65f93",
+            "reference": "StructureMap/dc80c875-95ea-4cc7-923e-73c41e0312d6",
             "identifier": {
               "value": "child-registration"
             }
@@ -336,7 +302,7 @@
         {
           "title": "Record Single Dose",
           "focus": {
-            "reference": "StructureMap/13034953",
+            "reference": "StructureMap/8aa91198-0b9c-4622-ba30-04d1f3775fd8",
             "identifier": {
               "value": "record-single-dose"
             }
@@ -346,7 +312,7 @@
         {
           "title": "Record All Doses",
           "focus": {
-            "reference": "StructureMap/13038626",
+            "reference": "StructureMap/e98ad422-136f-4783-ad7d-4513626bb01d",
             "identifier": {
               "value": "record-all-doses"
             }
@@ -356,7 +322,7 @@
         {
           "title": "Child Immunizations PD SM",
           "focus": {
-            "reference": "StructureMap/13036617",
+            "reference": "StructureMap/ecd7339d-1279-4661-b6f6-e6a058f5fed2",
             "identifier": {
               "value": "child-immunizations-pd-sm"
             }
@@ -366,7 +332,7 @@
         {
           "title": "Record Adverse Event SM",
           "focus": {
-            "reference": "StructureMap/13038627",
+            "reference": "StructureMap/f1a25251-d70f-4c6d-a517-98acdeda6a21",
             "identifier": {
               "value": "record-adverse-event-sm"
             }
@@ -376,7 +342,7 @@
         {
           "title": "Mute Patient SM",
           "focus": {
-            "reference": "StructureMap/13038620",
+            "reference": "StructureMap/fe5fe0c8-3e8c-4199-ae15-6601f01e4501",
             "identifier": {
               "value": "mute-patient-sm"
             }
@@ -386,7 +352,7 @@
         {
           "title": "Unmute Patient SM",
           "focus": {
-            "reference": "StructureMap/13038623",
+            "reference": "StructureMap/9ad15b32-45e6-4de6-ab28-122b948af93f",
             "identifier": {
               "value": "unmute-patient-sm"
             }
@@ -396,7 +362,7 @@
         {
           "title": "Remove Patient SM",
           "focus": {
-            "reference": "StructureMap/13038622",
+            "reference": "StructureMap/e6d949ee-405c-4d41-88d1-af815559cb9f",
             "identifier": {
               "value": "remove-patient-sm"
             }
@@ -406,7 +372,7 @@
         {
           "title": "Child Recurring Services PD SM",
           "focus": {
-            "reference": "StructureMap/13038624",
+            "reference": "StructureMap/5e7e8f96-a332-4b4d-8643-a9873046f59e",
             "identifier": {
               "value": "child-recurring-services-pd-sm"
             }
@@ -416,27 +382,12 @@
         {
           "title": "Record Recurring Service",
           "focus": {
-            "reference": "StructureMap/13038625",
+            "reference": "StructureMap/2b637847-3948-4b82-9864-dbfb347cd84d",
             "identifier": {
               "value": "record-recurring-service"
             }
           },
           "mode": "working"
-        }
-      ]
-    },
-    {
-      "title": "Geo Widget configurations",
-      "mode": "working",
-      "section": [
-        {
-          "title": "Geo Widget configuration",
-          "focus": {
-            "reference": "Binary/n4o5p6q7-r8s9-0t1u-2v3w-4x5y6z7a8b9c",
-            "identifier": {
-              "value": "locationMap"
-            }
-          }
         }
       ]
     }

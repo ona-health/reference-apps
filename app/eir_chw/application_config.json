@@ -12,7 +12,7 @@
   "useDarkTheme": false,
   "syncInterval": 30,
   "syncStrategy": [
-    "CareTeam"
+    "Location"
   ],
   "loginConfig": {
     "showLogo": true,
