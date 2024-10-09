@@ -624,7 +624,7 @@
                     "condition": "true",
                     "priority": 4,
                     "actions": [
-                      "data.put('taskDate', data.get('taskStatus') == 'completed' ? data.get('immunizationDate').empty().not() ? data.get('immunizationDate') : data.get('taskPeriodDueDate') : data.get('taskPeriodDueDate'))"
+                      "data.put('taskDate', data.get('taskStatus') == 'completed' ? (!data.get('immunizationDate').empty() ? data.get('immunizationDate') : data.get('taskPeriodDueDate')) : data.get('taskPeriodDueDate'))"
                     ]
                   },
                   {
@@ -834,7 +834,7 @@
                     "condition": "true",
                     "priority": 4,
                     "actions": [
-                      "data.put('taskDate', data.get('taskStatus') == 'completed' ? data.get('immunizationDate').empty().not() ? data.get('immunizationDate') : data.get('taskPeriodDueDate') : data.get('taskPeriodDueDate'))"
+                      "data.put('taskDate', data.get('taskStatus') == 'completed' ? (!data.get('immunizationDate').empty() ? data.get('immunizationDate') : data.get('taskPeriodDueDate')) : data.get('taskPeriodDueDate'))"
                     ]
                   },
                   {
@@ -1037,7 +1037,7 @@
                     "condition": "true",
                     "priority": 4,
                     "actions": [
-                      "data.put('taskDate', data.get('taskStatus') == 'completed' ? data.get('immunizationDate').empty().not() ? data.get('immunizationDate') : data.get('taskPeriodDueDate') : data.get('taskPeriodDueDate'))"
+                      "data.put('taskDate', data.get('taskStatus') == 'completed' ? (!data.get('immunizationDate').empty() ? data.get('immunizationDate') : data.get('taskPeriodDueDate')) : data.get('taskPeriodDueDate'))"
                     ]
                   },
                   {
@@ -1306,7 +1306,7 @@
                     "condition": "true",
                     "priority": 4,
                     "actions": [
-                      "data.put('taskDate', data.get('taskStatus') == 'completed' ? data.get('immunizationDate').empty().not() ? data.get('immunizationDate') : data.get('taskPeriodDueDate') : data.get('taskPeriodDueDate'))"
+                      "data.put('taskDate', data.get('taskStatus') == 'completed' ? (!data.get('immunizationDate').empty() ? data.get('immunizationDate') : data.get('taskPeriodDueDate')) : data.get('taskPeriodDueDate'))"
                     ]
                   },
                   {
@@ -1516,7 +1516,7 @@
                     "condition": "true",
                     "priority": 4,
                     "actions": [
-                      "data.put('taskDate', data.get('taskStatus') == 'completed' ? data.get('immunizationDate').empty().not() ? data.get('immunizationDate') : data.get('taskPeriodDueDate') : data.get('taskPeriodDueDate'))"
+                      "data.put('taskDate', data.get('taskStatus') == 'completed' ? (!data.get('immunizationDate').empty() ? data.get('immunizationDate') : data.get('taskPeriodDueDate')) : data.get('taskPeriodDueDate'))"
                     ]
                   },
                   {
@@ -1719,7 +1719,7 @@
                     "condition": "true",
                     "priority": 4,
                     "actions": [
-                      "data.put('taskDate', data.get('taskStatus') == 'completed' ? data.get('immunizationDate').empty().not() ? data.get('immunizationDate') : data.get('taskPeriodDueDate') : data.get('taskPeriodDueDate'))"
+                      "data.put('taskDate', data.get('taskStatus') == 'completed' ? (!data.get('immunizationDate').empty() ? data.get('immunizationDate') : data.get('taskPeriodDueDate')) : data.get('taskPeriodDueDate'))"
                     ]
                   },
                   {
@@ -1922,7 +1922,7 @@
                     "condition": "true",
                     "priority": 4,
                     "actions": [
-                      "data.put('taskDate', data.get('taskStatus') == 'completed' ? data.get('immunizationDate').empty().not() ? data.get('immunizationDate') : data.get('taskPeriodDueDate') : data.get('taskPeriodDueDate'))"
+                      "data.put('taskDate', data.get('taskStatus') == 'completed' ? (!data.get('immunizationDate').empty() ? data.get('immunizationDate') : data.get('taskPeriodDueDate')) : data.get('taskPeriodDueDate'))"
                     ]
                   },
                   {
@@ -2125,7 +2125,7 @@
                     "condition": "true",
                     "priority": 4,
                     "actions": [
-                      "data.put('taskDate', data.get('taskStatus') == 'completed' ? data.get('immunizationDate').empty().not() ? data.get('immunizationDate') : data.get('taskPeriodDueDate') : data.get('taskPeriodDueDate'))"
+                      "data.put('taskDate', data.get('taskStatus') == 'completed' ? (!data.get('immunizationDate').empty() ? data.get('immunizationDate') : data.get('taskPeriodDueDate')) : data.get('taskPeriodDueDate'))"
                     ]
                   },
                   {
@@ -2320,7 +2320,7 @@
                     "condition": "true",
                     "priority": 2,
                     "actions": [
-                      "data.put('taskDate', data.get('taskStatus') == 'completed' ? data.get('immunizationDate').empty().not() ? data.get('immunizationDate') : data.get('taskPeriodDueDate') : data.get('taskPeriodDueDate'))"
+                      "data.put('taskDate', data.get('taskStatus') == 'completed' ? (!data.get('immunizationDate').empty() ? data.get('immunizationDate') : data.get('taskPeriodDueDate')) : data.get('taskPeriodDueDate'))"
                     ]
                   },
                   {
