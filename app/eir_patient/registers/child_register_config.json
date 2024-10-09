@@ -362,64 +362,7 @@
               "visible": "@{showMemberTasks}",
               "text": "@{taskDescription}",
               "status": "@{serviceStatus}",
-              "buttonType": "MEDIUM",
-              "actions": [
-                {
-                  "trigger": "ON_CLICK",
-                  "workflow": "LAUNCH_QUESTIONNAIRE",
-                  "questionnaire": {
-                    "id": "@{taskQuestionnaireId}",
-                    "title": "{{ b5b2dad2eda089b9695c3fa8f648beeb }}",
-                    "saveButtonText": "{{ a4d3b161ce1309df1c4e25df28694b7b }}",
-                    "taskId": "@{taskId}",
-                    "resourceIdentifier": "@{taskFor}"
-                  },
-                  "params": [
-                    {
-                      "paramType": "PREPOPULATE",
-                      "linkId": "patient-dob",
-                      "dataType": "STRING",
-                      "key": "patientDateOfBirth",
-                      "value": "@{patientDateOfBirth}"
-                    },
-                    {
-                      "paramType": "PREPOPULATE",
-                      "linkId": "task-name",
-                      "dataType": "STRING",
-                      "key": "taskName",
-                      "value": "@{taskName}"
-                    },
-                    {
-                      "paramType": "PREPOPULATE",
-                      "linkId": "task-code",
-                      "dataType": "STRING",
-                      "key": "taskCode",
-                      "value": "@{taskCode}"
-                    },
-                    {
-                      "paramType": "PREPOPULATE",
-                      "linkId": "patient-id",
-                      "dataType": "STRING",
-                      "key": "patientId",
-                      "value": "@{patientId}"
-                    },
-                    {
-                      "paramType": "PREPOPULATE",
-                      "linkId": "task-description",
-                      "dataType": "STRING",
-                      "key": "taskDesc",
-                      "value": "@{taskDescription}"
-                    },
-                    {
-                      "paramType": "PREPOPULATE",
-                      "linkId": "logical-task-id",
-                      "dataType": "STRING",
-                      "key": "logicalTaskId",
-                      "value": "@{logicalTaskId}"
-                    }
-                  ]
-                }
-              ]
+              "buttonType": "MEDIUM"
             },
             "actions": [
               {

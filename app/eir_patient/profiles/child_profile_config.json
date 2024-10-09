@@ -547,39 +547,6 @@
             "fontSize": 14.0,
             "padding": 16
           },
-          "headerAction": {
-            "viewType": "COMPOUND_TEXT",
-            "visible": "@{atBirthTasksMoreThan1}",
-            "primaryText": "{{ 5b22625a04693de0dfd851206bda68a5 }}",
-            "primaryTextColor": "infoColor",
-            "fontSize": 16.0,
-            "primaryTextFontWeight": "MEDIUM",
-            "padding": 16,
-            "clickable": true,
-            "maxLines": 1,
-            "textOverflow": "ELLIPSIS",
-            "primaryTextActions": [
-              {
-                "trigger": "ON_CLICK",
-                "workflow": "LAUNCH_QUESTIONNAIRE",
-                "questionnaire": {
-                  "id": "60d23244-3de2-4ee5-8bea-830eaf156068",
-                  "title": "{{ cd9b9693e6c22ffdd8f210336ed3b3b7 }}",
-                  "resourceIdentifier": "@{patientId}",
-                  "saveButtonText": "{{ c9cc8cce247e49bae79f15173ce97354 }}"
-                },
-                "params": [
-                  {
-                    "paramType": "PREPOPULATE",
-                    "linkId": "group-identifier",
-                    "dataType": "STRING",
-                    "key": "groupIdentifier",
-                    "value": "0_d"
-                  }
-                ]
-              }
-            ]
-          },
           "content": [
             {
               "viewType": "LIST",
@@ -765,74 +732,7 @@
                     "text": "@{taskDescriptionFormatted}",
                     "status": "@{taskStatusColorCode}",
                     "visible": "true",
-                    "clickable": "@{taskClickable}",
-                    "enabled": "@{patientActive}",
-                    "actions": [
-                      {
-                        "trigger": "ON_CLICK",
-                        "workflow": "LAUNCH_QUESTIONNAIRE",
-                        "questionnaire": {
-                          "id": "@{taskQuestionnaireId}",
-                          "title": "{{ b5b2dad2eda089b9695c3fa8f648beeb }}",
-                          "saveButtonText": "{{ c9cc8cce247e49bae79f15173ce97354 }}",
-                          "resourceIdentifier": "@{taskFor}",
-                          "type": "@{questionnaireType}",
-                          "setPractitionerDetails": true,
-                          "setOrganizationDetails": true
-                        },
-                        "params": [
-                          {
-                            "paramType": "PREPOPULATE",
-                            "linkId": "patient-dob",
-                            "dataType": "STRING",
-                            "key": "birthDate",
-                            "value": "@{birthDate}"
-                          },
-                          {
-                            "paramType": "PREPOPULATE",
-                            "linkId": "task-name",
-                            "dataType": "STRING",
-                            "key": "taskName",
-                            "value": "@{taskName}"
-                          },
-                          {
-                            "paramType": "PREPOPULATE",
-                            "linkId": "task-code",
-                            "dataType": "STRING",
-                            "key": "taskCode",
-                            "value": "@{taskCode}"
-                          },
-                          {
-                            "paramType": "PREPOPULATE",
-                            "linkId": "patient-id",
-                            "dataType": "STRING",
-                            "key": "patientId",
-                            "value": "@{patientId}"
-                          },
-                          {
-                            "paramType": "PREPOPULATE",
-                            "linkId": "task-description",
-                            "dataType": "STRING",
-                            "key": "taskDesc",
-                            "value": "@{taskDescription}"
-                          },
-                          {
-                            "paramType": "PREPOPULATE",
-                            "linkId": "logical-task-id",
-                            "dataType": "STRING",
-                            "key": "logicalTaskId",
-                            "value": "@{logicalTaskId}"
-                          },
-                          {
-                            "paramType": "PREPOPULATE",
-                            "linkId": "vaccine-dose-number",
-                            "dataType": "STRING",
-                            "key": "vaccineDoseNumber",
-                            "value": "@{vaccineDoseNumber}"
-                          }
-                        ]
-                      }
-                    ]
+                    "enabled": "false"
                   }
                 ]
               }
@@ -849,40 +749,6 @@
             "primaryTextColor": "#717171",
             "fontSize": 14.0,
             "padding": 16
-          },
-          "headerAction": {
-            "viewType": "COMPOUND_TEXT",
-            "visible": "@{atSixWeeksTasksMoreThan1}",
-            "primaryText": "{{ 5b22625a04693de0dfd851206bda68a5 }}",
-            "primaryTextColor": "infoColor",
-            "fontSize": 16.0,
-            "primaryTextFontWeight": "MEDIUM",
-            "padding": 16,
-            "clickable": true,
-            "maxLines": 1,
-            "textOverflow": "ELLIPSIS",
-            "primaryTextActions": [
-              {
-                "trigger": "ON_CLICK",
-                "workflow": "LAUNCH_QUESTIONNAIRE",
-                "questionnaire": {
-                  "id": "60d23244-3de2-4ee5-8bea-830eaf156068",
-                  "title": "{{ cd9b9693e6c22ffdd8f210336ed3b3b7 }}",
-                  "resourceIdentifier": "@{patientId}",
-                  "saveButtonText": "{{ c9cc8cce247e49bae79f15173ce97354 }}",
-                  "taskId": "@{taskId}"
-                },
-                "params": [
-                  {
-                    "paramType": "PREPOPULATE",
-                    "linkId": "group-identifier",
-                    "dataType": "STRING",
-                    "key": "groupIdentifier",
-                    "value": "6_wk"
-                  }
-                ]
-              }
-            ]
           },
           "content": [
             {
@@ -1076,74 +942,7 @@
                     "text": "@{taskDescriptionFormatted}",
                     "status": "@{taskStatusColorCode}",
                     "visible": "true",
-                    "clickable": "@{taskClickable}",
-                    "enabled": "@{patientActive}",
-                    "actions": [
-                      {
-                        "trigger": "ON_CLICK",
-                        "workflow": "LAUNCH_QUESTIONNAIRE",
-                        "questionnaire": {
-                          "id": "@{taskQuestionnaireId}",
-                          "title": "{{ b5b2dad2eda089b9695c3fa8f648beeb }}",
-                          "saveButtonText": "{{ c9cc8cce247e49bae79f15173ce97354 }}",
-                          "resourceIdentifier": "@{taskFor}",
-                          "type": "@{questionnaireType}",
-                          "setPractitionerDetails": true,
-                          "setOrganizationDetails": true
-                        },
-                        "params": [
-                          {
-                            "paramType": "PREPOPULATE",
-                            "linkId": "patient-dob",
-                            "dataType": "STRING",
-                            "key": "birthDate",
-                            "value": "@{birthDate}"
-                          },
-                          {
-                            "paramType": "PREPOPULATE",
-                            "linkId": "task-name",
-                            "dataType": "STRING",
-                            "key": "taskName",
-                            "value": "@{taskName}"
-                          },
-                          {
-                            "paramType": "PREPOPULATE",
-                            "linkId": "task-code",
-                            "dataType": "STRING",
-                            "key": "taskCode",
-                            "value": "@{taskCode}"
-                          },
-                          {
-                            "paramType": "PREPOPULATE",
-                            "linkId": "patient-id",
-                            "dataType": "STRING",
-                            "key": "patientId",
-                            "value": "@{patientId}"
-                          },
-                          {
-                            "paramType": "PREPOPULATE",
-                            "linkId": "task-description",
-                            "dataType": "STRING",
-                            "key": "taskDesc",
-                            "value": "@{taskDescription}"
-                          },
-                          {
-                            "paramType": "PREPOPULATE",
-                            "linkId": "logical-task-id",
-                            "dataType": "STRING",
-                            "key": "logicalTaskId",
-                            "value": "@{logicalTaskId}"
-                          },
-                          {
-                            "paramType": "PREPOPULATE",
-                            "linkId": "vaccine-dose-number",
-                            "dataType": "STRING",
-                            "key": "vaccineDoseNumber",
-                            "value": "@{vaccineDoseNumber}"
-                          }
-                        ]
-                      }
-                    ]
+                    "enabled": "false"
                   }
                 ]
               }
@@ -1160,40 +959,6 @@
             "primaryTextColor": "#717171",
             "fontSize": 14.0,
             "padding": 16
-          },
-          "headerAction": {
-            "viewType": "COMPOUND_TEXT",
-            "visible": "@{atTenWeeksTasksMoreThan1}",
-            "primaryText": "{{ 5b22625a04693de0dfd851206bda68a5 }}",
-            "primaryTextColor": "infoColor",
-            "fontSize": 16.0,
-            "primaryTextFontWeight": "MEDIUM",
-            "padding": 16,
-            "clickable": true,
-            "maxLines": 1,
-            "textOverflow": "ELLIPSIS",
-            "primaryTextActions": [
-              {
-                "trigger": "ON_CLICK",
-                "workflow": "LAUNCH_QUESTIONNAIRE",
-                "questionnaire": {
-                  "id": "60d23244-3de2-4ee5-8bea-830eaf156068",
-                  "title": "{{ cd9b9693e6c22ffdd8f210336ed3b3b7 }}",
-                  "resourceIdentifier": "@{patientId}",
-                  "saveButtonText": "{{ c9cc8cce247e49bae79f15173ce97354 }}",
-                  "taskId": "@{taskId}"
-                },
-                "params": [
-                  {
-                    "paramType": "PREPOPULATE",
-                    "linkId": "group-identifier",
-                    "dataType": "STRING",
-                    "key": "groupIdentifier",
-                    "value": "10_wk"
-                  }
-                ]
-              }
-            ]
           },
           "content": [
             {
@@ -1380,8 +1145,7 @@
                     "text": "@{taskDescriptionFormatted}",
                     "status": "@{taskStatusColorCode}",
                     "visible": "true",
-                    "clickable": "@{taskClickable}",
-                    "enabled": "@{patientActive}",
+                    "enabled": "false",
                     "actions": [
                       {
                         "trigger": "ON_CLICK",
@@ -1464,40 +1228,6 @@
             "primaryTextColor": "#717171",
             "fontSize": 14.0,
             "padding": 16
-          },
-          "headerAction": {
-            "viewType": "COMPOUND_TEXT",
-            "visible": "@{atTwelveWeeksTasksMoreThan1}",
-            "primaryText": "{{ 5b22625a04693de0dfd851206bda68a5 }}",
-            "primaryTextColor": "infoColor",
-            "fontSize": 16.0,
-            "primaryTextFontWeight": "MEDIUM",
-            "padding": 16,
-            "clickable": true,
-            "maxLines": 1,
-            "textOverflow": "ELLIPSIS",
-            "primaryTextActions": [
-              {
-                "trigger": "ON_CLICK",
-                "workflow": "LAUNCH_QUESTIONNAIRE",
-                "questionnaire": {
-                  "id": "60d23244-3de2-4ee5-8bea-830eaf156068",
-                  "title": "{{ cd9b9693e6c22ffdd8f210336ed3b3b7 }}",
-                  "resourceIdentifier": "@{patientId}",
-                  "saveButtonText": "{{ c9cc8cce247e49bae79f15173ce97354 }}",
-                  "taskId": "@{taskId}"
-                },
-                "params": [
-                  {
-                    "paramType": "PREPOPULATE",
-                    "linkId": "group-identifier",
-                    "dataType": "STRING",
-                    "key": "groupIdentifier",
-                    "value": "12_wk"
-                  }
-                ]
-              }
-            ]
           },
           "content": [
             {
@@ -1684,74 +1414,7 @@
                     "text": "@{taskDescriptionFormatted}",
                     "status": "@{taskStatusColorCode}",
                     "visible": "true",
-                    "clickable": "@{taskClickable}",
-                    "enabled": "@{patientActive}",
-                    "actions": [
-                      {
-                        "trigger": "ON_CLICK",
-                        "workflow": "LAUNCH_QUESTIONNAIRE",
-                        "questionnaire": {
-                          "id": "@{taskQuestionnaireId}",
-                          "title": "{{ b5b2dad2eda089b9695c3fa8f648beeb }}",
-                          "saveButtonText": "{{ c9cc8cce247e49bae79f15173ce97354 }}",
-                          "resourceIdentifier": "@{taskFor}",
-                          "type": "@{questionnaireType}",
-                          "setPractitionerDetails": true,
-                          "setOrganizationDetails": true
-                        },
-                        "params": [
-                          {
-                            "paramType": "PREPOPULATE",
-                            "linkId": "patient-dob",
-                            "dataType": "STRING",
-                            "key": "birthDate",
-                            "value": "@{birthDate}"
-                          },
-                          {
-                            "paramType": "PREPOPULATE",
-                            "linkId": "task-name",
-                            "dataType": "STRING",
-                            "key": "taskName",
-                            "value": "@{taskName}"
-                          },
-                          {
-                            "paramType": "PREPOPULATE",
-                            "linkId": "task-code",
-                            "dataType": "STRING",
-                            "key": "taskCode",
-                            "value": "@{taskCode}"
-                          },
-                          {
-                            "paramType": "PREPOPULATE",
-                            "linkId": "patient-id",
-                            "dataType": "STRING",
-                            "key": "patientId",
-                            "value": "@{patientId}"
-                          },
-                          {
-                            "paramType": "PREPOPULATE",
-                            "linkId": "task-description",
-                            "dataType": "STRING",
-                            "key": "taskDesc",
-                            "value": "@{taskDescription}"
-                          },
-                          {
-                            "paramType": "PREPOPULATE",
-                            "linkId": "logical-task-id",
-                            "dataType": "STRING",
-                            "key": "logicalTaskId",
-                            "value": "@{logicalTaskId}"
-                          },
-                          {
-                            "paramType": "PREPOPULATE",
-                            "linkId": "vaccine-dose-number",
-                            "dataType": "STRING",
-                            "key": "vaccineDoseNumber",
-                            "value": "@{vaccineDoseNumber}"
-                          }
-                        ]
-                      }
-                    ]
+                    "enabled": "false"
                   }
                 ]
               }
@@ -1768,40 +1431,6 @@
             "primaryTextColor": "#717171",
             "fontSize": 14.0,
             "padding": 16
-          },
-          "headerAction": {
-            "viewType": "COMPOUND_TEXT",
-            "visible": "@{atFourteenWeeksTasksMoreThan1}",
-            "primaryText": "{{ 5b22625a04693de0dfd851206bda68a5 }}",
-            "primaryTextColor": "infoColor",
-            "fontSize": 16.0,
-            "primaryTextFontWeight": "MEDIUM",
-            "padding": 16,
-            "clickable": true,
-            "maxLines": 1,
-            "textOverflow": "ELLIPSIS",
-            "primaryTextActions": [
-              {
-                "trigger": "ON_CLICK",
-                "workflow": "LAUNCH_QUESTIONNAIRE",
-                "questionnaire": {
-                  "id": "60d23244-3de2-4ee5-8bea-830eaf156068",
-                  "title": "{{ cd9b9693e6c22ffdd8f210336ed3b3b7 }}",
-                  "resourceIdentifier": "@{patientId}",
-                  "saveButtonText": "{{ c9cc8cce247e49bae79f15173ce97354 }}",
-                  "taskId": "@{taskId}"
-                },
-                "params": [
-                  {
-                    "paramType": "PREPOPULATE",
-                    "linkId": "group-identifier",
-                    "dataType": "STRING",
-                    "key": "groupIdentifier",
-                    "value": "14_wk"
-                  }
-                ]
-              }
-            ]
           },
           "content": [
             {
@@ -1995,74 +1624,7 @@
                     "text": "@{taskDescriptionFormatted}",
                     "status": "@{taskStatusColorCode}",
                     "visible": "true",
-                    "clickable": "@{taskClickable}",
-                    "enabled": "@{patientActive}",
-                    "actions": [
-                      {
-                        "trigger": "ON_CLICK",
-                        "workflow": "LAUNCH_QUESTIONNAIRE",
-                        "questionnaire": {
-                          "id": "@{taskQuestionnaireId}",
-                          "title": "{{ b5b2dad2eda089b9695c3fa8f648beeb }}",
-                          "saveButtonText": "{{ c9cc8cce247e49bae79f15173ce97354 }}",
-                          "resourceIdentifier": "@{taskFor}",
-                          "type": "@{questionnaireType}",
-                          "setPractitionerDetails": true,
-                          "setOrganizationDetails": true
-                        },
-                        "params": [
-                          {
-                            "paramType": "PREPOPULATE",
-                            "linkId": "patient-dob",
-                            "dataType": "STRING",
-                            "key": "birthDate",
-                            "value": "@{birthDate}"
-                          },
-                          {
-                            "paramType": "PREPOPULATE",
-                            "linkId": "task-name",
-                            "dataType": "STRING",
-                            "key": "taskName",
-                            "value": "@{taskName}"
-                          },
-                          {
-                            "paramType": "PREPOPULATE",
-                            "linkId": "task-code",
-                            "dataType": "STRING",
-                            "key": "taskCode",
-                            "value": "@{taskCode}"
-                          },
-                          {
-                            "paramType": "PREPOPULATE",
-                            "linkId": "patient-id",
-                            "dataType": "STRING",
-                            "key": "patientId",
-                            "value": "@{patientId}"
-                          },
-                          {
-                            "paramType": "PREPOPULATE",
-                            "linkId": "task-description",
-                            "dataType": "STRING",
-                            "key": "taskDesc",
-                            "value": "@{taskDescription}"
-                          },
-                          {
-                            "paramType": "PREPOPULATE",
-                            "linkId": "logical-task-id",
-                            "dataType": "STRING",
-                            "key": "logicalTaskId",
-                            "value": "@{logicalTaskId}"
-                          },
-                          {
-                            "paramType": "PREPOPULATE",
-                            "linkId": "vaccine-dose-number",
-                            "dataType": "STRING",
-                            "key": "vaccineDoseNumber",
-                            "value": "@{vaccineDoseNumber}"
-                          }
-                        ]
-                      }
-                    ]
+                    "enabled": "false"
                   }
                 ]
               }
@@ -2079,40 +1641,6 @@
             "primaryTextColor": "#717171",
             "fontSize": 14.0,
             "padding": 16
-          },
-          "headerAction": {
-            "viewType": "COMPOUND_TEXT",
-            "visible": "@{atNineMonthsTasksMoreThan1}",
-            "primaryText": "{{ 5b22625a04693de0dfd851206bda68a5 }}",
-            "primaryTextColor": "infoColor",
-            "fontSize": 16.0,
-            "primaryTextFontWeight": "MEDIUM",
-            "padding": 16,
-            "clickable": true,
-            "maxLines": 1,
-            "textOverflow": "ELLIPSIS",
-            "primaryTextActions": [
-              {
-                "trigger": "ON_CLICK",
-                "workflow": "LAUNCH_QUESTIONNAIRE",
-                "questionnaire": {
-                  "id": "60d23244-3de2-4ee5-8bea-830eaf156068",
-                  "title": "{{ cd9b9693e6c22ffdd8f210336ed3b3b7 }}",
-                  "resourceIdentifier": "@{patientId}",
-                  "saveButtonText": "{{ c9cc8cce247e49bae79f15173ce97354 }}",
-                  "taskId": "@{taskId}"
-                },
-                "params": [
-                  {
-                    "paramType": "PREPOPULATE",
-                    "linkId": "group-identifier",
-                    "dataType": "STRING",
-                    "key": "groupIdentifier",
-                    "value": "9_mo"
-                  }
-                ]
-              }
-            ]
           },
           "content": [
             {
@@ -2299,74 +1827,7 @@
                     "text": "@{taskDescriptionFormatted}",
                     "status": "@{taskStatusColorCode}",
                     "visible": "true",
-                    "clickable": "@{taskClickable}",
-                    "enabled": "@{patientActive}",
-                    "actions": [
-                      {
-                        "trigger": "ON_CLICK",
-                        "workflow": "LAUNCH_QUESTIONNAIRE",
-                        "questionnaire": {
-                          "id": "@{taskQuestionnaireId}",
-                          "title": "{{ b5b2dad2eda089b9695c3fa8f648beeb }}",
-                          "saveButtonText": "{{ c9cc8cce247e49bae79f15173ce97354 }}",
-                          "resourceIdentifier": "@{taskFor}",
-                          "type": "@{questionnaireType}",
-                          "setPractitionerDetails": true,
-                          "setOrganizationDetails": true
-                        },
-                        "params": [
-                          {
-                            "paramType": "PREPOPULATE",
-                            "linkId": "patient-dob",
-                            "dataType": "STRING",
-                            "key": "birthDate",
-                            "value": "@{birthDate}"
-                          },
-                          {
-                            "paramType": "PREPOPULATE",
-                            "linkId": "task-name",
-                            "dataType": "STRING",
-                            "key": "taskName",
-                            "value": "@{taskName}"
-                          },
-                          {
-                            "paramType": "PREPOPULATE",
-                            "linkId": "task-code",
-                            "dataType": "STRING",
-                            "key": "taskCode",
-                            "value": "@{taskCode}"
-                          },
-                          {
-                            "paramType": "PREPOPULATE",
-                            "linkId": "patient-id",
-                            "dataType": "STRING",
-                            "key": "patientId",
-                            "value": "@{patientId}"
-                          },
-                          {
-                            "paramType": "PREPOPULATE",
-                            "linkId": "task-description",
-                            "dataType": "STRING",
-                            "key": "taskDesc",
-                            "value": "@{taskDescription}"
-                          },
-                          {
-                            "paramType": "PREPOPULATE",
-                            "linkId": "logical-task-id",
-                            "dataType": "STRING",
-                            "key": "logicalTaskId",
-                            "value": "@{logicalTaskId}"
-                          },
-                          {
-                            "paramType": "PREPOPULATE",
-                            "linkId": "vaccine-dose-number",
-                            "dataType": "STRING",
-                            "key": "vaccineDoseNumber",
-                            "value": "@{vaccineDoseNumber}"
-                          }
-                        ]
-                      }
-                    ]
+                    "enabled": "false"
                   }
                 ]
               }
@@ -2383,40 +1844,6 @@
             "primaryTextColor": "#717171",
             "fontSize": 14.0,
             "padding": 16
-          },
-          "headerAction": {
-            "viewType": "COMPOUND_TEXT",
-            "visible": "@{atEighteenMonthsTasksMoreThan1}",
-            "primaryText": "{{ 5b22625a04693de0dfd851206bda68a5 }}",
-            "primaryTextColor": "infoColor",
-            "fontSize": 16.0,
-            "primaryTextFontWeight": "MEDIUM",
-            "padding": 16,
-            "clickable": true,
-            "maxLines": 1,
-            "textOverflow": "ELLIPSIS",
-            "primaryTextActions": [
-              {
-                "trigger": "ON_CLICK",
-                "workflow": "LAUNCH_QUESTIONNAIRE",
-                "questionnaire": {
-                  "id": "60d23244-3de2-4ee5-8bea-830eaf156068",
-                  "title": "{{ cd9b9693e6c22ffdd8f210336ed3b3b7 }}",
-                  "resourceIdentifier": "@{patientId}",
-                  "saveButtonText": "{{ c9cc8cce247e49bae79f15173ce97354 }}",
-                  "taskId": "@{taskId}"
-                },
-                "params": [
-                  {
-                    "paramType": "PREPOPULATE",
-                    "linkId": "group-identifier",
-                    "dataType": "STRING",
-                    "key": "groupIdentifier",
-                    "value": "18_mo"
-                  }
-                ]
-              }
-            ]
           },
           "content": [
             {
@@ -2603,74 +2030,7 @@
                     "text": "@{taskDescriptionFormatted}",
                     "status": "@{taskStatusColorCode}",
                     "visible": "true",
-                    "clickable": "@{taskClickable}",
-                    "enabled": "@{patientActive}",
-                    "actions": [
-                      {
-                        "trigger": "ON_CLICK",
-                        "workflow": "LAUNCH_QUESTIONNAIRE",
-                        "questionnaire": {
-                          "id": "@{taskQuestionnaireId}",
-                          "title": "{{ b5b2dad2eda089b9695c3fa8f648beeb }}",
-                          "saveButtonText": "{{ c9cc8cce247e49bae79f15173ce97354 }}",
-                          "resourceIdentifier": "@{taskFor}",
-                          "type": "@{questionnaireType}",
-                          "setPractitionerDetails": true,
-                          "setOrganizationDetails": true
-                        },
-                        "params": [
-                          {
-                            "paramType": "PREPOPULATE",
-                            "linkId": "patient-dob",
-                            "dataType": "STRING",
-                            "key": "birthDate",
-                            "value": "@{birthDate}"
-                          },
-                          {
-                            "paramType": "PREPOPULATE",
-                            "linkId": "task-name",
-                            "dataType": "STRING",
-                            "key": "taskName",
-                            "value": "@{taskName}"
-                          },
-                          {
-                            "paramType": "PREPOPULATE",
-                            "linkId": "task-code",
-                            "dataType": "STRING",
-                            "key": "taskCode",
-                            "value": "@{taskCode}"
-                          },
-                          {
-                            "paramType": "PREPOPULATE",
-                            "linkId": "patient-id",
-                            "dataType": "STRING",
-                            "key": "patientId",
-                            "value": "@{patientId}"
-                          },
-                          {
-                            "paramType": "PREPOPULATE",
-                            "linkId": "task-description",
-                            "dataType": "STRING",
-                            "key": "taskDesc",
-                            "value": "@{taskDescription}"
-                          },
-                          {
-                            "paramType": "PREPOPULATE",
-                            "linkId": "logical-task-id",
-                            "dataType": "STRING",
-                            "key": "logicalTaskId",
-                            "value": "@{logicalTaskId}"
-                          },
-                          {
-                            "paramType": "PREPOPULATE",
-                            "linkId": "vaccine-dose-number",
-                            "dataType": "STRING",
-                            "key": "vaccineDoseNumber",
-                            "value": "@{vaccineDoseNumber}"
-                          }
-                        ]
-                      }
-                    ]
+                    "enabled": "false"
                   }
                 ]
               }
@@ -2687,40 +2047,6 @@
             "primaryTextColor": "#717171",
             "fontSize": 14.0,
             "padding": 16
-          },
-          "headerAction": {
-            "viewType": "COMPOUND_TEXT",
-            "visible": "@{atNineYearsTasksMoreThan1}",
-            "primaryText": "{{ 5b22625a04693de0dfd851206bda68a5 }}",
-            "primaryTextColor": "infoColor",
-            "fontSize": 16.0,
-            "primaryTextFontWeight": "MEDIUM",
-            "padding": 16,
-            "clickable": true,
-            "maxLines": 1,
-            "textOverflow": "ELLIPSIS",
-            "primaryTextActions": [
-              {
-                "trigger": "ON_CLICK",
-                "workflow": "LAUNCH_QUESTIONNAIRE",
-                "questionnaire": {
-                  "id": "60d23244-3de2-4ee5-8bea-830eaf156068",
-                  "title": "{{ cd9b9693e6c22ffdd8f210336ed3b3b7 }}",
-                  "resourceIdentifier": "@{patientId}",
-                  "saveButtonText": "{{ c9cc8cce247e49bae79f15173ce97354 }}",
-                  "taskId": "@{taskId}"
-                },
-                "params": [
-                  {
-                    "paramType": "PREPOPULATE",
-                    "linkId": "group-identifier",
-                    "dataType": "STRING",
-                    "key": "groupIdentifier",
-                    "value": "108_mo"
-                  }
-                ]
-              }
-            ]
           },
           "content": [
             {
@@ -2907,74 +2233,7 @@
                     "text": "@{taskDescriptionFormatted}",
                     "status": "@{taskStatusColorCode}",
                     "visible": "true",
-                    "clickable": "@{taskClickable}",
-                    "enabled": "@{patientActive}",
-                    "actions": [
-                      {
-                        "trigger": "ON_CLICK",
-                        "workflow": "LAUNCH_QUESTIONNAIRE",
-                        "questionnaire": {
-                          "id": "@{taskQuestionnaireId}",
-                          "title": "{{ b5b2dad2eda089b9695c3fa8f648beeb }}",
-                          "saveButtonText": "{{ c9cc8cce247e49bae79f15173ce97354 }}",
-                          "resourceIdentifier": "@{taskFor}",
-                          "type": "@{questionnaireType}",
-                          "setPractitionerDetails": true,
-                          "setOrganizationDetails": true
-                        },
-                        "params": [
-                          {
-                            "paramType": "PREPOPULATE",
-                            "linkId": "patient-dob",
-                            "dataType": "STRING",
-                            "key": "birthDate",
-                            "value": "@{birthDate}"
-                          },
-                          {
-                            "paramType": "PREPOPULATE",
-                            "linkId": "task-name",
-                            "dataType": "STRING",
-                            "key": "taskName",
-                            "value": "@{taskName}"
-                          },
-                          {
-                            "paramType": "PREPOPULATE",
-                            "linkId": "task-code",
-                            "dataType": "STRING",
-                            "key": "taskCode",
-                            "value": "@{taskCode}"
-                          },
-                          {
-                            "paramType": "PREPOPULATE",
-                            "linkId": "patient-id",
-                            "dataType": "STRING",
-                            "key": "patientId",
-                            "value": "@{patientId}"
-                          },
-                          {
-                            "paramType": "PREPOPULATE",
-                            "linkId": "task-description",
-                            "dataType": "STRING",
-                            "key": "taskDesc",
-                            "value": "@{taskDescription}"
-                          },
-                          {
-                            "paramType": "PREPOPULATE",
-                            "linkId": "logical-task-id",
-                            "dataType": "STRING",
-                            "key": "logicalTaskId",
-                            "value": "@{logicalTaskId}"
-                          },
-                          {
-                            "paramType": "PREPOPULATE",
-                            "linkId": "vaccine-dose-number",
-                            "dataType": "STRING",
-                            "key": "vaccineDoseNumber",
-                            "value": "@{vaccineDoseNumber}"
-                          }
-                        ]
-                      }
-                    ]
+                    "enabled": "false"
                   }
                 ]
               }
@@ -3130,64 +2389,7 @@
                     "text": "@{taskDescriptionWithStartDate}",
                     "status": "@{taskStatusColorCode}",
                     "visible": "true",
-                    "clickable": "@{taskClickable}",
-                    "enabled": "@{patientActive}",
-                    "actions": [
-                      {
-                        "trigger": "ON_CLICK",
-                        "workflow": "LAUNCH_QUESTIONNAIRE",
-                        "questionnaire": {
-                          "id": "@{taskQuestionnaireId}",
-                          "title": "@{taskDescription}",
-                          "saveButtonText": "Save",
-                          "resourceIdentifier": "@{taskFor}"
-                        },
-                        "params": [
-                          {
-                            "paramType": "PREPOPULATE",
-                            "linkId": "patient-dob",
-                            "dataType": "STRING",
-                            "key": "birthDate",
-                            "value": "@{birthDate}"
-                          },
-                          {
-                            "paramType": "PREPOPULATE",
-                            "linkId": "task-name",
-                            "dataType": "STRING",
-                            "key": "taskName",
-                            "value": "@{taskName}"
-                          },
-                          {
-                            "paramType": "PREPOPULATE",
-                            "linkId": "task-code",
-                            "dataType": "STRING",
-                            "key": "taskCode",
-                            "value": "@{taskCode}"
-                          },
-                          {
-                            "paramType": "PREPOPULATE",
-                            "linkId": "patient-id",
-                            "dataType": "STRING",
-                            "key": "patientId",
-                            "value": "@{patientId}"
-                          },
-                          {
-                            "paramType": "PREPOPULATE",
-                            "linkId": "task-description",
-                            "dataType": "STRING",
-                            "key": "taskDesc",
-                            "value": "@{taskDescription}"
-                          },
-                          {
-                            "paramType": "PREPOPULATE",
-                            "linkId": "logical-task-id",
-                            "dataType": "STRING",
-                            "key": "logicalTaskId",
-                            "value": "@{logicalTaskId}"
-                          }
-                        ]
-                      }
-                    ]
+                    "enabled": "false"
                   }
                 ]
               }
@@ -3210,27 +2412,13 @@
           "questionnaire": {
             "id": "7cd88e5a-f553-4d6e-9c78-d533b99d54bd",
             "title": "{{ 9dedaeb034559971e6c224f0a0d8c9d6 }}",
-            "saveButtonText": "{{ 751bbde5a07e3d90d2e009fc8d585b19 }}",
+            "saveButtonText": "{{ raf70727dc34561dfde1a3c56cb6201d }}",
             "setPractitionerDetails": true,
             "setOrganizationDetails": true,
-            "type": "EDIT",
-            "resourceIdentifier": "@{patientId}",
-            "readOnlyLinkIds": [
-              "6c976c04-8f9c-4b4c-aae8-b4d6006006c4",
-              "550a5760-4ae6-4a52-9be0-a382b5035cad",
-              "ffd72b7a-473a-43bc-80ed-449224e5f216",
-              "ff36c6b9-8975-4a2c-a9d1-f65d8d4b8f6f",
-              "5b3ba7d2-98fe-45c7-8783-00659a2721b2"
-            ]
+            "type": "READ_ONLY",
+            "resourceIdentifier": "@{patientId}"
           },
           "params": [
-            {
-              "paramType": "PREPOPULATE",
-              "linkId": "is-edit-profile",
-              "dataType": "BOOLEAN",
-              "key": "isEditProfile",
-              "value": true
-            },
             {
               "paramType": "PREPOPULATE",
               "linkId": "child-id",
@@ -3394,78 +2582,6 @@
           "trigger": "ON_CLICK",
           "workflow": "LAUNCH_PROFILE",
           "id": "childadversereactionsProfile"
-        }
-      ]
-    },
-    {
-      "title": "{{ f39c480c58a9be8d1922efd79ef7172c }}",
-      "titleColor": "#FF0000",
-      "visible": "@{patientMuted}",
-      "enabled": "@{patientMuted}",
-      "showSeparator": "true",
-      "actions": [
-        {
-          "trigger": "ON_CLICK",
-          "workflow": "LAUNCH_QUESTIONNAIRE",
-          "questionnaire": {
-            "id": "a07bf8dc-97cd-4c6d-a55f-86e1970772af",
-            "resourceIdentifier": "@{patientId}",
-            "title": "{{ f39c480c58a9be8d1922efd79ef7172c }}",
-            "saveButtonText": "{{ a4d3b161ce1309df1c4e25df28694b7b }}"
-          },
-          "params": [
-            {
-              "paramType": "PREPOPULATE",
-              "linkId": "patient-id",
-              "dataType": "STRING",
-              "key": "patientId",
-              "value": "@{patientId}"
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "title": "{{ 796e39931943e921fb9dbdf6fe06486c }}",
-      "titleColor": "#FF0000",
-      "visible": "@{patientActive}",
-      "enabled": "@{patientActive}",
-      "showSeparator": "true",
-      "actions": [
-        {
-          "trigger": "ON_CLICK",
-          "workflow": "LAUNCH_QUESTIONNAIRE",
-          "questionnaire": {
-            "id": "45bfe729-d9d9-4c69-a05c-f99cd293a1c3",
-            "resourceIdentifier": "@{patientId}",
-            "title": "{{ 6935fa64c8972d5b396e0cede4f16beb }}",
-            "saveButtonText": "{{ a4d3b161ce1309df1c4e25df28694b7b }}",
-            "onSubmitActions": [
-              {
-                "trigger": "ON_QUESTIONNAIRE_SUBMISSION",
-                "workflow": "LAUNCH_REGISTER",
-                "id": "childRegister",
-                "display": "{{ 64e4aca4297806247f62a7b5f8cbd3df }}",
-                "popNavigationBackStack": true
-              }
-            ]
-          },
-          "params": [
-            {
-              "paramType": "PREPOPULATE",
-              "linkId": "a11ebb0d-acb3-4038-956b-293a41acb85b",
-              "dataType": "STRING",
-              "key": "patientId",
-              "value": "@{patientId}"
-            },
-            {
-              "paramType": "PREPOPULATE",
-              "linkId": "ad68508d-2bfd-400c-b3f8-4d4a01174f81",
-              "dataType": "STRING",
-              "key": "birthDate",
-              "value": "@{birthDate}"
-            }
-          ]
         }
       ]
     }

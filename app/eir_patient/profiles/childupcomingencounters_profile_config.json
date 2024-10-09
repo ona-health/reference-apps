@@ -257,8 +257,7 @@
                     "text": "@{taskDescriptionWithStartDate}",
                     "status": "@{taskStatusColorCode}",
                     "visible": "true",
-                    "clickable": "true",
-                    "enabled": "@{patientActive}",
+                    "enabled": "false",
                     "actions": [
                       {
                         "trigger": "ON_CLICK",
@@ -434,8 +433,7 @@
                     "text": "@{taskDescriptionWithStartDate}",
                     "status": "@{taskStatusColorCode}",
                     "visible": "true",
-                    "clickable": "true",
-                    "enabled": "@{patientActive}",
+                    "enabled": "false",
                     "actions": [
                       {
                         "trigger": "ON_CLICK",
@@ -611,8 +609,7 @@
                     "text": "@{taskDescriptionWithStartDate}",
                     "status": "@{taskStatusColorCode}",
                     "visible": "true",
-                    "clickable": "true",
-                    "enabled": "@{patientActive}",
+                    "enabled": "false",
                     "actions": [
                       {
                         "trigger": "ON_CLICK",
@@ -788,8 +785,7 @@
                     "text": "@{taskDescriptionWithStartDate}",
                     "status": "@{taskStatusColorCode}",
                     "visible": "true",
-                    "clickable": "true",
-                    "enabled": "@{patientActive}",
+                    "enabled": "false",
                     "actions": [
                       {
                         "trigger": "ON_CLICK",
@@ -965,8 +961,7 @@
                     "text": "@{taskDescriptionWithStartDate}",
                     "status": "@{taskStatusColorCode}",
                     "visible": "true",
-                    "clickable": "true",
-                    "enabled": "@{patientActive}",
+                    "enabled": "false",
                     "actions": [
                       {
                         "trigger": "ON_CLICK",
@@ -1149,8 +1144,7 @@
                     "text": "@{taskDescriptionWithStartDate}",
                     "status": "@{taskStatusColorCode}",
                     "visible": "true",
-                    "clickable": "true",
-                    "enabled": "@{patientActive}",
+                    "enabled": "false",
                     "actions": [
                       {
                         "trigger": "ON_CLICK",
@@ -1333,8 +1327,7 @@
                     "text": "@{taskDescriptionWithStartDate}",
                     "status": "@{taskStatusColorCode}",
                     "visible": "true",
-                    "clickable": "true",
-                    "enabled": "@{patientActive}",
+                    "enabled": "false",
                     "actions": [
                       {
                         "trigger": "ON_CLICK",
@@ -1517,8 +1510,7 @@
                     "text": "@{taskDescriptionWithStartDate}",
                     "status": "@{taskStatusColorCode}",
                     "visible": "true",
-                    "clickable": "true",
-                    "enabled": "@{patientActive}",
+                    "enabled": "false",
                     "actions": [
                       {
                         "trigger": "ON_CLICK",
@@ -1702,8 +1694,7 @@
                     "text": "@{taskDescriptionWithStartDate}",
                     "status": "@{taskStatusColorCode}",
                     "visible": "true",
-                    "clickable": "@{taskClickable}",
-                    "enabled": "@{patientActive}",
+                    "enabled": "false",
                     "actions": [
                       {
                         "trigger": "ON_CLICK",
