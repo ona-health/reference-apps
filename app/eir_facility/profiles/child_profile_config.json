@@ -389,7 +389,7 @@
               "children": [
                 {
                   "viewType": "COMPOUND_TEXT",
-                  "primaryText": "{{ a83679a4c87d5f9d857e5b8de79442c2 }}",
+                  "primaryText": "{{ 18795ad8977a44339037b2fac1f19fcf }}",
                   "primaryTextColor": "@{patientTextColor}",
                   "fontSize": 20.0,
                   "fontWeight": "BOLD"
