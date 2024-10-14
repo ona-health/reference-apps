@@ -518,7 +518,7 @@
             "id": "2b96ecfc-7159-40ef-ddd9-4fdf845fddb7",
             "system": "urn:uuid:c3f41b65-196a-4c9f-87cb-5c3f12030cd5",
             "code": "574378ab-079b-4922-9b37-6a56e2d1aa95",
-            "display": "Unknown DOB, enter age",
+            "display": "Date of birth unknown",
             "_display": {
               "extension": [
                 {
@@ -530,7 +530,7 @@
                     },
                     {
                       "url": "content",
-                      "valueString": "Fecha de nacimiento desconocida, ingrese la edad"
+                      "valueString": "Fecha de nacimiento desconocida"
                     }
                   ]
                 },
@@ -543,7 +543,7 @@
                     },
                     {
                       "url": "content",
-                      "valueString": "DdN inconnue, entrez l'âge"
+                      "valueString": "Date de naissance inconnue"
                     }
                   ]
                 }
