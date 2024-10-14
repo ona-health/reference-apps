@@ -1132,8 +1132,7 @@
           }
         ]
       },
-      "type": "decimal",
-      "required": true
+      "type": "decimal"
     },
     {
       "extension": [
