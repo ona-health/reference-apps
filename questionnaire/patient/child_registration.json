@@ -317,7 +317,7 @@
         }
       ],
       "linkId": "6c976c04-8f9c-4b4c-aae8-b4d6006006c4",
-      "text": "Client ID",
+      "text": "Child ID",
       "_text": {
         "extension": [
           {
@@ -329,7 +329,7 @@
               },
               {
                 "url": "content",
-                "valueString": "ID de cliente"
+                "valueString": "ID de Niño"
               }
             ]
           },
@@ -342,7 +342,7 @@
               },
               {
                 "url": "content",
-                "valueString": "ID client"
+                "valueString": "ID Enfant"
               }
             ]
           }
