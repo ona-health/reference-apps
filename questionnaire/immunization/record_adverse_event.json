@@ -1747,7 +1747,7 @@
                 }
             ],
             "linkId": "aefi-form-completed",
-            "text": "AEFI form completed?",
+            "text": "Adverse Events Following Immunization (AEFI) form completed?",
             "_text": {
                 "extension": [
                     {
@@ -1759,7 +1759,7 @@
                             },
                             {
                                 "url": "content",
-                                "valueString": "¿Formulario AEFI completado?"
+                                "valueString": "¿Formulario de Notificación Efecto Adverso Supuestamente Atribuible a la Vacunación e Inmunización (ESAVI) completado?"
                             }
                         ]
                     },
@@ -1772,7 +1772,7 @@
                             },
                             {
                                 "url": "content",
-                                "valueString": "Formulaire MAPI complété ?"
+                                "valueString": "Formulaire de notification des manifestations postvaccinales indésirables (MAPI) complété?"
                             }
                         ]
                     }
