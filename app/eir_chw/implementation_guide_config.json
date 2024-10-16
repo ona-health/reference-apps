@@ -1,11 +1,7 @@
 {
   "resourceType": "ImplementationGuide",
   "id": "4abdea5e-31d8-408c-b739-449fcc527bcb",
-  "meta": {
-    "versionId": "1",
-    "lastUpdated": "2024-05-27T14:42:53.345+00:00"
-  },
-  "url": "https://fhir.demo.smartregister.org/fhir/ImplementationGuide/eir-chw",
+  "url": "https://fhir-access-proxy.smartregister.org/fhir/ImplementationGuide/eir-chw",
   "version": "1.0.0",
   "name": "eir-chw",
   "title": "EIR CHW Implementation Guide",

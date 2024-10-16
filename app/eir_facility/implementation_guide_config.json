@@ -1,11 +1,7 @@
 {
   "resourceType": "ImplementationGuide",
-  "id": "13057302",
-  "meta": {
-    "versionId": "1",
-    "lastUpdated": "2024-05-27T14:42:53.345+00:00"
-  },
-  "url": "https://fhir.demo.smartregister.org/fhir/ImplementationGuide/eir-facility",
+  "id": "27fcabcc-7274-48fd-a4b9-4d72325c0af2",
+  "url": "https://fhir-access-proxy.smartregister.org/fhir/ImplementationGuide/eir-facility",
   "version": "1.0.0",
   "name": "eir-facility",
   "title": "EIR Facility Implementation Guide",
