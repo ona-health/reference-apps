@@ -1,0 +1,2232 @@
+{
+  "resourceType": "StructureMap",
+  "id": "5e7e8f96-a332-4b4d-8643-a9873046f59e",
+  "url": "https://fhir.demo.smartregister.org/fhir/StructureMap/5e7e8f96-a332-4b4d-8643-a9873046f59e",
+  "name": "ChildRecurringServicesSchedule",
+  "structure": [
+    {
+      "url": "http://hl7.org/fhir/StructureDefinition/Parameters",
+      "mode": "source"
+    },
+    {
+      "url": "http://hl7.org/fhir/StructureDefinition/CarePlan",
+      "mode": "target"
+    }
+  ],
+  "group": [
+    {
+      "name": "childRecurringServicesSchedule",
+      "typeMode": "none",
+      "input": [
+        {
+          "name": "src",
+          "type": "Parameters",
+          "mode": "source"
+        },
+        {
+          "name": "careplan",
+          "type": "CarePlan",
+          "mode": "target"
+        }
+      ],
+      "rule": [
+        {
+          "name": "r_careplan",
+          "source": [
+            {
+              "context": "src"
+            }
+          ],
+          "target": [
+            {
+              "variable": "subject",
+              "transform": "evaluate",
+              "parameter": [
+                {
+                  "valueId": "src"
+                },
+                {
+                  "valueString": "$this.parameter.where(name = 'subject').resource"
+                }
+              ]
+            },
+            {
+              "variable": "definition",
+              "transform": "evaluate",
+              "parameter": [
+                {
+                  "valueId": "src"
+                },
+                {
+                  "valueString": "$this.parameter.where(name = 'definition').resource"
+                }
+              ]
+            },
+            {
+              "variable": "questionnaireResponse",
+              "transform": "evaluate",
+              "parameter": [
+                {
+                  "valueId": "src"
+                },
+                {
+                  "valueString": "$this.parameter.where(name = 'depends-on').resource.entry.where(resource is QuestionnaireResponse).resource"
+                }
+              ]
+            },
+            {
+              "variable": "period",
+              "transform": "evaluate",
+              "parameter": [
+                {
+                  "valueId": "src"
+                },
+                {
+                  "valueString": "$this.parameter.where(name = 'period').value"
+                }
+              ]
+            },
+            {
+              "variable": "version",
+              "transform": "evaluate",
+              "parameter": [
+                {
+                  "valueId": "src"
+                },
+                {
+                  "valueString": "$this.parameter.where(name = 'version').value"
+                }
+              ]
+            }
+          ],
+          "dependent": [
+            {
+              "name": "extractTask",
+              "variable": [
+                "period",
+                "version",
+                "subject",
+                "definition",
+                "careplan"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "extractTask",
+      "typeMode": "none",
+      "input": [
+        {
+          "name": "period",
+          "type": "Period",
+          "mode": "source"
+        },
+        {
+          "name": "version",
+          "type": "Integer",
+          "mode": "source"
+        },
+        {
+          "name": "subject",
+          "type": "Patient",
+          "mode": "source"
+        },
+        {
+          "name": "definition",
+          "type": "ActivityDefinition",
+          "mode": "source"
+        },
+        {
+          "name": "careplan",
+          "type": "CarePlan",
+          "mode": "target"
+        }
+      ],
+      "rule": [
+        {
+          "name": "r_task",
+          "source": [
+            {
+              "context": "subject"
+            }
+          ],
+          "target": [
+            {
+              "variable": "task",
+              "transform": "create",
+              "parameter": [
+                {
+                  "valueString": "Task"
+                }
+              ]
+            },
+            {
+              "variable": "currentDose",
+              "transform": "evaluate",
+              "parameter": [
+                {
+                  "valueId": "definition"
+                },
+                {
+                  "valueString": "$this.dosage.skip(version).first()"
+                }
+              ]
+            }
+          ],
+          "rule": [
+            {
+              "name": "r_task_data",
+              "source": [
+                {
+                  "context": "subject"
+                }
+              ],
+              "target": [
+                {
+                  "context": "task",
+                  "contextType": "variable",
+                  "element": "id",
+                  "transform": "uuid"
+                },
+                {
+                  "context": "task",
+                  "contextType": "variable",
+                  "element": "identifier",
+                  "variable": "iden",
+                  "transform": "create",
+                  "parameter": [
+                    {
+                      "valueString": "Identifier"
+                    }
+                  ]
+                },
+                {
+                  "context": "iden",
+                  "contextType": "variable",
+                  "element": "value",
+                  "transform": "uuid"
+                },
+                {
+                  "context": "iden",
+                  "contextType": "variable",
+                  "element": "use",
+                  "transform": "copy",
+                  "parameter": [
+                    {
+                      "valueString": "official"
+                    }
+                  ]
+                },
+                {
+                  "context": "task",
+                  "contextType": "variable",
+                  "element": "status",
+                  "transform": "copy",
+                  "parameter": [
+                    {
+                      "valueString": "requested"
+                    }
+                  ]
+                },
+                {
+                  "context": "task",
+                  "contextType": "variable",
+                  "element": "intent",
+                  "transform": "copy",
+                  "parameter": [
+                    {
+                      "valueString": "plan"
+                    }
+                  ]
+                },
+                {
+                  "context": "task",
+                  "contextType": "variable",
+                  "element": "executionPeriod",
+                  "transform": "copy",
+                  "parameter": [
+                    {
+                      "valueId": "period"
+                    }
+                  ]
+                },
+                {
+                  "context": "task",
+                  "contextType": "variable",
+                  "element": "priority",
+                  "transform": "copy",
+                  "parameter": [
+                    {
+                      "valueString": "routine"
+                    }
+                  ]
+                },
+                {
+                  "context": "task",
+                  "contextType": "variable",
+                  "element": "description",
+                  "transform": "evaluate",
+                  "parameter": [
+                    {
+                      "valueId": "definition"
+                    },
+                    {
+                      "valueString": "$this.product.text + ' ' + version.toString()"
+                    }
+                  ]
+                },
+                {
+                  "context": "task",
+                  "contextType": "variable",
+                  "element": "for",
+                  "variable": "patientReference",
+                  "transform": "create",
+                  "parameter": [
+                    {
+                      "valueString": "Reference"
+                    }
+                  ]
+                },
+                {
+                  "context": "patientReference",
+                  "contextType": "variable",
+                  "element": "reference",
+                  "transform": "evaluate",
+                  "parameter": [
+                    {
+                      "valueId": "subject"
+                    },
+                    {
+                      "valueString": "$this.type().name + '/' + $this.id.replaceMatches('/_history/.*', '')"
+                    }
+                  ]
+                },
+                {
+                  "context": "task",
+                  "contextType": "variable",
+                  "element": "basedOn",
+                  "transform": "reference",
+                  "parameter": [
+                    {
+                      "valueId": "careplan"
+                    }
+                  ]
+                },
+                {
+                  "context": "task",
+                  "contextType": "variable",
+                  "element": "authoredOn",
+                  "transform": "evaluate",
+                  "parameter": [
+                    {
+                      "valueId": "subject"
+                    },
+                    {
+                      "valueString": "now()"
+                    }
+                  ]
+                },
+                {
+                  "context": "task",
+                  "contextType": "variable",
+                  "element": "requester",
+                  "transform": "evaluate",
+                  "parameter": [
+                    {
+                      "valueId": "subject"
+                    },
+                    {
+                      "valueString": "$this.generalPractitioner.first()"
+                    }
+                  ]
+                },
+                {
+                  "context": "task",
+                  "contextType": "variable",
+                  "element": "owner",
+                  "transform": "evaluate",
+                  "parameter": [
+                    {
+                      "valueId": "subject"
+                    },
+                    {
+                      "valueString": "$this.generalPractitioner.first()"
+                    }
+                  ]
+                },
+                {
+                  "context": "task",
+                  "contextType": "variable",
+                  "element": "code",
+                  "transform": "evaluate",
+                  "parameter": [
+                    {
+                      "valueId": "definition"
+                    },
+                    {
+                      "valueString": "code"
+                    }
+                  ]
+                },
+                {
+                  "context": "task",
+                  "contextType": "variable",
+                  "element": "reasonCode",
+                  "transform": "evaluate",
+                  "parameter": [
+                    {
+                      "valueId": "definition"
+                    },
+                    {
+                      "valueString": "product"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "name": "r_task_desc_prod",
+              "source": [
+                {
+                  "context": "subject"
+                }
+              ],
+              "target": [
+                {
+                  "variable": "prod",
+                  "transform": "evaluate",
+                  "parameter": [
+                    {
+                      "valueId": "definition"
+                    },
+                    {
+                      "valueString": "$this.product"
+                    }
+                  ]
+                }
+              ],
+              "rule": [
+                {
+                  "name": "r_task_desc_vita_ifc",
+                  "source": [
+                    {
+                      "context": "subject",
+                      "condition": "(prod.text = 'Vit A - At Birth')"
+                    }
+                  ],
+                  "rule": [
+                    {
+                      "name": "r_task_vita_ifc_desc",
+                      "source": [
+                        {
+                          "context": "subject"
+                        }
+                      ],
+                      "target": [
+                        {
+                          "context": "task",
+                          "contextType": "variable",
+                          "element": "description",
+                          "transform": "evaluate",
+                          "parameter": [
+                            {
+                              "valueId": "definition"
+                            },
+                            {
+                              "valueString": "$this.product.text"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "name": "r_task_desc_prod_vita",
+                  "source": [
+                    {
+                      "context": "subject",
+                      "condition": "(prod.text = 'Vit A')"
+                    }
+                  ],
+                  "rule": [
+                    {
+                      "name": "r_task_desc_version",
+                      "source": [
+                        {
+                          "context": "subject"
+                        }
+                      ],
+                      "target": [
+                        {
+                          "variable": "ver",
+                          "transform": "evaluate",
+                          "parameter": [
+                            {
+                              "valueId": "definition"
+                            },
+                            {
+                              "valueString": "version"
+                            }
+                          ]
+                        }
+                      ],
+                      "rule": [
+                        {
+                          "name": "r_task_desc_vita1",
+                          "source": [
+                            {
+                              "context": "subject",
+                              "condition": "(ver = '0')"
+                            }
+                          ],
+                          "rule": [
+                            {
+                              "name": "r_task_vita1_desc",
+                              "source": [
+                                {
+                                  "context": "subject"
+                                }
+                              ],
+                              "target": [
+                                {
+                                  "context": "task",
+                                  "contextType": "variable",
+                                  "element": "description",
+                                  "transform": "evaluate",
+                                  "parameter": [
+                                    {
+                                      "valueId": "definition"
+                                    },
+                                    {
+                                      "valueString": "$this.product.text + ' - 6 Months'"
+                                    }
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "name": "r_task_desc_vita2",
+                          "source": [
+                            {
+                              "context": "subject",
+                              "condition": "(ver = '1')"
+                            }
+                          ],
+                          "rule": [
+                            {
+                              "name": "r_task_vita2_desc",
+                              "source": [
+                                {
+                                  "context": "subject"
+                                }
+                              ],
+                              "target": [
+                                {
+                                  "context": "task",
+                                  "contextType": "variable",
+                                  "element": "description",
+                                  "transform": "evaluate",
+                                  "parameter": [
+                                    {
+                                      "valueId": "definition"
+                                    },
+                                    {
+                                      "valueString": "$this.product.text + ' - 1 Year'"
+                                    }
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "name": "r_task_desc_vita3",
+                          "source": [
+                            {
+                              "context": "subject",
+                              "condition": "(ver = '2')"
+                            }
+                          ],
+                          "rule": [
+                            {
+                              "name": "r_task_vita3_desc",
+                              "source": [
+                                {
+                                  "context": "subject"
+                                }
+                              ],
+                              "target": [
+                                {
+                                  "context": "task",
+                                  "contextType": "variable",
+                                  "element": "description",
+                                  "transform": "evaluate",
+                                  "parameter": [
+                                    {
+                                      "valueId": "definition"
+                                    },
+                                    {
+                                      "valueString": "$this.product.text + ' - 1.5 Years'"
+                                    }
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "name": "r_task_desc_vita4",
+                          "source": [
+                            {
+                              "context": "subject",
+                              "condition": "(ver = '3')"
+                            }
+                          ],
+                          "rule": [
+                            {
+                              "name": "r_task_vita4_desc",
+                              "source": [
+                                {
+                                  "context": "subject"
+                                }
+                              ],
+                              "target": [
+                                {
+                                  "context": "task",
+                                  "contextType": "variable",
+                                  "element": "description",
+                                  "transform": "evaluate",
+                                  "parameter": [
+                                    {
+                                      "valueId": "definition"
+                                    },
+                                    {
+                                      "valueString": "$this.product.text + ' - 2 Years'"
+                                    }
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "name": "r_task_desc_vita5",
+                          "source": [
+                            {
+                              "context": "subject",
+                              "condition": "(ver = '4')"
+                            }
+                          ],
+                          "rule": [
+                            {
+                              "name": "r_task_vita5_desc",
+                              "source": [
+                                {
+                                  "context": "subject"
+                                }
+                              ],
+                              "target": [
+                                {
+                                  "context": "task",
+                                  "contextType": "variable",
+                                  "element": "description",
+                                  "transform": "evaluate",
+                                  "parameter": [
+                                    {
+                                      "valueId": "definition"
+                                    },
+                                    {
+                                      "valueString": "$this.product.text + ' - 2.5 Years'"
+                                    }
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "name": "r_task_desc_vita6",
+                          "source": [
+                            {
+                              "context": "subject",
+                              "condition": "(ver = '5')"
+                            }
+                          ],
+                          "rule": [
+                            {
+                              "name": "r_task_vita6_desc",
+                              "source": [
+                                {
+                                  "context": "subject"
+                                }
+                              ],
+                              "target": [
+                                {
+                                  "context": "task",
+                                  "contextType": "variable",
+                                  "element": "description",
+                                  "transform": "evaluate",
+                                  "parameter": [
+                                    {
+                                      "valueId": "definition"
+                                    },
+                                    {
+                                      "valueString": "$this.product.text + ' - 3 Years'"
+                                    }
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "name": "r_task_desc_vita7",
+                          "source": [
+                            {
+                              "context": "subject",
+                              "condition": "(ver = '6')"
+                            }
+                          ],
+                          "rule": [
+                            {
+                              "name": "r_task_vita7_desc",
+                              "source": [
+                                {
+                                  "context": "subject"
+                                }
+                              ],
+                              "target": [
+                                {
+                                  "context": "task",
+                                  "contextType": "variable",
+                                  "element": "description",
+                                  "transform": "evaluate",
+                                  "parameter": [
+                                    {
+                                      "valueId": "definition"
+                                    },
+                                    {
+                                      "valueString": "$this.product.text + ' - 3.5 Years'"
+                                    }
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "name": "r_task_desc_vita8",
+                          "source": [
+                            {
+                              "context": "subject",
+                              "condition": "(ver = '7')"
+                            }
+                          ],
+                          "rule": [
+                            {
+                              "name": "r_task_vita8_desc",
+                              "source": [
+                                {
+                                  "context": "subject"
+                                }
+                              ],
+                              "target": [
+                                {
+                                  "context": "task",
+                                  "contextType": "variable",
+                                  "element": "description",
+                                  "transform": "evaluate",
+                                  "parameter": [
+                                    {
+                                      "valueId": "definition"
+                                    },
+                                    {
+                                      "valueString": "$this.product.text + ' - 4 Years'"
+                                    }
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "name": "r_task_desc_vita9",
+                          "source": [
+                            {
+                              "context": "subject",
+                              "condition": "(ver = '8')"
+                            }
+                          ],
+                          "rule": [
+                            {
+                              "name": "r_task_vita9_desc",
+                              "source": [
+                                {
+                                  "context": "subject"
+                                }
+                              ],
+                              "target": [
+                                {
+                                  "context": "task",
+                                  "contextType": "variable",
+                                  "element": "description",
+                                  "transform": "evaluate",
+                                  "parameter": [
+                                    {
+                                      "valueId": "definition"
+                                    },
+                                    {
+                                      "valueString": "$this.product.text + ' - 4.5 Years'"
+                                    }
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "name": "r_task_desc_vita10",
+                          "source": [
+                            {
+                              "context": "subject",
+                              "condition": "(ver = '9')"
+                            }
+                          ],
+                          "rule": [
+                            {
+                              "name": "r_task_vita10_desc",
+                              "source": [
+                                {
+                                  "context": "subject"
+                                }
+                              ],
+                              "target": [
+                                {
+                                  "context": "task",
+                                  "contextType": "variable",
+                                  "element": "description",
+                                  "transform": "evaluate",
+                                  "parameter": [
+                                    {
+                                      "valueId": "definition"
+                                    },
+                                    {
+                                      "valueString": "$this.product.text + ' - 5 Years'"
+                                    }
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "name": "r_task_desc_deworming",
+                  "source": [
+                    {
+                      "context": "subject",
+                      "condition": "(prod.text = 'Deworming')"
+                    }
+                  ],
+                  "rule": [
+                    {
+                      "name": "r_task_desc_deworming_ver",
+                      "source": [
+                        {
+                          "context": "subject"
+                        }
+                      ],
+                      "target": [
+                        {
+                          "variable": "ver",
+                          "transform": "evaluate",
+                          "parameter": [
+                            {
+                              "valueId": "definition"
+                            },
+                            {
+                              "valueString": "version"
+                            }
+                          ]
+                        }
+                      ],
+                      "rule": [
+                        {
+                          "name": "r_task_deworming_desc",
+                          "source": [
+                            {
+                              "context": "subject"
+                            }
+                          ],
+                          "target": [
+                            {
+                              "context": "task",
+                              "contextType": "variable",
+                              "element": "description",
+                              "transform": "evaluate",
+                              "parameter": [
+                                {
+                                  "valueId": "definition"
+                                },
+                                {
+                                  "valueString": "$this.product.text + ' ' + (ver + 1).toString()"
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "name": "r_task_desc_itn",
+                  "source": [
+                    {
+                      "context": "subject",
+                      "condition": "(prod.text = 'ITN')"
+                    }
+                  ],
+                  "rule": [
+                    {
+                      "name": "r_task_desc_itn_ver",
+                      "source": [
+                        {
+                          "context": "subject"
+                        }
+                      ],
+                      "target": [
+                        {
+                          "variable": "ver",
+                          "transform": "evaluate",
+                          "parameter": [
+                            {
+                              "valueId": "definition"
+                            },
+                            {
+                              "valueString": "version"
+                            }
+                          ]
+                        }
+                      ],
+                      "rule": [
+                        {
+                          "name": "r_task_itn_desc",
+                          "source": [
+                            {
+                              "context": "subject"
+                            }
+                          ],
+                          "target": [
+                            {
+                              "context": "task",
+                              "contextType": "variable",
+                              "element": "description",
+                              "transform": "evaluate",
+                              "parameter": [
+                                {
+                                  "valueId": "definition"
+                                },
+                                {
+                                  "valueString": "$this.product.text + ' ' + (ver + 1).toString()"
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "name": "r_task_period_extraction",
+              "source": [
+                {
+                  "context": "subject"
+                }
+              ],
+              "dependent": [
+                {
+                  "name": "extractTaskExecutionPeriod",
+                  "variable": [
+                    "subject",
+                    "definition",
+                    "task"
+                  ]
+                }
+              ]
+            },
+            {
+              "name": "r_task_reason_reference",
+              "source": [
+                {
+                  "context": "subject"
+                }
+              ],
+              "target": [
+                {
+                  "context": "task",
+                  "contextType": "variable",
+                  "element": "reasonReference",
+                  "variable": "reasonReference",
+                  "transform": "create",
+                  "parameter": [
+                    {
+                      "valueString": "Reference"
+                    }
+                  ]
+                },
+                {
+                  "context": "reasonReference",
+                  "contextType": "variable",
+                  "element": "reference",
+                  "transform": "copy",
+                  "parameter": [
+                    {
+                      "valueString": "Questionnaire/911c67be-9196-4eb2-b122-5bfeb7d8fb5f"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "name": "r_group_identifier",
+              "source": [
+                {
+                  "context": "subject"
+                }
+              ],
+              "target": [
+                {
+                  "context": "task",
+                  "contextType": "variable",
+                  "element": "groupIdentifier",
+                  "variable": "groupIdentifier",
+                  "transform": "create",
+                  "parameter": [
+                    {
+                      "valueString": "Identifier"
+                    }
+                  ]
+                }
+              ],
+              "rule": [
+                {
+                  "name": "r_group_identifier_value",
+                  "source": [
+                    {
+                      "context": "subject"
+                    }
+                  ],
+                  "target": [
+                    {
+                      "context": "groupIdentifier",
+                      "contextType": "variable",
+                      "element": "value",
+                      "transform": "evaluate",
+                      "parameter": [
+                        {
+                          "valueId": "definition"
+                        },
+                        {
+                          "valueString": "$this.dosage.skip(version).first().select(timing.repeat.period.toString() + '_' + timing.repeat.periodUnit)"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "name": "r_group_identifier_use",
+                  "source": [
+                    {
+                      "context": "subject"
+                    }
+                  ],
+                  "target": [
+                    {
+                      "context": "groupIdentifier",
+                      "contextType": "variable",
+                      "element": "use",
+                      "transform": "copy",
+                      "parameter": [
+                        {
+                          "valueString": "secondary"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "name": "r_task_restriction",
+              "source": [
+                {
+                  "context": "subject"
+                }
+              ],
+              "target": [
+                {
+                  "variable": "prod",
+                  "transform": "evaluate",
+                  "parameter": [
+                    {
+                      "valueId": "definition"
+                    },
+                    {
+                      "valueString": "$this.product"
+                    }
+                  ]
+                }
+              ],
+              "rule": [
+                {
+                  "name": "r_task_restriction_5_years",
+                  "source": [
+                    {
+                      "context": "subject"
+                    }
+                  ],
+                  "target": [
+                    {
+                      "variable": "maxDays",
+                      "transform": "evaluate",
+                      "parameter": [
+                        {
+                          "valueId": "subject"
+                        },
+                        {
+                          "valueString": "'1825'"
+                        }
+                      ]
+                    }
+                  ],
+                  "dependent": [
+                    {
+                      "name": "extractTaskRestriction",
+                      "variable": [
+                        "subject",
+                        "task",
+                        "definition",
+                        "version",
+                        "maxDays"
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "name": "r_task_restriction_vita_at_birth",
+                  "source": [
+                    {
+                      "context": "subject",
+                      "condition": "(prod.text = 'Vit A - At Birth')"
+                    }
+                  ],
+                  "rule": [
+                    {
+                      "name": "r_task_restriction_vita",
+                      "source": [
+                        {
+                          "context": "subject"
+                        }
+                      ],
+                      "target": [
+                        {
+                          "variable": "maxDays",
+                          "transform": "evaluate",
+                          "parameter": [
+                            {
+                              "valueId": "subject"
+                            },
+                            {
+                              "valueString": "'180'"
+                            }
+                          ]
+                        }
+                      ],
+                      "dependent": [
+                        {
+                          "name": "extractTaskRestriction",
+                          "variable": [
+                            "subject",
+                            "task",
+                            "definition",
+                            "version",
+                            "maxDays"
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "name": "r_task_input",
+              "source": [
+                {
+                  "context": "subject"
+                }
+              ],
+              "target": [
+                {
+                  "context": "task",
+                  "contextType": "variable",
+                  "element": "input",
+                  "variable": "inputTask",
+                  "transform": "create",
+                  "parameter": [
+                    {
+                      "valueString": "Task_Input"
+                    }
+                  ]
+                }
+              ],
+              "rule": [
+                {
+                  "name": "r_codeable_concept",
+                  "source": [
+                    {
+                      "context": "subject"
+                    }
+                  ],
+                  "target": [
+                    {
+                      "context": "inputTask",
+                      "contextType": "variable",
+                      "element": "type",
+                      "variable": "concept",
+                      "transform": "create",
+                      "parameter": [
+                        {
+                          "valueString": "CodeableConcept"
+                        }
+                      ]
+                    }
+                  ],
+                  "rule": [
+                    {
+                      "name": "r_task_concept_coding",
+                      "source": [
+                        {
+                          "context": "subject"
+                        }
+                      ],
+                      "target": [
+                        {
+                          "context": "concept",
+                          "contextType": "variable",
+                          "element": "coding",
+                          "variable": "coding",
+                          "transform": "c",
+                          "parameter": [
+                            {
+                              "valueString": "http://snomed.info/sct"
+                            },
+                            {
+                              "valueString": "371154000"
+                            }
+                          ]
+                        }
+                      ],
+                      "rule": [
+                        {
+                          "name": "r_coding_display",
+                          "source": [
+                            {
+                              "context": "subject"
+                            }
+                          ],
+                          "target": [
+                            {
+                              "context": "coding",
+                              "contextType": "variable",
+                              "element": "display",
+                              "transform": "copy",
+                              "parameter": [
+                                {
+                                  "valueString": "Dependent (qualifier value)"
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "name": "r_input_value",
+                  "source": [
+                    {
+                      "context": "subject"
+                    }
+                  ],
+                  "target": [
+                    {
+                      "context": "inputTask",
+                      "contextType": "variable",
+                      "element": "value",
+                      "transform": "copy",
+                      "parameter": [
+                        {
+                          "valueInteger": 28
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "name": "r_dosage",
+              "source": [
+                {
+                  "context": "subject"
+                }
+              ],
+              "target": [
+                {
+                  "variable": "preReqName",
+                  "transform": "evaluate",
+                  "parameter": [
+                    {
+                      "valueId": "definition"
+                    },
+                    {
+                      "valueString": "$this.product.text + ' ' + (version - 1).toString()"
+                    }
+                  ]
+                },
+                {
+                  "variable": "preReqTask",
+                  "transform": "evaluate",
+                  "parameter": [
+                    {
+                      "valueId": "careplan"
+                    },
+                    {
+                      "valueString": "$this.contained.where(description.contains(preReqName))"
+                    }
+                  ]
+                }
+              ],
+              "rule": [
+                {
+                  "name": "r_task_part_of",
+                  "source": [
+                    {
+                      "context": "subject",
+                      "condition": "(preReqTask.exists())"
+                    }
+                  ],
+                  "target": [
+                    {
+                      "context": "task",
+                      "contextType": "variable",
+                      "element": "partOf",
+                      "variable": "partOfReference",
+                      "transform": "create",
+                      "parameter": [
+                        {
+                          "valueString": "Reference"
+                        }
+                      ]
+                    }
+                  ],
+                  "rule": [
+                    {
+                      "name": "r_task_reference_id",
+                      "source": [
+                        {
+                          "context": "subject"
+                        }
+                      ],
+                      "target": [
+                        {
+                          "context": "partOfReference",
+                          "contextType": "variable",
+                          "element": "reference",
+                          "transform": "evaluate",
+                          "parameter": [
+                            {
+                              "valueId": "preReqTask"
+                            },
+                            {
+                              "valueString": "'Task/' + id"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "name": "r_task_reference_input",
+              "source": [
+                {
+                  "context": "subject"
+                }
+              ],
+              "dependent": [
+                {
+                  "name": "extractTaskReferenceInput",
+                  "variable": [
+                    "subject",
+                    "task",
+                    "definition",
+                    "version",
+                    "careplan"
+                  ]
+                }
+              ]
+            },
+            {
+              "name": "r_careplan_activity",
+              "source": [
+                {
+                  "context": "subject",
+                  "condition": "(careplan.activity.where(detail.kind = 'Task').exists().not())"
+                }
+              ],
+              "target": [
+                {
+                  "context": "careplan",
+                  "contextType": "variable",
+                  "element": "activity",
+                  "variable": "activity",
+                  "transform": "create",
+                  "parameter": [
+                    {
+                      "valueString": "CarePlan_Activity"
+                    }
+                  ]
+                }
+              ],
+              "rule": [
+                {
+                  "name": "r_activity_detail",
+                  "source": [
+                    {
+                      "context": "subject"
+                    }
+                  ],
+                  "target": [
+                    {
+                      "context": "activity",
+                      "contextType": "variable",
+                      "element": "detail",
+                      "variable": "ActivityDefinition",
+                      "transform": "create",
+                      "parameter": [
+                        {
+                          "valueString": "CarePlan_ActivityDetail"
+                        }
+                      ]
+                    }
+                  ],
+                  "rule": [
+                    {
+                      "name": "r_activity_detail_data",
+                      "source": [
+                        {
+                          "context": "subject"
+                        }
+                      ],
+                      "target": [
+                        {
+                          "context": "ActivityDefinition",
+                          "contextType": "variable",
+                          "element": "kind",
+                          "transform": "copy",
+                          "parameter": [
+                            {
+                              "valueString": "Task"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "name": "r_careplan_task",
+              "source": [
+                {
+                  "context": "subject"
+                }
+              ],
+              "rule": [
+                {
+                  "name": "r_careplan_task_reference",
+                  "source": [
+                    {
+                      "context": "subject"
+                    }
+                  ],
+                  "target": [
+                    {
+                      "variable": "activity",
+                      "transform": "evaluate",
+                      "parameter": [
+                        {
+                          "valueId": "careplan"
+                        },
+                        {
+                          "valueString": "activity.where(detail.kind = 'Task')"
+                        }
+                      ]
+                    },
+                    {
+                      "context": "activity",
+                      "contextType": "variable",
+                      "element": "outcomeReference",
+                      "transform": "reference",
+                      "parameter": [
+                        {
+                          "valueId": "task"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "name": "r_add_task",
+                  "source": [
+                    {
+                      "context": "subject"
+                    }
+                  ],
+                  "target": [
+                    {
+                      "context": "careplan",
+                      "contextType": "variable",
+                      "element": "contained",
+                      "transform": "copy",
+                      "parameter": [
+                        {
+                          "valueId": "task"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "extractTaskReferenceInput",
+      "typeMode": "none",
+      "input": [
+        {
+          "name": "subject",
+          "type": "Patient",
+          "mode": "source"
+        },
+        {
+          "name": "task",
+          "type": "Task",
+          "mode": "target"
+        },
+        {
+          "name": "definition",
+          "type": "ActivityDefinition",
+          "mode": "source"
+        },
+        {
+          "name": "version",
+          "type": "Integer",
+          "mode": "source"
+        },
+        {
+          "name": "careplan",
+          "type": "CarePlan",
+          "mode": "source"
+        }
+      ],
+      "rule": [
+        {
+          "name": "r_task_part_of_reference",
+          "source": [
+            {
+              "context": "subject"
+            }
+          ],
+          "target": [
+            {
+              "variable": "taskPartOfReference",
+              "transform": "evaluate",
+              "parameter": [
+                {
+                  "valueId": "task"
+                },
+                {
+                  "valueString": "$this.partOf.last()"
+                }
+              ]
+            }
+          ],
+          "rule": [
+            {
+              "name": "r_task_part_of_reference_exists",
+              "source": [
+                {
+                  "context": "subject",
+                  "condition": "(taskPartOfReference.empty().not())"
+                }
+              ],
+              "rule": [
+                {
+                  "name": "r_task_input",
+                  "source": [
+                    {
+                      "context": "subject"
+                    }
+                  ],
+                  "target": [
+                    {
+                      "context": "task",
+                      "contextType": "variable",
+                      "element": "input",
+                      "variable": "inputTask",
+                      "transform": "create",
+                      "parameter": [
+                        {
+                          "valueString": "Task_Input"
+                        }
+                      ]
+                    }
+                  ],
+                  "rule": [
+                    {
+                      "name": "r_codeable_concept",
+                      "source": [
+                        {
+                          "context": "subject"
+                        }
+                      ],
+                      "target": [
+                        {
+                          "context": "inputTask",
+                          "contextType": "variable",
+                          "element": "type",
+                          "variable": "concept",
+                          "transform": "create",
+                          "parameter": [
+                            {
+                              "valueString": "CodeableConcept"
+                            }
+                          ]
+                        }
+                      ],
+                      "rule": [
+                        {
+                          "name": "r_task_concept_coding",
+                          "source": [
+                            {
+                              "context": "subject"
+                            }
+                          ],
+                          "target": [
+                            {
+                              "context": "concept",
+                              "contextType": "variable",
+                              "element": "coding",
+                              "variable": "coding",
+                              "transform": "c",
+                              "parameter": [
+                                {
+                                  "valueString": "http://snomed.info/sct"
+                                },
+                                {
+                                  "valueString": "900000000000457003"
+                                }
+                              ]
+                            }
+                          ],
+                          "rule": [
+                            {
+                              "name": "r_coding_display",
+                              "source": [
+                                {
+                                  "context": "subject"
+                                }
+                              ],
+                              "target": [
+                                {
+                                  "context": "coding",
+                                  "contextType": "variable",
+                                  "element": "display",
+                                  "transform": "copy",
+                                  "parameter": [
+                                    {
+                                      "valueString": "Reference set attribute (foundation metadata concept)"
+                                    }
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "name": "r_task_part_of_reference",
+                      "source": [
+                        {
+                          "context": "subject"
+                        }
+                      ],
+                      "target": [
+                        {
+                          "context": "inputTask",
+                          "contextType": "variable",
+                          "element": "value",
+                          "variable": "partOfReference",
+                          "transform": "create",
+                          "parameter": [
+                            {
+                              "valueString": "Reference"
+                            }
+                          ]
+                        }
+                      ],
+                      "rule": [
+                        {
+                          "name": "r_task_reference_id",
+                          "source": [
+                            {
+                              "context": "subject"
+                            }
+                          ],
+                          "target": [
+                            {
+                              "context": "partOfReference",
+                              "contextType": "variable",
+                              "element": "reference",
+                              "transform": "evaluate",
+                              "parameter": [
+                                {
+                                  "valueId": "subject"
+                                },
+                                {
+                                  "valueString": "taskPartOfReference.reference.toString()"
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "extractTaskRestriction",
+      "typeMode": "none",
+      "input": [
+        {
+          "name": "subject",
+          "type": "Patient",
+          "mode": "source"
+        },
+        {
+          "name": "task",
+          "type": "Task",
+          "mode": "target"
+        },
+        {
+          "name": "definition",
+          "type": "ActivityDefinition",
+          "mode": "source"
+        },
+        {
+          "name": "version",
+          "type": "Integer",
+          "mode": "source"
+        },
+        {
+          "name": "restrictionEndDate",
+          "type": "String",
+          "mode": "source"
+        }
+      ],
+      "rule": [
+        {
+          "name": "r_birth_date",
+          "source": [
+            {
+              "context": "subject"
+            }
+          ],
+          "target": [
+            {
+              "variable": "patientBirthDate",
+              "transform": "evaluate",
+              "parameter": [
+                {
+                  "valueId": "subject"
+                },
+                {
+                  "valueString": "$this.birthDate"
+                }
+              ]
+            }
+          ],
+          "rule": [
+            {
+              "name": "r_task_restriction_extract",
+              "source": [
+                {
+                  "context": "subject"
+                }
+              ],
+              "target": [
+                {
+                  "variable": "taskRestriction",
+                  "transform": "create",
+                  "parameter": [
+                    {
+                      "valueString": "Task_Restriction"
+                    }
+                  ]
+                }
+              ],
+              "rule": [
+                {
+                  "name": "r_task_restriction_period",
+                  "source": [
+                    {
+                      "context": "subject"
+                    }
+                  ],
+                  "target": [
+                    {
+                      "context": "taskRestriction",
+                      "contextType": "variable",
+                      "element": "period",
+                      "variable": "taskRestrictionPeriod",
+                      "transform": "create",
+                      "parameter": [
+                        {
+                          "valueString": "Period"
+                        }
+                      ]
+                    }
+                  ],
+                  "rule": [
+                    {
+                      "name": "r_period_start",
+                      "source": [
+                        {
+                          "context": "subject"
+                        }
+                      ],
+                      "target": [
+                        {
+                          "context": "taskRestrictionPeriod",
+                          "contextType": "variable",
+                          "element": "start",
+                          "variable": "startDateTime",
+                          "transform": "create",
+                          "parameter": [
+                            {
+                              "valueString": "dateTime"
+                            }
+                          ]
+                        },
+                        {
+                          "context": "startDateTime",
+                          "contextType": "variable",
+                          "element": "value",
+                          "transform": "evaluate",
+                          "parameter": [
+                            {
+                              "valueId": "patientBirthDate"
+                            },
+                            {
+                              "valueString": "$this.value.substring(0, 10) + 'T00:00:00.00Z'"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "name": "r_period_end",
+                      "source": [
+                        {
+                          "context": "subject"
+                        }
+                      ],
+                      "target": [
+                        {
+                          "context": "taskRestrictionPeriod",
+                          "contextType": "variable",
+                          "element": "end",
+                          "variable": "endDateTime",
+                          "transform": "create",
+                          "parameter": [
+                            {
+                              "valueString": "dateTime"
+                            }
+                          ]
+                        },
+                        {
+                          "context": "endDateTime",
+                          "contextType": "variable",
+                          "element": "value",
+                          "transform": "evaluate",
+                          "parameter": [
+                            {
+                              "valueId": "patientBirthDate"
+                            },
+                            {
+                              "valueString": "(($this + (((restrictionEndDate).toString() + ' days')).toQuantity()).value.substring(0, 10)) + 'T00:00:00.00Z'"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "name": "r_restriction_period",
+                      "source": [
+                        {
+                          "context": "subject"
+                        }
+                      ],
+                      "target": [
+                        {
+                          "context": "task",
+                          "contextType": "variable",
+                          "element": "restriction",
+                          "transform": "copy",
+                          "parameter": [
+                            {
+                              "valueId": "taskRestriction"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "extractTaskExecutionPeriod",
+      "typeMode": "none",
+      "input": [
+        {
+          "name": "subject",
+          "type": "Patient",
+          "mode": "source"
+        },
+        {
+          "name": "definition",
+          "type": "ActivityDefinition",
+          "mode": "source"
+        },
+        {
+          "name": "task",
+          "type": "Task",
+          "mode": "target"
+        }
+      ],
+      "rule": [
+        {
+          "name": "r_task_execution_period",
+          "source": [
+            {
+              "context": "subject"
+            }
+          ],
+          "target": [
+            {
+              "variable": "start",
+              "transform": "evaluate",
+              "parameter": [
+                {
+                  "valueId": "task"
+                },
+                {
+                  "valueString": "$this.executionPeriod.start"
+                }
+              ]
+            },
+            {
+              "variable": "end",
+              "transform": "evaluate",
+              "parameter": [
+                {
+                  "valueId": "task"
+                },
+                {
+                  "valueString": "$this.executionPeriod.end"
+                }
+              ]
+            }
+          ],
+          "rule": [
+            {
+              "name": "r_period",
+              "source": [
+                {
+                  "context": "subject"
+                }
+              ],
+              "target": [
+                {
+                  "variable": "period",
+                  "transform": "create",
+                  "parameter": [
+                    {
+                      "valueString": "Period"
+                    }
+                  ]
+                }
+              ],
+              "rule": [
+                {
+                  "name": "r_period_start",
+                  "source": [
+                    {
+                      "context": "subject"
+                    }
+                  ],
+                  "target": [
+                    {
+                      "context": "period",
+                      "contextType": "variable",
+                      "element": "start",
+                      "variable": "startDateTime",
+                      "transform": "create",
+                      "parameter": [
+                        {
+                          "valueString": "dateTime"
+                        }
+                      ]
+                    },
+                    {
+                      "context": "startDateTime",
+                      "contextType": "variable",
+                      "element": "value",
+                      "transform": "evaluate",
+                      "parameter": [
+                        {
+                          "valueId": "start"
+                        },
+                        {
+                          "valueString": "$this.value.substring(0, 10) + 'T00:00:00.00Z'"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "name": "r_execution_period_product",
+                  "source": [
+                    {
+                      "context": "subject"
+                    }
+                  ],
+                  "target": [
+                    {
+                      "variable": "prod",
+                      "transform": "evaluate",
+                      "parameter": [
+                        {
+                          "valueId": "definition"
+                        },
+                        {
+                          "valueString": "$this.product"
+                        }
+                      ]
+                    }
+                  ],
+                  "rule": [
+                    {
+                      "name": "r_execution_period_viita_at_birth",
+                      "source": [
+                        {
+                          "context": "subject",
+                          "condition": "(prod.text != 'Vit A - At Birth')"
+                        }
+                      ],
+                      "rule": [
+                        {
+                          "name": "r_period_end",
+                          "source": [
+                            {
+                              "context": "subject"
+                            }
+                          ],
+                          "target": [
+                            {
+                              "context": "period",
+                              "contextType": "variable",
+                              "element": "end",
+                              "variable": "endDateTime",
+                              "transform": "create",
+                              "parameter": [
+                                {
+                                  "valueString": "dateTime"
+                                }
+                              ]
+                            },
+                            {
+                              "context": "endDateTime",
+                              "contextType": "variable",
+                              "element": "value",
+                              "transform": "evaluate",
+                              "parameter": [
+                                {
+                                  "valueId": "end"
+                                },
+                                {
+                                  "valueString": "$this.value.substring(0, 10) + 'T00:00:00.00Z'"
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "name": "r_execution_period_viita_at_birth",
+                      "source": [
+                        {
+                          "context": "subject",
+                          "condition": "(prod.text != 'Deworming')"
+                        }
+                      ],
+                      "rule": [
+                        {
+                          "name": "r_task_desc_deworming",
+                          "source": [
+                            {
+                              "context": "subject"
+                            }
+                          ],
+                          "target": [
+                            {
+                              "variable": "ver",
+                              "transform": "evaluate",
+                              "parameter": [
+                                {
+                                  "valueId": "definition"
+                                },
+                                {
+                                  "valueString": "version"
+                                }
+                              ]
+                            }
+                          ],
+                          "rule": [
+                            {
+                              "name": "r_period_end__ver",
+                              "source": [
+                                {
+                                  "context": "subject",
+                                  "condition": "(ver = '0')"
+                                }
+                              ],
+                              "rule": [
+                                {
+                                  "name": "r_period_end",
+                                  "source": [
+                                    {
+                                      "context": "subject"
+                                    }
+                                  ],
+                                  "target": [
+                                    {
+                                      "context": "period",
+                                      "contextType": "variable",
+                                      "element": "end",
+                                      "variable": "endDateTime",
+                                      "transform": "create",
+                                      "parameter": [
+                                        {
+                                          "valueString": "dateTime"
+                                        }
+                                      ]
+                                    },
+                                    {
+                                      "context": "endDateTime",
+                                      "contextType": "variable",
+                                      "element": "value",
+                                      "transform": "evaluate",
+                                      "parameter": [
+                                        {
+                                          "valueId": "start"
+                                        },
+                                        {
+                                          "valueString": "(($this + (((375).toString() + ' days')).toQuantity()).value.substring(0, 10)) + 'T00:00:00.00Z'"
+                                        }
+                                      ]
+                                    }
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "name": "r_execution_period",
+                  "source": [
+                    {
+                      "context": "subject"
+                    }
+                  ],
+                  "target": [
+                    {
+                      "context": "task",
+                      "contextType": "variable",
+                      "element": "executionPeriod",
+                      "transform": "copy",
+                      "parameter": [
+                        {
+                          "valueId": "period"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

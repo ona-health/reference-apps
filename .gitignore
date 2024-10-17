@@ -1,0 +1,6 @@
+.DS_Store
+# IntelliJ
+*.iml
+.idea
+.vscode
+fhir.schema.json
