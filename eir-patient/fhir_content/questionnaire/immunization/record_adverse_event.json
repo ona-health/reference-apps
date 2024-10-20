@@ -1,0 +1,1863 @@
+{
+    "resourceType": "Questionnaire",
+    "id": "061e24f4-5c9b-477f-8062-249dd43bc20f",
+    "meta": {
+        "versionId": "16",
+        "lastUpdated": "2024-09-26T08:52:51.047+00:00",
+        "source": "#729ef4ad32de6e26",
+        "profile": [
+            "http://ehelse.no/fhir/StructureDefinition/sdf-Questionnaire"
+        ],
+        "security": [
+            {
+                "system": "urn:oid:2.16.578.1.12.4.1.1.7618",
+                "code": "3",
+                "display": "Helsehjelp"
+            }
+        ],
+        "tag": [
+            {
+                "system": "urn:ietf:bcp:47",
+                "code": "nb-NO",
+                "display": "Norsk Bokm�l"
+            }
+        ]
+    },
+    "language": "nb-NO",
+    "extension": [
+        {
+            "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-launchContext",
+            "extension": [
+                {
+                    "url": "name",
+                    "valueCoding": {
+                        "system": "http://hl7.org/fhir/uv/sdc/CodeSystem/launchContext",
+                        "code": "patient",
+                        "display": "Patient",
+                        "_display": {
+                            "extension": [
+                                {
+                                    "url": "http://hl7.org/fhir/StructureDefinition/translation",
+                                    "extension": [
+                                        {
+                                            "url": "lang",
+                                            "valueCode": "es"
+                                        },
+                                        {
+                                            "url": "content",
+                                            "valueString": "Paciente"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "url": "http://hl7.org/fhir/StructureDefinition/translation",
+                                    "extension": [
+                                        {
+                                            "url": "lang",
+                                            "valueCode": "fr"
+                                        },
+                                        {
+                                            "url": "content",
+                                            "valueString": "Patient"
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    }
+                },
+                {
+                    "url": "type",
+                    "valueCode": "Patient"
+                }
+            ]
+        },
+        {
+            "url": "http://helsenorge.no/fhir/StructureDefinition/sdf-sidebar",
+            "valueCoding": {
+                "system": "http://helsenorge.no/fhir/ValueSet/sdf-sidebar",
+                "code": "1"
+            }
+        },
+        {
+            "url": "http://helsenorge.no/fhir/StructureDefinition/sdf-information-message",
+            "valueCoding": {
+                "system": "http://helsenorge.no/fhir/ValueSet/sdf-information-message",
+                "code": "1"
+            }
+        },
+        {
+            "url": "http://helsenorge.no/fhir/StructureDefintion/sdf-itemControl-visibility",
+            "valueCodeableConcept": {
+                "coding": [
+                    {
+                        "system": "http://helsenorge.no/fhir/CodeSystem/AttachmentRenderOptions",
+                        "code": "hide-help",
+                        "display": "Hide help texts",
+                        "_display": {
+                            "extension": [
+                                {
+                                    "url": "http://hl7.org/fhir/StructureDefinition/translation",
+                                    "extension": [
+                                        {
+                                            "url": "lang",
+                                            "valueCode": "es"
+                                        },
+                                        {
+                                            "url": "content",
+                                            "valueString": "Ocultar textos de ayuda"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "url": "http://hl7.org/fhir/StructureDefinition/translation",
+                                    "extension": [
+                                        {
+                                            "url": "lang",
+                                            "valueCode": "fr"
+                                        },
+                                        {
+                                            "url": "content",
+                                            "valueString": "Masquer les textes d'aide"
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "system": "http://helsenorge.no/fhir/CodeSystem/AttachmentRenderOptions",
+                        "code": "hide-sublabel",
+                        "display": "Hide sublabel texts",
+                        "_display": {
+                            "extension": [
+                                {
+                                    "url": "http://hl7.org/fhir/StructureDefinition/translation",
+                                    "extension": [
+                                        {
+                                            "url": "lang",
+                                            "valueCode": "es"
+                                        },
+                                        {
+                                            "url": "content",
+                                            "valueString": "Ocultar textos de subetiquetas"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "url": "http://hl7.org/fhir/StructureDefinition/translation",
+                                    "extension": [
+                                        {
+                                            "url": "lang",
+                                            "valueCode": "fr"
+                                        },
+                                        {
+                                            "url": "content",
+                                            "valueString": "Masquer les textes des sous-étiquettes"
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-targetStructureMap",
+            "valueCanonical": "https://fhir.demo.smartregister.org/fhir/StructureMap/f1a25251-d70f-4c6d-a517-98acdeda6a21"
+        },
+        {
+            "url": "http://hl7.org/fhir/StructureDefinition/variable",
+            "valueExpression": {
+                "name": "vaccines",
+                "language": "application/x-fhir-query",
+                "expression": "Immunization?patient={{%patient.id.replaceMatches('/_history/.*', '')}}&_sort=date"
+            }
+        }
+    ],
+    "name": "RecordAdverseEvent",
+    "title": "Record Adverse Event",
+    "status": "draft",
+    "subjectType": [
+        "Patient"
+    ],
+    "publisher": "NHN",
+    "contact": [
+        {
+            "name": "http://www.nhn.no"
+        }
+    ],
+    "item": [
+        {
+            "extension": [
+                {
+                    "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-hidden",
+                    "valueBoolean": true
+                }
+            ],
+            "linkId": "patient-id",
+            "text": "Patient's Id",
+            "_text": {
+                "extension": [
+                    {
+                        "url": "http://hl7.org/fhir/StructureDefinition/translation",
+                        "extension": [
+                            {
+                                "url": "lang",
+                                "valueCode": "es"
+                            },
+                            {
+                                "url": "content",
+                                "valueString": "Identificación del paciente"
+                            }
+                        ]
+                    },
+                    {
+                        "url": "http://hl7.org/fhir/StructureDefinition/translation",
+                        "extension": [
+                            {
+                                "url": "lang",
+                                "valueCode": "fr"
+                            },
+                            {
+                                "url": "content",
+                                "valueString": "Identifiant du patient"
+                            }
+                        ]
+                    }
+                ]
+            },
+            "type": "string",
+            "required": true
+        },
+        {
+            "extension": [
+                {
+                    "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-hidden",
+                    "valueBoolean": true
+                }
+            ],
+            "linkId": "patient-age-in-years",
+            "text": "Patient's Age",
+            "_text": {
+                "extension": [
+                    {
+                        "url": "http://hl7.org/fhir/StructureDefinition/translation",
+                        "extension": [
+                            {
+                                "url": "lang",
+                                "valueCode": "es"
+                            },
+                            {
+                                "url": "content",
+                                "valueString": "Edad del paciente"
+                            }
+                        ]
+                    },
+                    {
+                        "url": "http://hl7.org/fhir/StructureDefinition/translation",
+                        "extension": [
+                            {
+                                "url": "lang",
+                                "valueCode": "fr"
+                            },
+                            {
+                                "url": "content",
+                                "valueString": "Âge du patient"
+                            }
+                        ]
+                    }
+                ]
+            },
+            "type": "integer",
+            "required": false
+        },
+        {
+            "extension": [
+                {
+                    "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-hidden",
+                    "valueBoolean": true
+                }
+            ],
+            "linkId": "patient-birthdate",
+            "text": "Patient's Birthdate",
+            "_text": {
+                "extension": [
+                    {
+                        "url": "http://hl7.org/fhir/StructureDefinition/translation",
+                        "extension": [
+                            {
+                                "url": "lang",
+                                "valueCode": "es"
+                            },
+                            {
+                                "url": "content",
+                                "valueString": "Fecha de nacimiento del paciente"
+                            }
+                        ]
+                    },
+                    {
+                        "url": "http://hl7.org/fhir/StructureDefinition/translation",
+                        "extension": [
+                            {
+                                "url": "lang",
+                                "valueCode": "fr"
+                            },
+                            {
+                                "url": "content",
+                                "valueString": "Date de naissance du patient"
+                            }
+                        ]
+                    }
+                ]
+            },
+            "type": "string",
+            "required": true,
+            "readOnly": true
+        },
+        {
+            "extension": [
+                {
+                    "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+                    "valueCodeableConcept": {
+                        "coding": [
+                            {
+                                "system": "http://hl7.org/fhir/questionnaire-item-control",
+                                "code": "drop-down",
+                                "display": "Drop down",
+                                "_display": {
+                                    "extension": [
+                                        {
+                                            "url": "http://hl7.org/fhir/StructureDefinition/translation",
+                                            "extension": [
+                                                {
+                                                    "url": "lang",
+                                                    "valueCode": "es"
+                                                },
+                                                {
+                                                    "url": "content",
+                                                    "valueString": "Desplegable"
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "url": "http://hl7.org/fhir/StructureDefinition/translation",
+                                            "extension": [
+                                                {
+                                                    "url": "lang",
+                                                    "valueCode": "fr"
+                                                },
+                                                {
+                                                    "url": "content",
+                                                    "valueString": "Déroulant"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            }
+                        ],
+                        "text": "Drop down",
+                        "_text": {
+                            "extension": [
+                                {
+                                    "url": "http://hl7.org/fhir/StructureDefinition/translation",
+                                    "extension": [
+                                        {
+                                            "url": "lang",
+                                            "valueCode": "es"
+                                        },
+                                        {
+                                            "url": "content",
+                                            "valueString": "Desplegable"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "url": "http://hl7.org/fhir/StructureDefinition/translation",
+                                    "extension": [
+                                        {
+                                            "url": "lang",
+                                            "valueCode": "fr"
+                                        },
+                                        {
+                                            "url": "content",
+                                            "valueString": "Déroulant"
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    }
+                },
+                {
+                    "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-answerExpression",
+                    "valueExpression": {
+                        "language": "application/x-fhir-query",
+                        "expression": "Immunization?patient=Patient/{{%patient.id.replaceMatches('/_history/.*', '')}}&_sort=date"
+                    }
+                },
+                {
+                    "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-choiceColumn",
+                    "extension": [
+                        {
+                            "url": "path",
+                            "valueString": "vaccineCode.text"
+                        },
+                        {
+                            "url": "forDisplay",
+                            "valueBoolean": true
+                        }
+                    ]
+                }
+            ],
+            "linkId": "child-vaccines",
+            "text": "Vaccine that caused the reaction",
+            "_text": {
+                "extension": [
+                    {
+                        "url": "http://hl7.org/fhir/StructureDefinition/translation",
+                        "extension": [
+                            {
+                                "url": "lang",
+                                "valueCode": "es"
+                            },
+                            {
+                                "url": "content",
+                                "valueString": "Vacuna que provocó la reacción"
+                            }
+                        ]
+                    },
+                    {
+                        "url": "http://hl7.org/fhir/StructureDefinition/translation",
+                        "extension": [
+                            {
+                                "url": "lang",
+                                "valueCode": "fr"
+                            },
+                            {
+                                "url": "content",
+                                "valueString": "Vaccin qui a provoqué la réaction"
+                            }
+                        ]
+                    }
+                ]
+            },
+            "type": "reference",
+            "required": true
+        },
+        {
+            "extension": [
+                {
+                    "url": "http://hl7.org/fhir/StructureDefinition/maxValue",
+                    "_valueDate": {
+                        "extension": [
+                            {
+                                "url": "http://hl7.org/fhir/StructureDefinition/cqf-calculatedValue",
+                                "valueExpression": {
+                                    "language": "text/fhirpath",
+                                    "expression": "today()"
+                                }
+                            }
+                        ]
+                    }
+                }
+            ],
+            "linkId": "recorded-date",
+            "text": "Date that the patient started experiencing the reaction",
+            "_text": {
+                "extension": [
+                    {
+                        "url": "http://hl7.org/fhir/StructureDefinition/translation",
+                        "extension": [
+                            {
+                                "url": "lang",
+                                "valueCode": "es"
+                            },
+                            {
+                                "url": "content",
+                                "valueString": "Fecha en que el paciente comenzó a experimentar la reacción"
+                            }
+                        ]
+                    },
+                    {
+                        "url": "http://hl7.org/fhir/StructureDefinition/translation",
+                        "extension": [
+                            {
+                                "url": "lang",
+                                "valueCode": "fr"
+                            },
+                            {
+                                "url": "content",
+                                "valueString": "Date à laquelle le patient a commencé à ressentir la réaction"
+                            }
+                        ]
+                    }
+                ]
+            },
+            "type": "date",
+            "required": true
+        },
+        {
+            "linkId": "a2f71c64-5ccc-4575-8638-d51aeefe6e6c",
+            "text": "Reaction manifestation",
+            "_text": {
+                "extension": [
+                    {
+                        "url": "http://hl7.org/fhir/StructureDefinition/translation",
+                        "extension": [
+                            {
+                                "url": "lang",
+                                "valueCode": "es"
+                            },
+                            {
+                                "url": "content",
+                                "valueString": "Manifestación de reacción"
+                            }
+                        ]
+                    },
+                    {
+                        "url": "http://hl7.org/fhir/StructureDefinition/translation",
+                        "extension": [
+                            {
+                                "url": "lang",
+                                "valueCode": "fr"
+                            },
+                            {
+                                "url": "content",
+                                "valueString": "Manifestation de la réaction"
+                            }
+                        ]
+                    }
+                ]
+            },
+            "type": "choice",
+            "required": false,
+            "answerOption": [
+                {
+                    "valueCoding": {
+                        "id": "600fc7d0-6052-4a82-82cf-28d71f26dc38",
+                        "system": "urn:uuid:65f1c0a0-5fcc-409c-8bd0-097fe9458040",
+                        "code": "30717",
+                        "display": "Severe local reaction",
+                        "_display": {
+                            "extension": [
+                                {
+                                    "url": "http://hl7.org/fhir/StructureDefinition/translation",
+                                    "extension": [
+                                        {
+                                            "url": "lang",
+                                            "valueCode": "es"
+                                        },
+                                        {
+                                            "url": "content",
+                                            "valueString": "Reacción local grave"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "url": "http://hl7.org/fhir/StructureDefinition/translation",
+                                    "extension": [
+                                        {
+                                            "url": "lang",
+                                            "valueCode": "fr"
+                                        },
+                                        {
+                                            "url": "content",
+                                            "valueString": "Réaction locale sévère"
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    }
+                },
+                {
+                    "valueCoding": {
+                        "id": "f9e4cbe6-e0a3-4abb-804d-19528f1ac919",
+                        "system": "urn:uuid:65f1c0a0-5fcc-409c-8bd0-097fe9458040",
+                        "code": "83396",
+                        "display": "Seizures",
+                        "_display": {
+                            "extension": [
+                                {
+                                    "url": "http://hl7.org/fhir/StructureDefinition/translation",
+                                    "extension": [
+                                        {
+                                            "url": "lang",
+                                            "valueCode": "es"
+                                        },
+                                        {
+                                            "url": "content",
+                                            "valueString": "Convulsiones"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "url": "http://hl7.org/fhir/StructureDefinition/translation",
+                                    "extension": [
+                                        {
+                                            "url": "lang",
+                                            "valueCode": "fr"
+                                        },
+                                        {
+                                            "url": "content",
+                                            "valueString": "Saisies"
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    }
+                },
+                {
+                    "valueCoding": {
+                        "id": "d734f8c0-614a-4f98-c269-8c38f57a62f6",
+                        "system": "urn:uuid:65f1c0a0-5fcc-409c-8bd0-097fe9458040",
+                        "code": "15587",
+                        "display": "Abscess",
+                        "_display": {
+                            "extension": [
+                                {
+                                    "url": "http://hl7.org/fhir/StructureDefinition/translation",
+                                    "extension": [
+                                        {
+                                            "url": "lang",
+                                            "valueCode": "es"
+                                        },
+                                        {
+                                            "url": "content",
+                                            "valueString": "Absceso"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "url": "http://hl7.org/fhir/StructureDefinition/translation",
+                                    "extension": [
+                                        {
+                                            "url": "lang",
+                                            "valueCode": "fr"
+                                        },
+                                        {
+                                            "url": "content",
+                                            "valueString": "Abcès"
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    }
+                },
+                {
+                    "valueCoding": {
+                        "id": "aedddae6-b8d3-4691-d627-fbb44b15d842",
+                        "system": "urn:uuid:65f1c0a0-5fcc-409c-8bd0-097fe9458040",
+                        "code": "63730",
+                        "display": "Sepsis",
+                        "_display": {
+                            "extension": [
+                                {
+                                    "url": "http://hl7.org/fhir/StructureDefinition/translation",
+                                    "extension": [
+                                        {
+                                            "url": "lang",
+                                            "valueCode": "es"
+                                        },
+                                        {
+                                            "url": "content",
+                                            "valueString": "Sepsis"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "url": "http://hl7.org/fhir/StructureDefinition/translation",
+                                    "extension": [
+                                        {
+                                            "url": "lang",
+                                            "valueCode": "fr"
+                                        },
+                                        {
+                                            "url": "content",
+                                            "valueString": "Sepsis"
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    }
+                },
+                {
+                    "valueCoding": {
+                        "id": "3d12a0cd-8b70-466a-8335-889e1ed71741",
+                        "system": "urn:uuid:65f1c0a0-5fcc-409c-8bd0-097fe9458040",
+                        "code": "22582",
+                        "display": "Encephalopathy",
+                        "_display": {
+                            "extension": [
+                                {
+                                    "url": "http://hl7.org/fhir/StructureDefinition/translation",
+                                    "extension": [
+                                        {
+                                            "url": "lang",
+                                            "valueCode": "es"
+                                        },
+                                        {
+                                            "url": "content",
+                                            "valueString": "Encefalopatía"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "url": "http://hl7.org/fhir/StructureDefinition/translation",
+                                    "extension": [
+                                        {
+                                            "url": "lang",
+                                            "valueCode": "fr"
+                                        },
+                                        {
+                                            "url": "content",
+                                            "valueString": "Encéphalopathie"
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    }
+                },
+                {
+                    "valueCoding": {
+                        "id": "ae28419c-bbfc-4ab6-cf8f-94b8e77df275",
+                        "system": "urn:uuid:65f1c0a0-5fcc-409c-8bd0-097fe9458040",
+                        "code": "14227",
+                        "display": "Toxic shock syndrome",
+                        "_display": {
+                            "extension": [
+                                {
+                                    "url": "http://hl7.org/fhir/StructureDefinition/translation",
+                                    "extension": [
+                                        {
+                                            "url": "lang",
+                                            "valueCode": "es"
+                                        },
+                                        {
+                                            "url": "content",
+                                            "valueString": "Síndrome de shock tóxico"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "url": "http://hl7.org/fhir/StructureDefinition/translation",
+                                    "extension": [
+                                        {
+                                            "url": "lang",
+                                            "valueCode": "fr"
+                                        },
+                                        {
+                                            "url": "content",
+                                            "valueString": "Syndrome du choc toxique"
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    }
+                },
+                {
+                    "valueCoding": {
+                        "id": "db16d360-da73-4f06-8d14-4ed3bffbbf51",
+                        "system": "urn:uuid:65f1c0a0-5fcc-409c-8bd0-097fe9458040",
+                        "code": "13201",
+                        "display": "Anaphylaxis",
+                        "_display": {
+                            "extension": [
+                                {
+                                    "url": "http://hl7.org/fhir/StructureDefinition/translation",
+                                    "extension": [
+                                        {
+                                            "url": "lang",
+                                            "valueCode": "es"
+                                        },
+                                        {
+                                            "url": "content",
+                                            "valueString": "Anafilaxia"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "url": "http://hl7.org/fhir/StructureDefinition/translation",
+                                    "extension": [
+                                        {
+                                            "url": "lang",
+                                            "valueCode": "fr"
+                                        },
+                                        {
+                                            "url": "content",
+                                            "valueString": "Anaphylaxie"
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    }
+                },
+                {
+                    "valueCoding": {
+                        "id": "649fe212-3b85-41cf-8954-62d23633e7dd",
+                        "system": "urn:uuid:65f1c0a0-5fcc-409c-8bd0-097fe9458040",
+                        "code": "98389",
+                        "display": "Fever",
+                        "_display": {
+                            "extension": [
+                                {
+                                    "url": "http://hl7.org/fhir/StructureDefinition/translation",
+                                    "extension": [
+                                        {
+                                            "url": "lang",
+                                            "valueCode": "es"
+                                        },
+                                        {
+                                            "url": "content",
+                                            "valueString": "Fiebre"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "url": "http://hl7.org/fhir/StructureDefinition/translation",
+                                    "extension": [
+                                        {
+                                            "url": "lang",
+                                            "valueCode": "fr"
+                                        },
+                                        {
+                                            "url": "content",
+                                            "valueString": "Fièvre"
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    }
+                },
+                {
+                    "valueCoding": {
+                        "id": "d554fcf9-92d1-464a-e5a0-111f3c3c7abd",
+                        "system": "urn:uuid:65f1c0a0-5fcc-409c-8bd0-097fe9458040",
+                        "code": "71977",
+                        "display": "Other",
+                        "_display": {
+                            "extension": [
+                                {
+                                    "url": "http://hl7.org/fhir/StructureDefinition/translation",
+                                    "extension": [
+                                        {
+                                            "url": "lang",
+                                            "valueCode": "es"
+                                        },
+                                        {
+                                            "url": "content",
+                                            "valueString": "Otro"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "url": "http://hl7.org/fhir/StructureDefinition/translation",
+                                    "extension": [
+                                        {
+                                            "url": "lang",
+                                            "valueCode": "fr"
+                                        },
+                                        {
+                                            "url": "content",
+                                            "valueString": "Autre"
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "linkId": "ce7ac789-2bef-411c-c181-c4b02a2d08c6",
+            "text": "Specify other type of reaction manifestation",
+            "_text": {
+                "extension": [
+                    {
+                        "url": "http://hl7.org/fhir/StructureDefinition/translation",
+                        "extension": [
+                            {
+                                "url": "lang",
+                                "valueCode": "es"
+                            },
+                            {
+                                "url": "content",
+                                "valueString": "Especificar otro tipo de manifestación de reacción"
+                            }
+                        ]
+                    },
+                    {
+                        "url": "http://hl7.org/fhir/StructureDefinition/translation",
+                        "extension": [
+                            {
+                                "url": "lang",
+                                "valueCode": "fr"
+                            },
+                            {
+                                "url": "content",
+                                "valueString": "Spécifier un autre type de manifestation de réaction"
+                            }
+                        ]
+                    }
+                ]
+            },
+            "type": "string",
+            "enableWhen": [
+                {
+                    "question": "a2f71c64-5ccc-4575-8638-d51aeefe6e6c",
+                    "operator": "=",
+                    "answerCoding": {
+                        "system": "urn:uuid:65f1c0a0-5fcc-409c-8bd0-097fe9458040",
+                        "code": "other"
+                    }
+                }
+            ],
+            "required": false
+        },
+        {
+            "linkId": "287f1e51-937b-4a44-ab72-6b82a0a1475f",
+            "text": "Type of reaction",
+            "_text": {
+                "extension": [
+                    {
+                        "url": "http://hl7.org/fhir/StructureDefinition/translation",
+                        "extension": [
+                            {
+                                "url": "lang",
+                                "valueCode": "es"
+                            },
+                            {
+                                "url": "content",
+                                "valueString": "Tipo de reacción"
+                            }
+                        ]
+                    },
+                    {
+                        "url": "http://hl7.org/fhir/StructureDefinition/translation",
+                        "extension": [
+                            {
+                                "url": "lang",
+                                "valueCode": "fr"
+                            },
+                            {
+                                "url": "content",
+                                "valueString": "Type de réaction"
+                            }
+                        ]
+                    }
+                ]
+            },
+            "type": "choice",
+            "required": false,
+            "answerOption": [
+                {
+                    "valueCoding": {
+                        "id": "f2ed6ab5-6b76-4420-88b4-2fb7c59c488d",
+                        "system": "urn:uuid:0b28611c-7e8f-42b9-fba2-968f1e4bf523",
+                        "code": "non-serious",
+                        "display": "Non serious",
+                        "_display": {
+                            "extension": [
+                                {
+                                    "url": "http://hl7.org/fhir/StructureDefinition/translation",
+                                    "extension": [
+                                        {
+                                            "url": "lang",
+                                            "valueCode": "es"
+                                        },
+                                        {
+                                            "url": "content",
+                                            "valueString": "No grave"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "url": "http://hl7.org/fhir/StructureDefinition/translation",
+                                    "extension": [
+                                        {
+                                            "url": "lang",
+                                            "valueCode": "fr"
+                                        },
+                                        {
+                                            "url": "content",
+                                            "valueString": "Non sérieux"
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    }
+                },
+                {
+                    "valueCoding": {
+                        "id": "eb7be9fb-a8d5-45e7-92ab-bf776f7623b9",
+                        "system": "urn:uuid:0b28611c-7e8f-42b9-fba2-968f1e4bf523",
+                        "code": "death",
+                        "display": "Death",
+                        "_display": {
+                            "extension": [
+                                {
+                                    "url": "http://hl7.org/fhir/StructureDefinition/translation",
+                                    "extension": [
+                                        {
+                                            "url": "lang",
+                                            "valueCode": "es"
+                                        },
+                                        {
+                                            "url": "content",
+                                            "valueString": "Muerte"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "url": "http://hl7.org/fhir/StructureDefinition/translation",
+                                    "extension": [
+                                        {
+                                            "url": "lang",
+                                            "valueCode": "fr"
+                                        },
+                                        {
+                                            "url": "content",
+                                            "valueString": "Mort"
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    }
+                },
+                {
+                    "valueCoding": {
+                        "id": "89051954-8a41-4789-ee4a-a325946a1975",
+                        "system": "urn:uuid:0b28611c-7e8f-42b9-fba2-968f1e4bf523",
+                        "code": "life-threatening",
+                        "display": "Life threatening",
+                        "_display": {
+                            "extension": [
+                                {
+                                    "url": "http://hl7.org/fhir/StructureDefinition/translation",
+                                    "extension": [
+                                        {
+                                            "url": "lang",
+                                            "valueCode": "es"
+                                        },
+                                        {
+                                            "url": "content",
+                                            "valueString": "Peligro de muerte"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "url": "http://hl7.org/fhir/StructureDefinition/translation",
+                                    "extension": [
+                                        {
+                                            "url": "lang",
+                                            "valueCode": "fr"
+                                        },
+                                        {
+                                            "url": "content",
+                                            "valueString": "Manger la vie"
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    }
+                },
+                {
+                    "valueCoding": {
+                        "id": "efa934bf-910d-4f0f-8378-ae6336f2d2c6",
+                        "system": "urn:uuid:0b28611c-7e8f-42b9-fba2-968f1e4bf523",
+                        "code": "disability",
+                        "display": "Disability",
+                        "_display": {
+                            "extension": [
+                                {
+                                    "url": "http://hl7.org/fhir/StructureDefinition/translation",
+                                    "extension": [
+                                        {
+                                            "url": "lang",
+                                            "valueCode": "es"
+                                        },
+                                        {
+                                            "url": "content",
+                                            "valueString": "Discapacidad"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "url": "http://hl7.org/fhir/StructureDefinition/translation",
+                                    "extension": [
+                                        {
+                                            "url": "lang",
+                                            "valueCode": "fr"
+                                        },
+                                        {
+                                            "url": "content",
+                                            "valueString": "Handicap"
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    }
+                },
+                {
+                    "valueCoding": {
+                        "id": "5e1e8f71-f348-4525-9c3f-e9984933e316",
+                        "system": "urn:uuid:0b28611c-7e8f-42b9-fba2-968f1e4bf523",
+                        "code": "hospitalization",
+                        "display": "Hospitalization",
+                        "_display": {
+                            "extension": [
+                                {
+                                    "url": "http://hl7.org/fhir/StructureDefinition/translation",
+                                    "extension": [
+                                        {
+                                            "url": "lang",
+                                            "valueCode": "es"
+                                        },
+                                        {
+                                            "url": "content",
+                                            "valueString": "Hospitalización"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "url": "http://hl7.org/fhir/StructureDefinition/translation",
+                                    "extension": [
+                                        {
+                                            "url": "lang",
+                                            "valueCode": "fr"
+                                        },
+                                        {
+                                            "url": "content",
+                                            "valueString": "Hospitalisation"
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    }
+                },
+                {
+                    "valueCoding": {
+                        "id": "7988bef0-ccb0-4b5b-90af-ff2f029541f6",
+                        "system": "urn:uuid:0b28611c-7e8f-42b9-fba2-968f1e4bf523",
+                        "code": "congenital-anomaly",
+                        "display": "Congenital anomaly",
+                        "_display": {
+                            "extension": [
+                                {
+                                    "url": "http://hl7.org/fhir/StructureDefinition/translation",
+                                    "extension": [
+                                        {
+                                            "url": "lang",
+                                            "valueCode": "es"
+                                        },
+                                        {
+                                            "url": "content",
+                                            "valueString": "Anomalía congénita"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "url": "http://hl7.org/fhir/StructureDefinition/translation",
+                                    "extension": [
+                                        {
+                                            "url": "lang",
+                                            "valueCode": "fr"
+                                        },
+                                        {
+                                            "url": "content",
+                                            "valueString": "Anomalie congénitale"
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    }
+                },
+                {
+                    "valueCoding": {
+                        "id": "3d737f31-b571-4d11-8ff8-729136bf2416",
+                        "system": "urn:uuid:0b28611c-7e8f-42b9-fba2-968f1e4bf523",
+                        "code": "other-important-medical-event-(specify)",
+                        "display": "Other important medical event (specify)",
+                        "_display": {
+                            "extension": [
+                                {
+                                    "url": "http://hl7.org/fhir/StructureDefinition/translation",
+                                    "extension": [
+                                        {
+                                            "url": "lang",
+                                            "valueCode": "es"
+                                        },
+                                        {
+                                            "url": "content",
+                                            "valueString": "Otro evento médico importante (especificar)"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "url": "http://hl7.org/fhir/StructureDefinition/translation",
+                                    "extension": [
+                                        {
+                                            "url": "lang",
+                                            "valueCode": "fr"
+                                        },
+                                        {
+                                            "url": "content",
+                                            "valueString": "Autre événement médical important (préciser)"
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "linkId": "5aac5579-3892-43e4-892b-e59d2cfdc796",
+            "text": "Specify Other important medical event ",
+            "_text": {
+                "extension": [
+                    {
+                        "url": "http://hl7.org/fhir/StructureDefinition/translation",
+                        "extension": [
+                            {
+                                "url": "lang",
+                                "valueCode": "es"
+                            },
+                            {
+                                "url": "content",
+                                "valueString": "Especificar otro evento médico importante"
+                            }
+                        ]
+                    },
+                    {
+                        "url": "http://hl7.org/fhir/StructureDefinition/translation",
+                        "extension": [
+                            {
+                                "url": "lang",
+                                "valueCode": "fr"
+                            },
+                            {
+                                "url": "content",
+                                "valueString": "Spécifier un autre événement médical important"
+                            }
+                        ]
+                    }
+                ]
+            },
+            "type": "string",
+            "enableWhen": [
+                {
+                    "question": "287f1e51-937b-4a44-ab72-6b82a0a1475f",
+                    "operator": "=",
+                    "answerCoding": {
+                        "system": "urn:uuid:0b28611c-7e8f-42b9-fba2-968f1e4bf523",
+                        "code": "other-important-medical-event-(specify)"
+                    }
+                }
+            ],
+            "required": false
+        },
+        {
+            "linkId": "9bbf6a69-3c16-4052-82a5-8ca9f9102ef3",
+            "text": "Reaction outcome",
+            "_text": {
+                "extension": [
+                    {
+                        "url": "http://hl7.org/fhir/StructureDefinition/translation",
+                        "extension": [
+                            {
+                                "url": "lang",
+                                "valueCode": "es"
+                            },
+                            {
+                                "url": "content",
+                                "valueString": "Resultado de la reacción"
+                            }
+                        ]
+                    },
+                    {
+                        "url": "http://hl7.org/fhir/StructureDefinition/translation",
+                        "extension": [
+                            {
+                                "url": "lang",
+                                "valueCode": "fr"
+                            },
+                            {
+                                "url": "content",
+                                "valueString": "Résultat de la réaction"
+                            }
+                        ]
+                    }
+                ]
+            },
+            "type": "choice",
+            "enableWhen": [
+                {
+                    "question": "287f1e51-937b-4a44-ab72-6b82a0a1475f",
+                    "operator": "!=",
+                    "answerCoding": {
+                        "system": "urn:uuid:0b28611c-7e8f-42b9-fba2-968f1e4bf523",
+                        "code": "death"
+                    }
+                }
+            ],
+            "required": false,
+            "answerOption": [
+                {
+                    "valueCoding": {
+                        "id": "7446e2fc-78d8-47e1-d73f-1d15ade5c22f",
+                        "system": "urn:uuid:2aae15e8-4873-4460-e111-470f2d5b3a40",
+                        "code": "died",
+                        "display": "Died",
+                        "_display": {
+                            "extension": [
+                                {
+                                    "url": "http://hl7.org/fhir/StructureDefinition/translation",
+                                    "extension": [
+                                        {
+                                            "url": "lang",
+                                            "valueCode": "es"
+                                        },
+                                        {
+                                            "url": "content",
+                                            "valueString": "Murió"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "url": "http://hl7.org/fhir/StructureDefinition/translation",
+                                    "extension": [
+                                        {
+                                            "url": "lang",
+                                            "valueCode": "fr"
+                                        },
+                                        {
+                                            "url": "content",
+                                            "valueString": "Décédé"
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    }
+                },
+                {
+                    "valueCoding": {
+                        "id": "164a3b04-caff-43be-9b68-77930c55f290",
+                        "system": "urn:uuid:2aae15e8-4873-4460-e111-470f2d5b3a40",
+                        "code": "recovered",
+                        "display": "Recovered",
+                        "_display": {
+                            "extension": [
+                                {
+                                    "url": "http://hl7.org/fhir/StructureDefinition/translation",
+                                    "extension": [
+                                        {
+                                            "url": "lang",
+                                            "valueCode": "es"
+                                        },
+                                        {
+                                            "url": "content",
+                                            "valueString": "Recuperado"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "url": "http://hl7.org/fhir/StructureDefinition/translation",
+                                    "extension": [
+                                        {
+                                            "url": "lang",
+                                            "valueCode": "fr"
+                                        },
+                                        {
+                                            "url": "content",
+                                            "valueString": "Récupéré"
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    }
+                },
+                {
+                    "valueCoding": {
+                        "id": "865f57a9-398d-4ebb-a850-74f580ce4e75",
+                        "system": "urn:uuid:2aae15e8-4873-4460-e111-470f2d5b3a40",
+                        "code": "recovered-with-sequelae",
+                        "display": "Recovered with sequelae",
+                        "_display": {
+                            "extension": [
+                                {
+                                    "url": "http://hl7.org/fhir/StructureDefinition/translation",
+                                    "extension": [
+                                        {
+                                            "url": "lang",
+                                            "valueCode": "es"
+                                        },
+                                        {
+                                            "url": "content",
+                                            "valueString": "Recuperado con secuelas"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "url": "http://hl7.org/fhir/StructureDefinition/translation",
+                                    "extension": [
+                                        {
+                                            "url": "lang",
+                                            "valueCode": "fr"
+                                        },
+                                        {
+                                            "url": "content",
+                                            "valueString": "Récupéré avec des séquelles"
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    }
+                },
+                {
+                    "valueCoding": {
+                        "id": "2d49f308-442c-4eb5-8ffb-8055189d9aa3",
+                        "system": "urn:uuid:2aae15e8-4873-4460-e111-470f2d5b3a40",
+                        "code": "recovering",
+                        "display": "Recovering",
+                        "_display": {
+                            "extension": [
+                                {
+                                    "url": "http://hl7.org/fhir/StructureDefinition/translation",
+                                    "extension": [
+                                        {
+                                            "url": "lang",
+                                            "valueCode": "es"
+                                        },
+                                        {
+                                            "url": "content",
+                                            "valueString": "Recuperando"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "url": "http://hl7.org/fhir/StructureDefinition/translation",
+                                    "extension": [
+                                        {
+                                            "url": "lang",
+                                            "valueCode": "fr"
+                                        },
+                                        {
+                                            "url": "content",
+                                            "valueString": "Récupération"
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    }
+                },
+                {
+                    "valueCoding": {
+                        "id": "22ff649b-7479-45da-f097-d4efee63588c",
+                        "system": "urn:uuid:2aae15e8-4873-4460-e111-470f2d5b3a40",
+                        "code": "not-recovered",
+                        "display": "Not recovered",
+                        "_display": {
+                            "extension": [
+                                {
+                                    "url": "http://hl7.org/fhir/StructureDefinition/translation",
+                                    "extension": [
+                                        {
+                                            "url": "lang",
+                                            "valueCode": "es"
+                                        },
+                                        {
+                                            "url": "content",
+                                            "valueString": "No recuperado"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "url": "http://hl7.org/fhir/StructureDefinition/translation",
+                                    "extension": [
+                                        {
+                                            "url": "lang",
+                                            "valueCode": "fr"
+                                        },
+                                        {
+                                            "url": "content",
+                                            "valueString": "Non récupéré"
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "extension": [
+                {
+                    "url": "http://hl7.org/fhir/StructureDefinition/maxValue",
+                    "_valueDate": {
+                        "extension": [
+                            {
+                                "url": "http://hl7.org/fhir/StructureDefinition/cqf-calculatedValue",
+                                "valueExpression": {
+                                    "language": "text/fhirpath",
+                                    "expression": "today()"
+                                }
+                            }
+                        ]
+                    }
+                },
+                {
+                    "url": "http://hl7.org/fhir/StructureDefinition/minValue",
+                    "_valueDate": {
+                        "extension": [
+                            {
+                                "url": "http://hl7.org/fhir/StructureDefinition/cqf-calculatedValue",
+                                "valueExpression": {
+                                    "language": "text/fhirpath",
+                                    "expression": "today() - (((%resource.descendants().where(linkId='patient-age-in-years').answer.value * 365) + (iif((today().toString().substring(5, 2).toInteger().round() - %resource.descendants().where(linkId='patient-birthdate').answer.value.toString().substring(5, 2).toInteger().round()) < 0, 12 - (today().toString().substring(5, 2).toInteger().round() - %resource.descendants().where(linkId='patient-birthdate').answer.value.toString().substring(5, 2).toInteger().round()).toInteger() * (-1), today().toString().substring(5, 2).toInteger().round() - %resource.descendants().where(linkId='patient-birthdate').answer.value.toString().substring(5, 2).toInteger().round()) * 30.4167) + iif((today().toString().substring(8, 2).toInteger().round() - %resource.descendants().where(linkId='patient-birthdate').answer.value.toString().substring(8, 2).toInteger().round()) < 0, 30.4167 - (today().toString().substring(8, 2).toInteger().round() - %resource.descendants().where(linkId='patient-birthdate').answer.value.toString().substring(8, 2).toInteger().round()).toInteger() * (-1), today().toString().substring(8, 2).toInteger().round() - %resource.descendants().where(linkId='patient-birthdate').answer.value.toString().substring(8, 2).toInteger().round())).round().toString() + ' days').toQuantity()"
+                                }
+                            }
+                        ]
+                    }
+                }
+            ],
+            "linkId": "670552cf-cd9e-4596-9d89-5d6e4872d523",
+            "text": "Date of Death",
+            "_text": {
+                "extension": [
+                    {
+                        "url": "http://hl7.org/fhir/StructureDefinition/translation",
+                        "extension": [
+                            {
+                                "url": "lang",
+                                "valueCode": "es"
+                            },
+                            {
+                                "url": "content",
+                                "valueString": "Fecha de muerte"
+                            }
+                        ]
+                    },
+                    {
+                        "url": "http://hl7.org/fhir/StructureDefinition/translation",
+                        "extension": [
+                            {
+                                "url": "lang",
+                                "valueCode": "fr"
+                            },
+                            {
+                                "url": "content",
+                                "valueString": "Date de décès"
+                            }
+                        ]
+                    }
+                ]
+            },
+            "type": "date",
+            "enableWhen": [
+                {
+                    "question": "287f1e51-937b-4a44-ab72-6b82a0a1475f",
+                    "operator": "=",
+                    "answerCoding": {
+                        "system": "urn:uuid:0b28611c-7e8f-42b9-fba2-968f1e4bf523",
+                        "code": "death"
+                    }
+                },
+                {
+                    "question": "9bbf6a69-3c16-4052-82a5-8ca9f9102ef3",
+                    "operator": "=",
+                    "answerCoding": {
+                        "system": "urn:uuid:2aae15e8-4873-4460-e111-470f2d5b3a40",
+                        "code": "died"
+                    }
+                }
+            ],
+            "enableBehavior": "any",
+            "required": true
+        },
+        {
+            "extension": [
+                {
+                    "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+                    "valueCodeableConcept": {
+                        "coding": [
+                            {
+                                "system": "http://hl7.org/fhir/ValueSet/questionnaire-item-control",
+                                "code": "drop-down"
+                            }
+                        ]
+                    }
+                }
+            ],
+            "linkId": "referred",
+            "text": "Was the patient referred?",
+            "_text": {
+                "extension": [
+                    {
+                        "url": "http://hl7.org/fhir/StructureDefinition/translation",
+                        "extension": [
+                            {
+                                "url": "lang",
+                                "valueCode": "es"
+                            },
+                            {
+                                "url": "content",
+                                "valueString": "¿El paciente fue remitido?"
+                            }
+                        ]
+                    },
+                    {
+                        "url": "http://hl7.org/fhir/StructureDefinition/translation",
+                        "extension": [
+                            {
+                                "url": "lang",
+                                "valueCode": "fr"
+                            },
+                            {
+                                "url": "content",
+                                "valueString": "Le patient a-t-il été référé ?"
+                            }
+                        ]
+                    }
+                ]
+            },
+            "type": "choice",
+            "enableWhen": [
+                {
+                    "question": "670552cf-cd9e-4596-9d89-5d6e4872d523",
+                    "operator": "exists",
+                    "answerBoolean": false
+                }
+            ],
+            "required": true,
+            "answerOption": [
+                {
+                    "valueCoding": {
+                        "id": "ab3f0a15-0964-4af0-89a4-54bd21111418",
+                        "system": "urn:uuid:220f33dc-4fc6-4a6b-c16f-006ea550cf52",
+                        "code": "yes",
+                        "display": "Yes",
+                        "_display": {
+                            "extension": [
+                                {
+                                    "url": "http://hl7.org/fhir/StructureDefinition/translation",
+                                    "extension": [
+                                        {
+                                            "url": "lang",
+                                            "valueCode": "es"
+                                        },
+                                        {
+                                            "url": "content",
+                                            "valueString": "Sí"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "url": "http://hl7.org/fhir/StructureDefinition/translation",
+                                    "extension": [
+                                        {
+                                            "url": "lang",
+                                            "valueCode": "fr"
+                                        },
+                                        {
+                                            "url": "content",
+                                            "valueString": "Oui"
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    }
+                },
+                {
+                    "valueCoding": {
+                        "id": "d9dce381-acaf-4098-e17b-669707b17ead",
+                        "system": "urn:uuid:220f33dc-4fc6-4a6b-c16f-006ea550cf52",
+                        "code": "no",
+                        "display": "No",
+                        "_display": {
+                            "extension": [
+                                {
+                                    "url": "http://hl7.org/fhir/StructureDefinition/translation",
+                                    "extension": [
+                                        {
+                                            "url": "lang",
+                                            "valueCode": "es"
+                                        },
+                                        {
+                                            "url": "content",
+                                            "valueString": "No"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "url": "http://hl7.org/fhir/StructureDefinition/translation",
+                                    "extension": [
+                                        {
+                                            "url": "lang",
+                                            "valueCode": "fr"
+                                        },
+                                        {
+                                            "url": "content",
+                                            "valueString": "Non"
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "extension": [
+                {
+                    "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+                    "valueCodeableConcept": {
+                        "coding": [
+                            {
+                                "system": "http://hl7.org/fhir/ValueSet/questionnaire-item-control",
+                                "code": "drop-down"
+                            }
+                        ]
+                    }
+                }
+            ],
+            "linkId": "aefi-form-completed",
+            "text": "Adverse Events Following Immunization (AEFI) form completed?",
+            "_text": {
+                "extension": [
+                    {
+                        "url": "http://hl7.org/fhir/StructureDefinition/translation",
+                        "extension": [
+                            {
+                                "url": "lang",
+                                "valueCode": "es"
+                            },
+                            {
+                                "url": "content",
+                                "valueString": "¿Formulario de Notificación Efecto Adverso Supuestamente Atribuible a la Vacunación e Inmunización (ESAVI) completado?"
+                            }
+                        ]
+                    },
+                    {
+                        "url": "http://hl7.org/fhir/StructureDefinition/translation",
+                        "extension": [
+                            {
+                                "url": "lang",
+                                "valueCode": "fr"
+                            },
+                            {
+                                "url": "content",
+                                "valueString": "Formulaire de notification des manifestations postvaccinales indésirables (MAPI) complété?"
+                            }
+                        ]
+                    }
+                ]
+            },
+            "type": "choice",
+            "required": false,
+            "answerOption": [
+                {
+                    "valueCoding": {
+                        "id": "c8e493d3-84d5-4744-cb8f-912c37c97cef",
+                        "system": "urn:uuid:d63e420a-b83d-4954-d1a2-a46497760fa8",
+                        "code": "yes",
+                        "display": "Yes",
+                        "_display": {
+                            "extension": [
+                                {
+                                    "url": "http://hl7.org/fhir/StructureDefinition/translation",
+                                    "extension": [
+                                        {
+                                            "url": "lang",
+                                            "valueCode": "es"
+                                        },
+                                        {
+                                            "url": "content",
+                                            "valueString": "Sí"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "url": "http://hl7.org/fhir/StructureDefinition/translation",
+                                    "extension": [
+                                        {
+                                            "url": "lang",
+                                            "valueCode": "fr"
+                                        },
+                                        {
+                                            "url": "content",
+                                            "valueString": "Oui"
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    }
+                },
+                {
+                    "valueCoding": {
+                        "id": "37c938fb-3bc7-437b-c921-615f77a6494e",
+                        "system": "urn:uuid:d63e420a-b83d-4954-d1a2-a46497760fa8",
+                        "code": "no",
+                        "display": "No",
+                        "_display": {
+                            "extension": [
+                                {
+                                    "url": "http://hl7.org/fhir/StructureDefinition/translation",
+                                    "extension": [
+                                        {
+                                            "url": "lang",
+                                            "valueCode": "es"
+                                        },
+                                        {
+                                            "url": "content",
+                                            "valueString": "No"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "url": "http://hl7.org/fhir/StructureDefinition/translation",
+                                    "extension": [
+                                        {
+                                            "url": "lang",
+                                            "valueCode": "fr"
+                                        },
+                                        {
+                                            "url": "content",
+                                            "valueString": "Non"
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    }
+                }
+            ]
+        }
+    ]
+}
