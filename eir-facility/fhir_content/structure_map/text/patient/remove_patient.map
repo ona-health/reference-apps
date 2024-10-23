@@ -1,0 +1,93 @@
+map "https://fhir.demo.smartregister.org/fhir/StructureMap/e6d949ee-405c-4d41-88d1-af815559cb9f" = 'RemovePatient'
+
+uses "http://hl7.org/fhir/StructureDefinition/QuestionnaireResponse" as source
+uses "http://hl7.org/fhir/StructureDefinition/Bundle" as target
+
+group RemovePatient(source src: QuestionnaireResponse, target bundle: Bundle) {
+    src -> bundle.id, bundle.type = 'collection'
+    then ExtractEncounter(src, bundle),
+        SetPatientActiveAsFalse(src, bundle) "r_extract_obs";
+}
+
+group ExtractEncounter(source src: QuestionnaireResponse, target bundle: Bundle) {
+    src -> bundle.entry as entry, entry.resource = create("Encounter") as encounter then {
+        src -> encounter.id = uuid(),
+            encounter.status = 'finished',
+            encounter.class = c("http://terminology.hl7.org/CodeSystem/v3-ActCode", "HH", "home health") "r_en_static";
+
+        src -> encounter.type = create('CodeableConcept') as concept then {
+            src -> concept.coding = c("https://smartregister.org/", "remove_patient") as coding then {
+                src -> coding.display = "Remove Patient" "r_en_type_coding_display";
+            } "r_en_type_coding";
+            src -> concept.text = "Remove Patient" "r_en_type_text";
+        } "r_en_type";
+
+        src -> encounter.priority = create('CodeableConcept') as priority then {
+            src -> priority.coding = c("http://terminology.hl7.org/ValueSet/v3-ActPriority", "EL") as priorityCoding then {
+                src -> priorityCoding.display = "Elective" "r_en_priority_coding_display";
+            } "r_en_priority_coding";
+            src -> priority.text = "Elective" "r_en_priority_coding_text";
+        } "r_en_priority";
+
+        src.subject as subject -> encounter.subject = subject "r_en_subject";
+
+        // when no date is entered
+        src -> encounter.period = create('Period') as enPeriod then {
+            src -> enPeriod.start = evaluate(src, now()) "r_en_per_start";
+            src -> enPeriod.end = evaluate(src, now()) "r_en_per_end";
+        } "r_en_period";
+        // date moved entered
+        src.item as item where($this.linkId.where(contains('b6c21488-87b8-4213-8cd0-d482367669c1')).exists()) then {
+            src -> encounter.period = create('Period') as enPeriod then {
+                src -> evaluate(src, $this.item.where(linkId="b6c21488-87b8-4213-8cd0-d482367669c1").answer.value) as dateMoved then {
+                    src -> enPeriod.start = create('dateTime') as date,
+                        date.value = evaluate(dateMoved, $this.value.substring(0, 10) + 'T00:00:00.00Z') "r_en_period_moved_value_start";
+
+                    src -> enPeriod.end = create('dateTime') as date,
+                        date.value = evaluate(dateMoved, $this.value.substring(0, 10) + 'T00:00:00.00Z') "r_en_period_moved_value_end";
+                } "r_en_period_moved_value";
+            } "r_en_period_moved_period";
+        } "r_en_period_moved";
+        // date of death entered
+        src.item as item where($this.linkId.where(contains('17b7fda5-514c-4408-88e7-52313ab0ef2f')).exists()) then {
+            src -> encounter.period = create('Period') as enPeriod then {
+                src -> evaluate(src, $this.item.where(linkId="17b7fda5-514c-4408-88e7-52313ab0ef2f").answer.value) as dateDied then {
+                    src -> enPeriod.start = create('dateTime') as date,
+                        date.value = evaluate(dateDied, $this.value.substring(0, 10) + 'T00:00:00.00Z') "r_en_period_died_value_start";
+
+                    src -> enPeriod.end = create('dateTime') as date,
+                        date.value = evaluate(dateDied, $this.value.substring(0, 10) + 'T00:00:00.00Z') "r_en_period_died_value_end";
+                } "r_en_period_died_value";
+            } "r_en_period_died_period";
+        } "r_en_period_died";
+
+        src -> evaluate(src, $this.item.where(linkId="f83bb7c0-dfd6-4aa8-9cb9-89d48b8040ff").answer.value.code) as reasonForRemoval then {
+            src -> encounter.reasonCode = create('CodeableConcept') as reason then {
+                src -> reason.coding = c("https://smartregister.org/", reasonForRemoval) as reasonCoding then {
+                    src -> reasonCoding.display = evaluate(src, $this.item.where(linkId="f83bb7c0-dfd6-4aa8-9cb9-89d48b8040ff").answer.value.display) "r_en_reason_value_disp";
+                } "r_en_priority_coding";
+                
+                src -> reason.text = evaluate(src, $this.item.where(linkId="8489d249-1ef3-4edb-aa99-b5713fd2cb0a").answer.value) "r_en_reason_value_text";
+            } "r_en_reason";
+        } "r_patient_deceased_value";
+    } "r_en_bundle";
+}
+
+group SetPatientActiveAsFalse(source src: QuestionnaireResponse, target bundle: Bundle) {
+    src.item as item where($this.linkId.where(contains('a11ebb0d-acb3-4038-956b-293a41acb85b')).exists()) then {
+        src -> bundle.entry as entry, entry.resource = create("Patient") as patient then {
+            src -> patient.id = create("id") as patient_id then {
+                src -> patient_id.value = evaluate(item, $this.answer.value) "r_patient_id_value";
+            } "r_patient_id";
+            
+            src -> patient.active = false "r_patient_active";
+
+            src.item as item where($this.linkId.where(contains('17b7fda5-514c-4408-88e7-52313ab0ef2f')).exists()) then {
+                src -> evaluate(src, $this.item.where(linkId="17b7fda5-514c-4408-88e7-52313ab0ef2f").answer.value) as dateOfDeath then {
+                    src -> patient.deceased = create('dateTime') as date,
+                        date.value = evaluate(dateOfDeath, $this.value.substring(0, 10) + 'T00:00:00.00Z') "r_patient_deceased_value_dod";
+                } "r_patient_deceased_value";
+            } "r_patient_deceased";
+        } "r_patient_bundle";
+    } "r_patient";
+}

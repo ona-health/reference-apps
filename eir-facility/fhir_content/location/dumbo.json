@@ -1,0 +1,48 @@
+{
+  "resourceType": "Location",
+  "id": "Dumbo",
+  "meta": {
+    "versionId": "1",
+    "lastUpdated": "2024-10-08T13:04:00.175+00:00",
+    "source": "#80d4b10683b61916"
+  },
+  "identifier": [
+    {
+      "use": "official",
+      "value": "1f4c75e1-6523-42d9-b5b8-4b213ee48d45"
+    }
+  ],
+  "status": "active",
+  "name": "Dumbo",
+  "alias": [
+    "Kabete"
+  ],
+  "type": [
+    {
+      "coding": [
+        {
+          "system": "http://terminology.hl7.org/CodeSystem/location-physical-type",
+          "code": "bu",
+          "display": "Building"
+        }
+      ]
+    }
+  ],
+  "physicalType": {
+    "coding": [
+      {
+        "system": "http://terminology.hl7.org/CodeSystem/location-physical-type",
+        "code": "bu",
+        "display": "Building"
+      }
+    ]
+  },
+  "position": {
+    "longitude": 36.8025,
+    "latitude": -1.2591
+  },
+  "partOf": {
+    "reference": "Location/RegionB",
+    "display": "RegionB"
+  }
+}

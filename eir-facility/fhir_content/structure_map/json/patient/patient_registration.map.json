@@ -1,0 +1,2886 @@
+{
+  "resourceType": "StructureMap",
+  "id": "1167492f-bdd6-46d4-8a8d-7dd8d5ad3d3a",
+  "text": {
+    "status": "additional",
+    "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><pre>map &quot;https://fhir.demo.smartregister.org/fhir/StructureMap/1167492f-bdd6-46d4-8a8d-7dd8d5ad3d3a&quot; = 'PatientRegistration'\n\nuses &quot;http://hl7.org/fhir/StructureDefinition/QuestionnaireReponse&quot; as source\nuses &quot;http://hl7.org/fhir/StructureDefinition/Patient&quot; as target\n\ngroup EirPatientRegistration(source src: QuestionnaireResponse, target bundle: Bundle) {\n    src -&gt; bundle.id = uuid(),\n        bundle.type = 'collection' &quot;r_bundle_static&quot;;\n    src -&gt; bundle.entry as entry,\n        entry.resource = create('RelatedPerson') as caregiver then\n            ExtractRelatedPerson(src, caregiver, bundle) &quot;r_bundle&quot;;\n}\n\ngroup ExtractRelatedPerson(source src: QuestionnaireResponse, target caregiver: RelatedPerson, target bundle: Bundle) {\n    src -&gt; caregiver.id = uuid() &quot;r_related_person_id&quot;;\n\n\tsrc.item where(linkId = 'is-edit-profile' and (answer.exists().not() or answer.value = false)) then {\n\t\tsrc -&gt; bundle.entry as entry, entry.resource = create('Encounter') as encounter then\n            ExtractEncounter(src, encounter, bundle),\n            ExtractLocation(src, caregiver, encounter, bundle) &quot;r_bundle_entries&quot;;\n\t} &quot;r_is_edit_profile&quot;;\n\n\n\n    src.item where(linkId = 'caregiver-id' and answer.value.exists()) then {\n        src -&gt; caregiver.id = create(&quot;id&quot;) as patient_id then {\n            src -&gt; patient_id.value = evaluate(src, $this.item.where(linkId='caregiver-id').answer.value.trim()) &quot;r_related_person_id_value&quot;;\n        } &quot;r_related_person_cnd_id&quot;;\n    } &quot;r_related_person_id_value_check&quot;;\n\n    src -&gt; caregiver.active = true &quot;r_related_person_active&quot;;\n\n    src -&gt; caregiver.identifier = create('Identifier') as clientId then {\n        src -&gt; clientId.use = &quot;usual&quot; &quot;r_related_person_identifier_path_eir_id_use&quot;;\n        src -&gt; clientId.system = &quot;https://fhir.demo.smartregister.org/fhir/eir-id&quot; &quot;r_related_person_identifier_path_eir_id_system&quot;;\n        src -&gt; clientId.value = evaluate(src, $this.item.where(linkId = '0d77d40f-098b-4329-9199-33b6e77aa864').answer.value) &quot;r_related_person_identifier_path_eir_id_value&quot;;\n    } &quot;r_related_person_identifier_path_eir_id&quot;;\n\n    src -&gt; caregiver.name = create('HumanName') as patientName then {\n        src -&gt; patientName.use = 'official' &quot;r_related_person_name_use&quot;;\n        src -&gt; patientName.text = evaluate(src, ($this.item.where(linkId = '9d017fa4-56d3-4d9b-b5f6-f9b3ba7d17a3').answer.value | $this.item.where(linkId = '7b41d922-376c-49bf-f6a8-faaa681e9ef6').answer.value | $this.item.where(linkId = '76bad83a-f061-4b22-8b4f-a95cbd5be4da').answer.value).join(' ').trim()) &quot;r_related_person_name_full&quot;;\n\n        src -&gt; patientName.given = evaluate(src, ($this.item.where(linkId = '9d017fa4-56d3-4d9b-b5f6-f9b3ba7d17a3').answer.value.trim())) &quot;r_related_person_name_given_first&quot;;\n\n        src.item where(linkId = '7b41d922-376c-49bf-f6a8-faaa681e9ef6' and answer.value.exists()) then {\n            src -&gt; patientName.given = evaluate(src, $this.item.where(linkId = '7b41d922-376c-49bf-f6a8-faaa681e9ef6').answer.value.trim()) &quot;r_related_person_name_given_middle&quot;;\n        } &quot;r_related_person_name_given_middle_check&quot;;\n\n        src -&gt; patientName.family = evaluate(src, $this.item.where(linkId = '76bad83a-f061-4b22-8b4f-a95cbd5be4da').answer.value.trim()) &quot;r_related_person_family_name_family&quot;;\n    } &quot;r_related_person_name&quot;;\n\n    src.item as patientDob where(linkId = 'aa1ddb98-87a4-48a6-9d8c-4c80de1ec277') then {\n        patientDob.answer first as birthDate then {\n            birthDate.value as val -&gt; caregiver.birthDate = val &quot;r_related_person_dob_answer_value&quot;;\n        } &quot;r_related_person_dob_answer&quot;;\n    } &quot;r_related_person_dob&quot;;\n\n        src.item where(linkId = '8ebf5364-6bdc-4e45-89a7-28c65ce019b7' and answer.value &gt; 0) then {\n            src.item as relatedPersonAge where(linkId = '8ebf5364-6bdc-4e45-89a7-28c65ce019b7') -&gt; caregiver.birthDate = evaluate(relatedPersonAge, today() - (($this.answer.value * 365 + 1).toString() + &quot; days&quot;).toQuantity()) &quot;r_related_person_age_years&quot;;\n        } &quot;r_related_person_age&quot;;\n\n    src.item where(linkId = '50330b11-c520-4f45-a8f4-44771097788d' and answer.value.code = &quot;male&quot;) then {\n        src -&gt; caregiver.gender = &quot;male&quot; &quot;r_related_person_gender_male&quot;;\n    } &quot;r_related_person_gender_male&quot;;\n\n    src.item where(linkId = '50330b11-c520-4f45-a8f4-44771097788d' and answer.value.code = &quot;female&quot;) then {\n        src -&gt; caregiver.gender = &quot;female&quot; &quot;r_related_person_gender_female&quot;;\n    } &quot;r_related_person_gender_female&quot;;\n\n    src.item where(linkId = '50330b11-c520-4f45-a8f4-44771097788d' and answer.value.code = &quot;biological-sex-not-specified&quot;) then {\n        src -&gt; caregiver.gender = &quot;other&quot; &quot;r_related_person_gender_unspecified&quot;;\n\n        src -&gt; caregiver.extension = create('Extension') as extension then {\n            src -&gt; extension.url = &quot;http://example.org/sexual-orientation&quot; &quot;r_related_person_gender_unspecified_url&quot;;\n            src -&gt; extension.value = create('CodeableConcept') as concept then {\n                src -&gt; concept.coding = c(&quot;http://terminology.hl7.org/CodeSystem/v3-NullFlavor&quot;, &quot;OTH&quot;) as coding then {\n                    src -&gt; coding.display = 'Other' &quot;r_related_person_gender_unspecified_ext_coding_display&quot;;\n                } &quot;r_related_person_gender_unspecified_ext_coding&quot;;\n\n                src -&gt; concept.coding = c(&quot;http://example.org/sexual-orientation&quot;, &quot;NA&quot;) as coding then {\n                    src -&gt; coding.display = 'Biological sex not specified' &quot;r_related_person_gender_unspecified_ext_orientation_coding_display&quot;;\n                } &quot;r_related_person_gender_unspecified_ext_orientation_coding&quot;;\n                src -&gt; concept.text = 'Unspecified' &quot;r_related_person_gender_unspecified_ext_orientation_coding_text&quot;;\n            } &quot;r_related_person_gender_unspecified_ext_value&quot;;\n        } &quot;r_related_person_gender_unspecified_ext&quot;;\n    } &quot;r_related_person_gender_unspecified&quot;;\n\n    src.item where(linkId = '50330b11-c520-4f45-a8f4-44771097788d' and answer.value.code = &quot;intersex&quot;) then {\n        src -&gt; caregiver.gender = &quot;other&quot; &quot;r_related_person_gender_intersex&quot;;\n\n        src -&gt; caregiver.extension = create('Extension') as extension then {\n            src -&gt; extension.url = &quot;http://example.org/sexual-orientation&quot; &quot;r_related_person_gender_intersex_url&quot;;\n            src -&gt; extension.value = create('CodeableConcept') as concept then {\n                src -&gt; concept.coding = c(&quot;http://terminology.hl7.org/CodeSystem/v3-NullFlavor&quot;, &quot;OTH&quot;) as coding then {\n                    src -&gt; coding.display = 'Other' &quot;r_related_person_gender_intersex_ext_coding_display&quot;;\n                } &quot;r_related_person_gender_intersex_ext_coding&quot;;\n\n                    src -&gt; concept.coding = c(&quot;http://example.org/sexual-orientation&quot;, &quot;NA&quot;) as coding then {\n                        src -&gt; coding.display = 'Intersex' &quot;r_related_person_gender_intersex_ext_orientation_coding_display&quot;;\n                    } &quot;r_related_person_gender_intersex_ext_orientation_coding&quot;;\n                    src -&gt; concept.text = 'Intersex' &quot;r_related_person_gender_intersex_ext_orientation_coding_text&quot;;\n                } &quot;r_related_person_gender_intersex_ext_value&quot;;\n            } &quot;r_related_person_gender_intersex_ext&quot;;\n        } &quot;r_related_person_gender_intersex&quot;;\n\n    src.item where(linkId = '8d420cab-a72b-4190-ff05-306135edb39e' and answer.value.exists()) then {\n        src -&gt; caregiver.identifier = create('Identifier') as nationalIdNumber then {\n            src -&gt; nationalIdNumber.use = &quot;official&quot; &quot;r_related_person_identifier_national_id_use&quot;;\n            src -&gt; nationalIdNumber.system = evaluate(src, $this.item.where(linkId = '59d21749-f4d7-4725-bec5-e924d3ce1eeb').answer.value.system) &quot;r_related_person_identifier_national_id_system&quot;;\n            src -&gt; nationalIdNumber.value = evaluate(src, $this.item.where(linkId = '8d420cab-a72b-4190-ff05-306135edb39e').answer.value) &quot;r_related_person_identifier_national_id_value&quot;;\n        } &quot;r_related_person_identifier_national_id&quot;;\n    } &quot;r_related_person_identifier_national_id_check&quot;;\n\n    src.item where(linkId = '30667e76-8f1c-452c-cecd-fb99dfea485c' and answer.value.exists()) then {\n        src -&gt; caregiver.identifier = create('Identifier') as vaccinationCardNumber then {\n            src -&gt; vaccinationCardNumber.use = &quot;official&quot; &quot;r_related_person_identifier_vaccination_card_number_use&quot;;\n            src -&gt; vaccinationCardNumber.system = &quot;https://fhir.demo.smartregister.org/fhir/vaccination-card-number&quot; &quot;r_related_person_identifier_vaccination_card_number_system&quot;;\n            src -&gt; vaccinationCardNumber.value = evaluate(src, $this.item.where(linkId = '30667e76-8f1c-452c-cecd-fb99dfea485c').answer.value) &quot;r_related_person_identifier_vaccination_card_number_value&quot;;\n        } &quot;r_related_person_identifier_id_national_id&quot;;\n    } &quot;r_related_person_identifier_vaccination_card_number_check&quot;;\n\n    src.item as item where($this.linkId.where(contains('06cbf2e9-3643-4c7b-80f6-f145126034da')).exists() and $this.answer.value.exists()) then {\n        src -&gt; caregiver.telecom = create('ContactPoint') as relatedPersonContact then {\n            src -&gt; relatedPersonContact.value = evaluate(src, $this.item.where(linkId = '06cbf2e9-3643-4c7b-80f6-f145126034da').answer.value) &quot;r_related_person_tel_num&quot;;\n            src -&gt; relatedPersonContact.system = &quot;phone&quot; &quot;r_related_person_tel_sys&quot;;\n        } &quot;r_related_person_tel&quot;;\n    }  &quot;r_related_person_tel&quot;;\n\n    src -&gt; caregiver.address = create('Address') as patientAddress then {\n        src -&gt; patientAddress.use = &quot;home&quot; &quot;r_related_person_address_use&quot;;\n        src -&gt; patientAddress.type = &quot;physical&quot; &quot;r_related_person_address_type&quot;;\n        src -&gt; patientAddress.text = evaluate(src, $this.item.where(linkId ='73e1680b-23f6-41b4-c0d7-7f14b8b6a758').answer.value) &quot;r_related_person_address_text_home_address&quot;;\n    } &quot;r_related_person_address&quot;;\n}\n\ngroup ExtractEncounter(source src: QuestionnaireResponse, target encounter: Encounter, target bundle: Bundle) {\n    src -&gt; encounter.id = uuid(),\n        encounter.status = 'finished',\n        encounter.class = c(&quot;http://terminology.hl7.org/CodeSystem/v3-ActCode&quot;, &quot;HH&quot;) &quot;r_en_static&quot;;\n\n    src -&gt; encounter.type = create('CodeableConcept') as concept then {\n        src -&gt; concept.coding = create(&quot;Coding&quot;) as coding then {\n            src -&gt; coding.system = &quot;http://smartregister.org&quot; &quot;r_en_type_coding_system&quot;;\n            src -&gt; coding.code = &quot;184048005&quot; &quot;r_en_type_coding_code&quot;;\n            src -&gt; coding.display = &quot;Registration&quot; &quot;r_en_type_coding_display&quot;;\n        } &quot;r_en_type_coding&quot;;\n        src -&gt; concept.text = &quot;Registration&quot; &quot;r_en_type_text&quot;;\n    } &quot;r_en_type&quot;;\n\n    src -&gt; encounter.priority = create('CodeableConcept') as concept then {\n        src -&gt; concept.coding = create(&quot;Coding&quot;) as coding then {\n            src -&gt; coding.system = &quot;http://terminology.hl7.org/ValueSet/v3-ActPriority&quot; &quot;r_en_priority_coding_system&quot;;\n            src -&gt; coding.code = &quot;EL&quot; &quot;r_en_priority_coding_code&quot;;\n            src -&gt; coding.display = &quot;elective&quot; &quot;r_en_priority_coding_display&quot;;\n        } &quot;r_en_priority_coding&quot;;\n        src -&gt; concept.text = 'elective' &quot;r_en_priority_text&quot;;\n    } &quot;r_en_priority&quot;;\n\n    src -&gt; encounter.period = create('Period') as enPeriod then {\n        src -&gt; enPeriod.start = evaluate(src, now()) &quot;r_en_period_start&quot;;\n        src -&gt; enPeriod.end = evaluate(src, now()) &quot;r_en_period_end&quot;;\n    } &quot;r_en_period&quot;;\n\n    src -&gt; encounter.reasonCode = create('CodeableConcept') as concept then {\n        src -&gt; concept.coding = create(&quot;Coding&quot;) as coding then {\n            src -&gt; coding.system = &quot;http://smartregsiter.org/&quot; &quot;r_en_reason_code_coding_system&quot;;\n            src -&gt; coding.code = &quot;patient_registration&quot; &quot;r_en_reason_code_coding_code&quot;;\n            src -&gt; coding.display = &quot;Patient Registration&quot; &quot;r_en_reason_code_coding_display&quot;;\n        } &quot;r_en_reason_code_coding&quot;;\n        src -&gt; concept.text = 'Patient Registration' &quot;r_en_reason_code_text&quot;;\n    } &quot;r_en_reason_code&quot;;\n}\n\ngroup ExtractLocation(source src : QuestionnaireResponse, source caregiver: RelatedPerson, target encounter: Encounter, target bundle: Bundle){\n    src.item as locationWidgetItem where(linkId = 'location-widget') then {\n        locationWidgetItem.item as itemLatitude where(linkId='latitude') then {\n            locationWidgetItem.item as itemLongitude where(linkId='longitude') then {\n                src where (itemLatitude.answer.exists() and itemLongitude.answer.exists()) -&gt; bundle.entry as entry, entry.resource = create(&quot;Location&quot;) as servicePointLocation then {\n                    src -&gt; servicePointLocation.id = uuid() &quot;r_loc_id&quot;;\n                    src -&gt; servicePointLocation.name = evaluate(caregiver, $this.name[0].text + &quot; Location&quot;) &quot;r_loc_name&quot;;\n\n                    src -&gt; servicePointLocation.position = create(&quot;Location_Position&quot;) as position then {\n                        src -&gt; position.latitude = evaluate(src, itemLatitude.answer.value) &quot;r_loc_position_latitude&quot;;\n                        src -&gt; position.longitude = evaluate(src, itemLongitude.answer.value) &quot;r_loc_position_longitude&quot;;\n                    } &quot;r_loc_position&quot;;\n\n                    src -&gt; servicePointLocation.type = create('CodeableConcept') as concept then {\n                        src -&gt; concept.coding = create(&quot;Coding&quot;) as coding then {\n                            src -&gt; coding.system = &quot;http://terminology.hl7.org/CodeSystem/v3-RoleCode&quot; &quot;r_loc_type_coding_system&quot;;\n                            src -&gt; coding.code = &quot;238497&quot; &quot;r_loc_type_coding_code&quot;;\n                            src -&gt; coding.display = &quot;Caregiver Location&quot; &quot;r_loc_type_coding_display&quot;;\n                        } &quot;r_loc_type_coding&quot;;\n                        src -&gt; concept.text = 'Caregiver Location' &quot;r_loc_type_text&quot;;\n                    } &quot;r_loc_type&quot;;\n\n                    src -&gt; encounter.location = create(&quot;Encounter_Location&quot;) as location then {\n                        src -&gt; location.location = reference(servicePointLocation) &quot;r_loc_location_reference&quot;;\n                    } &quot;r_loc_location&quot;;\n\n                    src then ExtractList(src, caregiver, servicePointLocation, bundle) &quot;r_loc_extract_list&quot;;\n                } &quot;r_loc_extract_coordinates&quot;;\n            } &quot;r_loc_longitude_check&quot;;\n        } &quot;r_loc_latitude_check&quot;;\n    } &quot;r_loc_widget_check&quot;;\n}\n\ngroup ExtractList(source src : QuestionnaireResponse, source caregiver: RelatedPerson, source location: Location, target bundle: Bundle){\n    src -&gt; bundle.entry as entry, entry.resource = create('List') as list then {\n        src -&gt; list.id = uuid(),\n            list.status = &quot;current&quot;,\n            list.title = &quot;Caregiver&quot; &quot;r_list_static&quot;;\n\n        src -&gt; list.subject = reference(location) &quot;r_list_subject&quot;;\n        src -&gt; list.code = create('CodeableConcept') as concept then {\n            src -&gt; concept.coding = create('Coding') as coding then {\n                src -&gt; coding.system = &quot;http://smartregister.org/&quot; &quot;r_list_code_coding_system&quot;;\n                src -&gt; coding.code = &quot;234234435&quot; &quot;r_list_code_coding_code&quot;;\n                src -&gt; coding.display = &quot;Caregivers&quot; &quot;r_list_code_coding_display&quot;;\n            } &quot;r_list_code_coding&quot;;\n            src -&gt; concept.text = &quot;Caregiver location&quot; &quot;r_list_code_text&quot;;\n        } &quot;r_list_code&quot;;\n\n        src -&gt; list.entry = create('List_Entry') as listEntry then {\n            src -&gt; listEntry.flag = create('CodeableConcept') as concept then {\n                src -&gt; concept.coding = create('Coding') as coding then {\n                    src -&gt; coding.system = &quot;http://smartregister.org/&quot; &quot;r_list_entry_flag_coding_system&quot;;\n                    src -&gt; coding.code = &quot;22138876&quot; &quot;r_list_entry_flag_coding_code&quot;;\n                    src -&gt; coding.display = &quot;Caregivers&quot; &quot;r_list_entry_flag_coding_display&quot;;\n                } &quot;r_list_entry_flag_coding&quot;;\n                src -&gt; concept.text = &quot;Caregivers&quot; &quot;r_list_entry_flag_text&quot;;\n            } &quot;r_list_entry_flag&quot;;\n            src -&gt; listEntry.date = evaluate(src, now()) &quot;r_list_entry_date&quot;;\n            src -&gt; listEntry.item = reference(caregiver) &quot;r_list_entry_item&quot;;\n        } &quot;r_list_entry&quot;;\n    } &quot;r_list&quot;;\n}</pre></div>"
+  },
+  "url": "https://fhir.demo.smartregister.org/fhir/StructureMap/1167492f-bdd6-46d4-8a8d-7dd8d5ad3d3a",
+  "name": "PatientRegistration",
+  "structure": [
+    {
+      "url": "http://hl7.org/fhir/StructureDefinition/QuestionnaireReponse",
+      "mode": "source"
+    },
+    {
+      "url": "http://hl7.org/fhir/StructureDefinition/Patient",
+      "mode": "target"
+    }
+  ],
+  "group": [
+    {
+      "name": "EirPatientRegistration",
+      "typeMode": "none",
+      "input": [
+        {
+          "name": "src",
+          "type": "QuestionnaireResponse",
+          "mode": "source"
+        },
+        {
+          "name": "bundle",
+          "type": "Bundle",
+          "mode": "target"
+        }
+      ],
+      "rule": [
+        {
+          "name": "r_bundle_static",
+          "source": [
+            {
+              "context": "src"
+            }
+          ],
+          "target": [
+            {
+              "context": "bundle",
+              "contextType": "variable",
+              "element": "id",
+              "transform": "uuid"
+            },
+            {
+              "context": "bundle",
+              "contextType": "variable",
+              "element": "type",
+              "transform": "copy",
+              "parameter": [
+                {
+                  "valueString": "collection"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "r_bundle",
+          "source": [
+            {
+              "context": "src"
+            }
+          ],
+          "target": [
+            {
+              "context": "bundle",
+              "contextType": "variable",
+              "element": "entry",
+              "variable": "entry"
+            },
+            {
+              "context": "entry",
+              "contextType": "variable",
+              "element": "resource",
+              "variable": "caregiver",
+              "transform": "create",
+              "parameter": [
+                {
+                  "valueString": "RelatedPerson"
+                }
+              ]
+            }
+          ],
+          "dependent": [
+            {
+              "name": "ExtractRelatedPerson",
+              "variable": [
+                "src",
+                "caregiver",
+                "bundle"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "ExtractRelatedPerson",
+      "typeMode": "none",
+      "input": [
+        {
+          "name": "src",
+          "type": "QuestionnaireResponse",
+          "mode": "source"
+        },
+        {
+          "name": "caregiver",
+          "type": "RelatedPerson",
+          "mode": "target"
+        },
+        {
+          "name": "bundle",
+          "type": "Bundle",
+          "mode": "target"
+        }
+      ],
+      "rule": [
+        {
+          "name": "r_related_person_id",
+          "source": [
+            {
+              "context": "src"
+            }
+          ],
+          "target": [
+            {
+              "context": "caregiver",
+              "contextType": "variable",
+              "element": "id",
+              "transform": "uuid"
+            }
+          ]
+        },
+        {
+          "name": "r_is_edit_profile",
+          "source": [
+            {
+              "context": "src",
+              "element": "item",
+              "condition": "((linkId = 'is-edit-profile') and (answer.exists().not() or (answer.value = false)))"
+            }
+          ],
+          "rule": [
+            {
+              "name": "r_bundle_entries",
+              "source": [
+                {
+                  "context": "src"
+                }
+              ],
+              "target": [
+                {
+                  "context": "bundle",
+                  "contextType": "variable",
+                  "element": "entry",
+                  "variable": "entry"
+                },
+                {
+                  "context": "entry",
+                  "contextType": "variable",
+                  "element": "resource",
+                  "variable": "encounter",
+                  "transform": "create",
+                  "parameter": [
+                    {
+                      "valueString": "Encounter"
+                    }
+                  ]
+                }
+              ],
+              "dependent": [
+                {
+                  "name": "ExtractEncounter",
+                  "variable": [
+                    "src",
+                    "encounter",
+                    "bundle"
+                  ]
+                },
+                {
+                  "name": "ExtractLocation",
+                  "variable": [
+                    "src",
+                    "caregiver",
+                    "encounter",
+                    "bundle"
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "r_related_person_id_value_check",
+          "source": [
+            {
+              "context": "src",
+              "element": "item",
+              "condition": "((linkId = 'caregiver-id') and answer.value.exists())"
+            }
+          ],
+          "rule": [
+            {
+              "name": "r_related_person_cnd_id",
+              "source": [
+                {
+                  "context": "src"
+                }
+              ],
+              "target": [
+                {
+                  "context": "caregiver",
+                  "contextType": "variable",
+                  "element": "id",
+                  "variable": "patient_id",
+                  "transform": "create",
+                  "parameter": [
+                    {
+                      "valueString": "id"
+                    }
+                  ]
+                }
+              ],
+              "rule": [
+                {
+                  "name": "r_related_person_id_value",
+                  "source": [
+                    {
+                      "context": "src"
+                    }
+                  ],
+                  "target": [
+                    {
+                      "context": "patient_id",
+                      "contextType": "variable",
+                      "element": "value",
+                      "transform": "evaluate",
+                      "parameter": [
+                        {
+                          "valueId": "src"
+                        },
+                        {
+                          "valueString": "$this.item.where(linkId = 'caregiver-id').answer.value.trim()"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "r_related_person_active",
+          "source": [
+            {
+              "context": "src"
+            }
+          ],
+          "target": [
+            {
+              "context": "caregiver",
+              "contextType": "variable",
+              "element": "active",
+              "transform": "copy",
+              "parameter": [
+                {
+                  "valueBoolean": true
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "r_related_person_identifier_path_eir_id",
+          "source": [
+            {
+              "context": "src"
+            }
+          ],
+          "target": [
+            {
+              "context": "caregiver",
+              "contextType": "variable",
+              "element": "identifier",
+              "variable": "clientId",
+              "transform": "create",
+              "parameter": [
+                {
+                  "valueString": "Identifier"
+                }
+              ]
+            }
+          ],
+          "rule": [
+            {
+              "name": "r_related_person_identifier_path_eir_id_use",
+              "source": [
+                {
+                  "context": "src"
+                }
+              ],
+              "target": [
+                {
+                  "context": "clientId",
+                  "contextType": "variable",
+                  "element": "use",
+                  "transform": "copy",
+                  "parameter": [
+                    {
+                      "valueString": "usual"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "name": "r_related_person_identifier_path_eir_id_system",
+              "source": [
+                {
+                  "context": "src"
+                }
+              ],
+              "target": [
+                {
+                  "context": "clientId",
+                  "contextType": "variable",
+                  "element": "system",
+                  "transform": "copy",
+                  "parameter": [
+                    {
+                      "valueString": "https://fhir.demo.smartregister.org/fhir/eir-id"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "name": "r_related_person_identifier_path_eir_id_value",
+              "source": [
+                {
+                  "context": "src"
+                }
+              ],
+              "target": [
+                {
+                  "context": "clientId",
+                  "contextType": "variable",
+                  "element": "value",
+                  "transform": "evaluate",
+                  "parameter": [
+                    {
+                      "valueId": "src"
+                    },
+                    {
+                      "valueString": "$this.item.where(linkId = '0d77d40f-098b-4329-9199-33b6e77aa864').answer.value"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "r_related_person_name",
+          "source": [
+            {
+              "context": "src"
+            }
+          ],
+          "target": [
+            {
+              "context": "caregiver",
+              "contextType": "variable",
+              "element": "name",
+              "variable": "patientName",
+              "transform": "create",
+              "parameter": [
+                {
+                  "valueString": "HumanName"
+                }
+              ]
+            }
+          ],
+          "rule": [
+            {
+              "name": "r_related_person_name_use",
+              "source": [
+                {
+                  "context": "src"
+                }
+              ],
+              "target": [
+                {
+                  "context": "patientName",
+                  "contextType": "variable",
+                  "element": "use",
+                  "transform": "copy",
+                  "parameter": [
+                    {
+                      "valueString": "official"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "name": "r_related_person_name_full",
+              "source": [
+                {
+                  "context": "src"
+                }
+              ],
+              "target": [
+                {
+                  "context": "patientName",
+                  "contextType": "variable",
+                  "element": "text",
+                  "transform": "evaluate",
+                  "parameter": [
+                    {
+                      "valueId": "src"
+                    },
+                    {
+                      "valueString": "($this.item.where(linkId = '9d017fa4-56d3-4d9b-b5f6-f9b3ba7d17a3').answer.value | $this.item.where(linkId = '7b41d922-376c-49bf-f6a8-faaa681e9ef6').answer.value | $this.item.where(linkId = '76bad83a-f061-4b22-8b4f-a95cbd5be4da').answer.value).join(' ').trim()"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "name": "r_related_person_name_given_first",
+              "source": [
+                {
+                  "context": "src"
+                }
+              ],
+              "target": [
+                {
+                  "context": "patientName",
+                  "contextType": "variable",
+                  "element": "given",
+                  "transform": "evaluate",
+                  "parameter": [
+                    {
+                      "valueId": "src"
+                    },
+                    {
+                      "valueString": "($this.item.where(linkId = '9d017fa4-56d3-4d9b-b5f6-f9b3ba7d17a3').answer.value.trim())"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "name": "r_related_person_name_given_middle_check",
+              "source": [
+                {
+                  "context": "src",
+                  "element": "item",
+                  "condition": "((linkId = '7b41d922-376c-49bf-f6a8-faaa681e9ef6') and answer.value.exists())"
+                }
+              ],
+              "rule": [
+                {
+                  "name": "r_related_person_name_given_middle",
+                  "source": [
+                    {
+                      "context": "src"
+                    }
+                  ],
+                  "target": [
+                    {
+                      "context": "patientName",
+                      "contextType": "variable",
+                      "element": "given",
+                      "transform": "evaluate",
+                      "parameter": [
+                        {
+                          "valueId": "src"
+                        },
+                        {
+                          "valueString": "$this.item.where(linkId = '7b41d922-376c-49bf-f6a8-faaa681e9ef6').answer.value.trim()"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "name": "r_related_person_family_name_family",
+              "source": [
+                {
+                  "context": "src"
+                }
+              ],
+              "target": [
+                {
+                  "context": "patientName",
+                  "contextType": "variable",
+                  "element": "family",
+                  "transform": "evaluate",
+                  "parameter": [
+                    {
+                      "valueId": "src"
+                    },
+                    {
+                      "valueString": "$this.item.where(linkId = '76bad83a-f061-4b22-8b4f-a95cbd5be4da').answer.value.trim()"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "r_related_person_dob",
+          "source": [
+            {
+              "context": "src",
+              "element": "item",
+              "variable": "patientDob",
+              "condition": "(linkId = 'aa1ddb98-87a4-48a6-9d8c-4c80de1ec277')"
+            }
+          ],
+          "rule": [
+            {
+              "name": "r_related_person_dob_answer",
+              "source": [
+                {
+                  "context": "patientDob",
+                  "element": "answer",
+                  "listMode": "first",
+                  "variable": "birthDate"
+                }
+              ],
+              "rule": [
+                {
+                  "name": "r_related_person_dob_answer_value",
+                  "source": [
+                    {
+                      "context": "birthDate",
+                      "element": "value",
+                      "variable": "val"
+                    }
+                  ],
+                  "target": [
+                    {
+                      "context": "caregiver",
+                      "contextType": "variable",
+                      "element": "birthDate",
+                      "transform": "copy",
+                      "parameter": [
+                        {
+                          "valueId": "val"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "r_related_person_age",
+          "source": [
+            {
+              "context": "src",
+              "element": "item",
+              "condition": "((linkId = '8ebf5364-6bdc-4e45-89a7-28c65ce019b7') and (answer.value > 0))"
+            }
+          ],
+          "rule": [
+            {
+              "name": "r_related_person_age_years",
+              "source": [
+                {
+                  "context": "src",
+                  "element": "item",
+                  "variable": "relatedPersonAge",
+                  "condition": "(linkId = '8ebf5364-6bdc-4e45-89a7-28c65ce019b7')"
+                }
+              ],
+              "target": [
+                {
+                  "context": "caregiver",
+                  "contextType": "variable",
+                  "element": "birthDate",
+                  "transform": "evaluate",
+                  "parameter": [
+                    {
+                      "valueId": "relatedPersonAge"
+                    },
+                    {
+                      "valueString": "today() - ((($this.answer.value * 365) + 1).toString() + ' days').toQuantity()"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "r_related_person_gender_male",
+          "source": [
+            {
+              "context": "src",
+              "element": "item",
+              "condition": "((linkId = '50330b11-c520-4f45-a8f4-44771097788d') and (answer.value.code = 'male'))"
+            }
+          ],
+          "rule": [
+            {
+              "name": "r_related_person_gender_male",
+              "source": [
+                {
+                  "context": "src"
+                }
+              ],
+              "target": [
+                {
+                  "context": "caregiver",
+                  "contextType": "variable",
+                  "element": "gender",
+                  "transform": "copy",
+                  "parameter": [
+                    {
+                      "valueString": "male"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "r_related_person_gender_female",
+          "source": [
+            {
+              "context": "src",
+              "element": "item",
+              "condition": "((linkId = '50330b11-c520-4f45-a8f4-44771097788d') and (answer.value.code = 'female'))"
+            }
+          ],
+          "rule": [
+            {
+              "name": "r_related_person_gender_female",
+              "source": [
+                {
+                  "context": "src"
+                }
+              ],
+              "target": [
+                {
+                  "context": "caregiver",
+                  "contextType": "variable",
+                  "element": "gender",
+                  "transform": "copy",
+                  "parameter": [
+                    {
+                      "valueString": "female"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "r_related_person_gender_unspecified",
+          "source": [
+            {
+              "context": "src",
+              "element": "item",
+              "condition": "((linkId = '50330b11-c520-4f45-a8f4-44771097788d') and (answer.value.code = 'biological-sex-not-specified'))"
+            }
+          ],
+          "rule": [
+            {
+              "name": "r_related_person_gender_unspecified",
+              "source": [
+                {
+                  "context": "src"
+                }
+              ],
+              "target": [
+                {
+                  "context": "caregiver",
+                  "contextType": "variable",
+                  "element": "gender",
+                  "transform": "copy",
+                  "parameter": [
+                    {
+                      "valueString": "other"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "name": "r_related_person_gender_unspecified_ext",
+              "source": [
+                {
+                  "context": "src"
+                }
+              ],
+              "target": [
+                {
+                  "context": "caregiver",
+                  "contextType": "variable",
+                  "element": "extension",
+                  "variable": "extension",
+                  "transform": "create",
+                  "parameter": [
+                    {
+                      "valueString": "Extension"
+                    }
+                  ]
+                }
+              ],
+              "rule": [
+                {
+                  "name": "r_related_person_gender_unspecified_url",
+                  "source": [
+                    {
+                      "context": "src"
+                    }
+                  ],
+                  "target": [
+                    {
+                      "context": "extension",
+                      "contextType": "variable",
+                      "element": "url",
+                      "transform": "copy",
+                      "parameter": [
+                        {
+                          "valueString": "http://example.org/sexual-orientation"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "name": "r_related_person_gender_unspecified_ext_value",
+                  "source": [
+                    {
+                      "context": "src"
+                    }
+                  ],
+                  "target": [
+                    {
+                      "context": "extension",
+                      "contextType": "variable",
+                      "element": "value",
+                      "variable": "concept",
+                      "transform": "create",
+                      "parameter": [
+                        {
+                          "valueString": "CodeableConcept"
+                        }
+                      ]
+                    }
+                  ],
+                  "rule": [
+                    {
+                      "name": "r_related_person_gender_unspecified_ext_coding",
+                      "source": [
+                        {
+                          "context": "src"
+                        }
+                      ],
+                      "target": [
+                        {
+                          "context": "concept",
+                          "contextType": "variable",
+                          "element": "coding",
+                          "variable": "coding",
+                          "transform": "c",
+                          "parameter": [
+                            {
+                              "valueString": "http://terminology.hl7.org/CodeSystem/v3-NullFlavor"
+                            },
+                            {
+                              "valueString": "OTH"
+                            }
+                          ]
+                        }
+                      ],
+                      "rule": [
+                        {
+                          "name": "r_related_person_gender_unspecified_ext_coding_display",
+                          "source": [
+                            {
+                              "context": "src"
+                            }
+                          ],
+                          "target": [
+                            {
+                              "context": "coding",
+                              "contextType": "variable",
+                              "element": "display",
+                              "transform": "copy",
+                              "parameter": [
+                                {
+                                  "valueString": "Other"
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "name": "r_related_person_gender_unspecified_ext_orientation_coding",
+                      "source": [
+                        {
+                          "context": "src"
+                        }
+                      ],
+                      "target": [
+                        {
+                          "context": "concept",
+                          "contextType": "variable",
+                          "element": "coding",
+                          "variable": "coding",
+                          "transform": "c",
+                          "parameter": [
+                            {
+                              "valueString": "http://example.org/sexual-orientation"
+                            },
+                            {
+                              "valueString": "NA"
+                            }
+                          ]
+                        }
+                      ],
+                      "rule": [
+                        {
+                          "name": "r_related_person_gender_unspecified_ext_orientation_coding_display",
+                          "source": [
+                            {
+                              "context": "src"
+                            }
+                          ],
+                          "target": [
+                            {
+                              "context": "coding",
+                              "contextType": "variable",
+                              "element": "display",
+                              "transform": "copy",
+                              "parameter": [
+                                {
+                                  "valueString": "Biological sex not specified"
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "name": "r_related_person_gender_unspecified_ext_orientation_coding_text",
+                      "source": [
+                        {
+                          "context": "src"
+                        }
+                      ],
+                      "target": [
+                        {
+                          "context": "concept",
+                          "contextType": "variable",
+                          "element": "text",
+                          "transform": "copy",
+                          "parameter": [
+                            {
+                              "valueString": "Unspecified"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "r_related_person_gender_intersex",
+          "source": [
+            {
+              "context": "src",
+              "element": "item",
+              "condition": "((linkId = '50330b11-c520-4f45-a8f4-44771097788d') and (answer.value.code = 'intersex'))"
+            }
+          ],
+          "rule": [
+            {
+              "name": "r_related_person_gender_intersex",
+              "source": [
+                {
+                  "context": "src"
+                }
+              ],
+              "target": [
+                {
+                  "context": "caregiver",
+                  "contextType": "variable",
+                  "element": "gender",
+                  "transform": "copy",
+                  "parameter": [
+                    {
+                      "valueString": "other"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "name": "r_related_person_gender_intersex_ext",
+              "source": [
+                {
+                  "context": "src"
+                }
+              ],
+              "target": [
+                {
+                  "context": "caregiver",
+                  "contextType": "variable",
+                  "element": "extension",
+                  "variable": "extension",
+                  "transform": "create",
+                  "parameter": [
+                    {
+                      "valueString": "Extension"
+                    }
+                  ]
+                }
+              ],
+              "rule": [
+                {
+                  "name": "r_related_person_gender_intersex_url",
+                  "source": [
+                    {
+                      "context": "src"
+                    }
+                  ],
+                  "target": [
+                    {
+                      "context": "extension",
+                      "contextType": "variable",
+                      "element": "url",
+                      "transform": "copy",
+                      "parameter": [
+                        {
+                          "valueString": "http://example.org/sexual-orientation"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "name": "r_related_person_gender_intersex_ext_value",
+                  "source": [
+                    {
+                      "context": "src"
+                    }
+                  ],
+                  "target": [
+                    {
+                      "context": "extension",
+                      "contextType": "variable",
+                      "element": "value",
+                      "variable": "concept",
+                      "transform": "create",
+                      "parameter": [
+                        {
+                          "valueString": "CodeableConcept"
+                        }
+                      ]
+                    }
+                  ],
+                  "rule": [
+                    {
+                      "name": "r_related_person_gender_intersex_ext_coding",
+                      "source": [
+                        {
+                          "context": "src"
+                        }
+                      ],
+                      "target": [
+                        {
+                          "context": "concept",
+                          "contextType": "variable",
+                          "element": "coding",
+                          "variable": "coding",
+                          "transform": "c",
+                          "parameter": [
+                            {
+                              "valueString": "http://terminology.hl7.org/CodeSystem/v3-NullFlavor"
+                            },
+                            {
+                              "valueString": "OTH"
+                            }
+                          ]
+                        }
+                      ],
+                      "rule": [
+                        {
+                          "name": "r_related_person_gender_intersex_ext_coding_display",
+                          "source": [
+                            {
+                              "context": "src"
+                            }
+                          ],
+                          "target": [
+                            {
+                              "context": "coding",
+                              "contextType": "variable",
+                              "element": "display",
+                              "transform": "copy",
+                              "parameter": [
+                                {
+                                  "valueString": "Other"
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "name": "r_related_person_gender_intersex_ext_orientation_coding",
+                      "source": [
+                        {
+                          "context": "src"
+                        }
+                      ],
+                      "target": [
+                        {
+                          "context": "concept",
+                          "contextType": "variable",
+                          "element": "coding",
+                          "variable": "coding",
+                          "transform": "c",
+                          "parameter": [
+                            {
+                              "valueString": "http://example.org/sexual-orientation"
+                            },
+                            {
+                              "valueString": "NA"
+                            }
+                          ]
+                        }
+                      ],
+                      "rule": [
+                        {
+                          "name": "r_related_person_gender_intersex_ext_orientation_coding_display",
+                          "source": [
+                            {
+                              "context": "src"
+                            }
+                          ],
+                          "target": [
+                            {
+                              "context": "coding",
+                              "contextType": "variable",
+                              "element": "display",
+                              "transform": "copy",
+                              "parameter": [
+                                {
+                                  "valueString": "Intersex"
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "name": "r_related_person_gender_intersex_ext_orientation_coding_text",
+                      "source": [
+                        {
+                          "context": "src"
+                        }
+                      ],
+                      "target": [
+                        {
+                          "context": "concept",
+                          "contextType": "variable",
+                          "element": "text",
+                          "transform": "copy",
+                          "parameter": [
+                            {
+                              "valueString": "Intersex"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "r_related_person_identifier_national_id_check",
+          "source": [
+            {
+              "context": "src",
+              "element": "item",
+              "condition": "((linkId = '8d420cab-a72b-4190-ff05-306135edb39e') and answer.value.exists())"
+            }
+          ],
+          "rule": [
+            {
+              "name": "r_related_person_identifier_national_id",
+              "source": [
+                {
+                  "context": "src"
+                }
+              ],
+              "target": [
+                {
+                  "context": "caregiver",
+                  "contextType": "variable",
+                  "element": "identifier",
+                  "variable": "nationalIdNumber",
+                  "transform": "create",
+                  "parameter": [
+                    {
+                      "valueString": "Identifier"
+                    }
+                  ]
+                }
+              ],
+              "rule": [
+                {
+                  "name": "r_related_person_identifier_national_id_use",
+                  "source": [
+                    {
+                      "context": "src"
+                    }
+                  ],
+                  "target": [
+                    {
+                      "context": "nationalIdNumber",
+                      "contextType": "variable",
+                      "element": "use",
+                      "transform": "copy",
+                      "parameter": [
+                        {
+                          "valueString": "official"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "name": "r_related_person_identifier_national_id_system",
+                  "source": [
+                    {
+                      "context": "src"
+                    }
+                  ],
+                  "target": [
+                    {
+                      "context": "nationalIdNumber",
+                      "contextType": "variable",
+                      "element": "system",
+                      "transform": "evaluate",
+                      "parameter": [
+                        {
+                          "valueId": "src"
+                        },
+                        {
+                          "valueString": "$this.item.where(linkId = '59d21749-f4d7-4725-bec5-e924d3ce1eeb').answer.value.system"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "name": "r_related_person_identifier_national_id_value",
+                  "source": [
+                    {
+                      "context": "src"
+                    }
+                  ],
+                  "target": [
+                    {
+                      "context": "nationalIdNumber",
+                      "contextType": "variable",
+                      "element": "value",
+                      "transform": "evaluate",
+                      "parameter": [
+                        {
+                          "valueId": "src"
+                        },
+                        {
+                          "valueString": "$this.item.where(linkId = '8d420cab-a72b-4190-ff05-306135edb39e').answer.value"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "r_related_person_identifier_vaccination_card_number_check",
+          "source": [
+            {
+              "context": "src",
+              "element": "item",
+              "condition": "((linkId = '30667e76-8f1c-452c-cecd-fb99dfea485c') and answer.value.exists())"
+            }
+          ],
+          "rule": [
+            {
+              "name": "r_related_person_identifier_id_national_id",
+              "source": [
+                {
+                  "context": "src"
+                }
+              ],
+              "target": [
+                {
+                  "context": "caregiver",
+                  "contextType": "variable",
+                  "element": "identifier",
+                  "variable": "vaccinationCardNumber",
+                  "transform": "create",
+                  "parameter": [
+                    {
+                      "valueString": "Identifier"
+                    }
+                  ]
+                }
+              ],
+              "rule": [
+                {
+                  "name": "r_related_person_identifier_vaccination_card_number_use",
+                  "source": [
+                    {
+                      "context": "src"
+                    }
+                  ],
+                  "target": [
+                    {
+                      "context": "vaccinationCardNumber",
+                      "contextType": "variable",
+                      "element": "use",
+                      "transform": "copy",
+                      "parameter": [
+                        {
+                          "valueString": "official"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "name": "r_related_person_identifier_vaccination_card_number_system",
+                  "source": [
+                    {
+                      "context": "src"
+                    }
+                  ],
+                  "target": [
+                    {
+                      "context": "vaccinationCardNumber",
+                      "contextType": "variable",
+                      "element": "system",
+                      "transform": "copy",
+                      "parameter": [
+                        {
+                          "valueString": "https://fhir.demo.smartregister.org/fhir/vaccination-card-number"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "name": "r_related_person_identifier_vaccination_card_number_value",
+                  "source": [
+                    {
+                      "context": "src"
+                    }
+                  ],
+                  "target": [
+                    {
+                      "context": "vaccinationCardNumber",
+                      "contextType": "variable",
+                      "element": "value",
+                      "transform": "evaluate",
+                      "parameter": [
+                        {
+                          "valueId": "src"
+                        },
+                        {
+                          "valueString": "$this.item.where(linkId = '30667e76-8f1c-452c-cecd-fb99dfea485c').answer.value"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "r_related_person_tel",
+          "source": [
+            {
+              "context": "src",
+              "element": "item",
+              "variable": "item",
+              "condition": "($this.linkId.where(contains('06cbf2e9-3643-4c7b-80f6-f145126034da')).exists() and $this.answer.value.exists())"
+            }
+          ],
+          "rule": [
+            {
+              "name": "r_related_person_tel",
+              "source": [
+                {
+                  "context": "src"
+                }
+              ],
+              "target": [
+                {
+                  "context": "caregiver",
+                  "contextType": "variable",
+                  "element": "telecom",
+                  "variable": "relatedPersonContact",
+                  "transform": "create",
+                  "parameter": [
+                    {
+                      "valueString": "ContactPoint"
+                    }
+                  ]
+                }
+              ],
+              "rule": [
+                {
+                  "name": "r_related_person_tel_num",
+                  "source": [
+                    {
+                      "context": "src"
+                    }
+                  ],
+                  "target": [
+                    {
+                      "context": "relatedPersonContact",
+                      "contextType": "variable",
+                      "element": "value",
+                      "transform": "evaluate",
+                      "parameter": [
+                        {
+                          "valueId": "src"
+                        },
+                        {
+                          "valueString": "$this.item.where(linkId = '06cbf2e9-3643-4c7b-80f6-f145126034da').answer.value"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "name": "r_related_person_tel_sys",
+                  "source": [
+                    {
+                      "context": "src"
+                    }
+                  ],
+                  "target": [
+                    {
+                      "context": "relatedPersonContact",
+                      "contextType": "variable",
+                      "element": "system",
+                      "transform": "copy",
+                      "parameter": [
+                        {
+                          "valueString": "phone"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "r_related_person_address",
+          "source": [
+            {
+              "context": "src"
+            }
+          ],
+          "target": [
+            {
+              "context": "caregiver",
+              "contextType": "variable",
+              "element": "address",
+              "variable": "patientAddress",
+              "transform": "create",
+              "parameter": [
+                {
+                  "valueString": "Address"
+                }
+              ]
+            }
+          ],
+          "rule": [
+            {
+              "name": "r_related_person_address_use",
+              "source": [
+                {
+                  "context": "src"
+                }
+              ],
+              "target": [
+                {
+                  "context": "patientAddress",
+                  "contextType": "variable",
+                  "element": "use",
+                  "transform": "copy",
+                  "parameter": [
+                    {
+                      "valueString": "home"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "name": "r_related_person_address_type",
+              "source": [
+                {
+                  "context": "src"
+                }
+              ],
+              "target": [
+                {
+                  "context": "patientAddress",
+                  "contextType": "variable",
+                  "element": "type",
+                  "transform": "copy",
+                  "parameter": [
+                    {
+                      "valueString": "physical"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "name": "r_related_person_address_text_home_address",
+              "source": [
+                {
+                  "context": "src"
+                }
+              ],
+              "target": [
+                {
+                  "context": "patientAddress",
+                  "contextType": "variable",
+                  "element": "text",
+                  "transform": "evaluate",
+                  "parameter": [
+                    {
+                      "valueId": "src"
+                    },
+                    {
+                      "valueString": "$this.item.where(linkId = '73e1680b-23f6-41b4-c0d7-7f14b8b6a758').answer.value"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "ExtractEncounter",
+      "typeMode": "none",
+      "input": [
+        {
+          "name": "src",
+          "type": "QuestionnaireResponse",
+          "mode": "source"
+        },
+        {
+          "name": "encounter",
+          "type": "Encounter",
+          "mode": "target"
+        },
+        {
+          "name": "bundle",
+          "type": "Bundle",
+          "mode": "target"
+        }
+      ],
+      "rule": [
+        {
+          "name": "r_en_static",
+          "source": [
+            {
+              "context": "src"
+            }
+          ],
+          "target": [
+            {
+              "context": "encounter",
+              "contextType": "variable",
+              "element": "id",
+              "transform": "uuid"
+            },
+            {
+              "context": "encounter",
+              "contextType": "variable",
+              "element": "status",
+              "transform": "copy",
+              "parameter": [
+                {
+                  "valueString": "finished"
+                }
+              ]
+            },
+            {
+              "context": "encounter",
+              "contextType": "variable",
+              "element": "class",
+              "transform": "c",
+              "parameter": [
+                {
+                  "valueString": "http://terminology.hl7.org/CodeSystem/v3-ActCode"
+                },
+                {
+                  "valueString": "HH"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "r_en_type",
+          "source": [
+            {
+              "context": "src"
+            }
+          ],
+          "target": [
+            {
+              "context": "encounter",
+              "contextType": "variable",
+              "element": "type",
+              "variable": "concept",
+              "transform": "create",
+              "parameter": [
+                {
+                  "valueString": "CodeableConcept"
+                }
+              ]
+            }
+          ],
+          "rule": [
+            {
+              "name": "r_en_type_coding",
+              "source": [
+                {
+                  "context": "src"
+                }
+              ],
+              "target": [
+                {
+                  "context": "concept",
+                  "contextType": "variable",
+                  "element": "coding",
+                  "variable": "coding",
+                  "transform": "create",
+                  "parameter": [
+                    {
+                      "valueString": "Coding"
+                    }
+                  ]
+                }
+              ],
+              "rule": [
+                {
+                  "name": "r_en_type_coding_system",
+                  "source": [
+                    {
+                      "context": "src"
+                    }
+                  ],
+                  "target": [
+                    {
+                      "context": "coding",
+                      "contextType": "variable",
+                      "element": "system",
+                      "transform": "copy",
+                      "parameter": [
+                        {
+                          "valueString": "http://smartregister.org"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "name": "r_en_type_coding_code",
+                  "source": [
+                    {
+                      "context": "src"
+                    }
+                  ],
+                  "target": [
+                    {
+                      "context": "coding",
+                      "contextType": "variable",
+                      "element": "code",
+                      "transform": "copy",
+                      "parameter": [
+                        {
+                          "valueString": "184048005"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "name": "r_en_type_coding_display",
+                  "source": [
+                    {
+                      "context": "src"
+                    }
+                  ],
+                  "target": [
+                    {
+                      "context": "coding",
+                      "contextType": "variable",
+                      "element": "display",
+                      "transform": "copy",
+                      "parameter": [
+                        {
+                          "valueString": "Registration"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "name": "r_en_type_text",
+              "source": [
+                {
+                  "context": "src"
+                }
+              ],
+              "target": [
+                {
+                  "context": "concept",
+                  "contextType": "variable",
+                  "element": "text",
+                  "transform": "copy",
+                  "parameter": [
+                    {
+                      "valueString": "Registration"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "r_en_priority",
+          "source": [
+            {
+              "context": "src"
+            }
+          ],
+          "target": [
+            {
+              "context": "encounter",
+              "contextType": "variable",
+              "element": "priority",
+              "variable": "concept",
+              "transform": "create",
+              "parameter": [
+                {
+                  "valueString": "CodeableConcept"
+                }
+              ]
+            }
+          ],
+          "rule": [
+            {
+              "name": "r_en_priority_coding",
+              "source": [
+                {
+                  "context": "src"
+                }
+              ],
+              "target": [
+                {
+                  "context": "concept",
+                  "contextType": "variable",
+                  "element": "coding",
+                  "variable": "coding",
+                  "transform": "create",
+                  "parameter": [
+                    {
+                      "valueString": "Coding"
+                    }
+                  ]
+                }
+              ],
+              "rule": [
+                {
+                  "name": "r_en_priority_coding_system",
+                  "source": [
+                    {
+                      "context": "src"
+                    }
+                  ],
+                  "target": [
+                    {
+                      "context": "coding",
+                      "contextType": "variable",
+                      "element": "system",
+                      "transform": "copy",
+                      "parameter": [
+                        {
+                          "valueString": "http://terminology.hl7.org/ValueSet/v3-ActPriority"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "name": "r_en_priority_coding_code",
+                  "source": [
+                    {
+                      "context": "src"
+                    }
+                  ],
+                  "target": [
+                    {
+                      "context": "coding",
+                      "contextType": "variable",
+                      "element": "code",
+                      "transform": "copy",
+                      "parameter": [
+                        {
+                          "valueString": "EL"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "name": "r_en_priority_coding_display",
+                  "source": [
+                    {
+                      "context": "src"
+                    }
+                  ],
+                  "target": [
+                    {
+                      "context": "coding",
+                      "contextType": "variable",
+                      "element": "display",
+                      "transform": "copy",
+                      "parameter": [
+                        {
+                          "valueString": "elective"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "name": "r_en_priority_text",
+              "source": [
+                {
+                  "context": "src"
+                }
+              ],
+              "target": [
+                {
+                  "context": "concept",
+                  "contextType": "variable",
+                  "element": "text",
+                  "transform": "copy",
+                  "parameter": [
+                    {
+                      "valueString": "elective"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "r_en_period",
+          "source": [
+            {
+              "context": "src"
+            }
+          ],
+          "target": [
+            {
+              "context": "encounter",
+              "contextType": "variable",
+              "element": "period",
+              "variable": "enPeriod",
+              "transform": "create",
+              "parameter": [
+                {
+                  "valueString": "Period"
+                }
+              ]
+            }
+          ],
+          "rule": [
+            {
+              "name": "r_en_period_start",
+              "source": [
+                {
+                  "context": "src"
+                }
+              ],
+              "target": [
+                {
+                  "context": "enPeriod",
+                  "contextType": "variable",
+                  "element": "start",
+                  "transform": "evaluate",
+                  "parameter": [
+                    {
+                      "valueId": "src"
+                    },
+                    {
+                      "valueString": "now()"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "name": "r_en_period_end",
+              "source": [
+                {
+                  "context": "src"
+                }
+              ],
+              "target": [
+                {
+                  "context": "enPeriod",
+                  "contextType": "variable",
+                  "element": "end",
+                  "transform": "evaluate",
+                  "parameter": [
+                    {
+                      "valueId": "src"
+                    },
+                    {
+                      "valueString": "now()"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "r_en_reason_code",
+          "source": [
+            {
+              "context": "src"
+            }
+          ],
+          "target": [
+            {
+              "context": "encounter",
+              "contextType": "variable",
+              "element": "reasonCode",
+              "variable": "concept",
+              "transform": "create",
+              "parameter": [
+                {
+                  "valueString": "CodeableConcept"
+                }
+              ]
+            }
+          ],
+          "rule": [
+            {
+              "name": "r_en_reason_code_coding",
+              "source": [
+                {
+                  "context": "src"
+                }
+              ],
+              "target": [
+                {
+                  "context": "concept",
+                  "contextType": "variable",
+                  "element": "coding",
+                  "variable": "coding",
+                  "transform": "create",
+                  "parameter": [
+                    {
+                      "valueString": "Coding"
+                    }
+                  ]
+                }
+              ],
+              "rule": [
+                {
+                  "name": "r_en_reason_code_coding_system",
+                  "source": [
+                    {
+                      "context": "src"
+                    }
+                  ],
+                  "target": [
+                    {
+                      "context": "coding",
+                      "contextType": "variable",
+                      "element": "system",
+                      "transform": "copy",
+                      "parameter": [
+                        {
+                          "valueString": "http://smartregsiter.org/"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "name": "r_en_reason_code_coding_code",
+                  "source": [
+                    {
+                      "context": "src"
+                    }
+                  ],
+                  "target": [
+                    {
+                      "context": "coding",
+                      "contextType": "variable",
+                      "element": "code",
+                      "transform": "copy",
+                      "parameter": [
+                        {
+                          "valueString": "patient_registration"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "name": "r_en_reason_code_coding_display",
+                  "source": [
+                    {
+                      "context": "src"
+                    }
+                  ],
+                  "target": [
+                    {
+                      "context": "coding",
+                      "contextType": "variable",
+                      "element": "display",
+                      "transform": "copy",
+                      "parameter": [
+                        {
+                          "valueString": "Patient Registration"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "name": "r_en_reason_code_text",
+              "source": [
+                {
+                  "context": "src"
+                }
+              ],
+              "target": [
+                {
+                  "context": "concept",
+                  "contextType": "variable",
+                  "element": "text",
+                  "transform": "copy",
+                  "parameter": [
+                    {
+                      "valueString": "Patient Registration"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "ExtractLocation",
+      "typeMode": "none",
+      "input": [
+        {
+          "name": "src",
+          "type": "QuestionnaireResponse",
+          "mode": "source"
+        },
+        {
+          "name": "caregiver",
+          "type": "RelatedPerson",
+          "mode": "source"
+        },
+        {
+          "name": "encounter",
+          "type": "Encounter",
+          "mode": "target"
+        },
+        {
+          "name": "bundle",
+          "type": "Bundle",
+          "mode": "target"
+        }
+      ],
+      "rule": [
+        {
+          "name": "r_loc_widget_check",
+          "source": [
+            {
+              "context": "src",
+              "element": "item",
+              "variable": "locationWidgetItem",
+              "condition": "(linkId = 'location-widget')"
+            }
+          ],
+          "rule": [
+            {
+              "name": "r_loc_latitude_check",
+              "source": [
+                {
+                  "context": "locationWidgetItem",
+                  "element": "item",
+                  "variable": "itemLatitude",
+                  "condition": "(linkId = 'latitude')"
+                }
+              ],
+              "rule": [
+                {
+                  "name": "r_loc_longitude_check",
+                  "source": [
+                    {
+                      "context": "locationWidgetItem",
+                      "element": "item",
+                      "variable": "itemLongitude",
+                      "condition": "(linkId = 'longitude')"
+                    }
+                  ],
+                  "rule": [
+                    {
+                      "name": "r_loc_extract_coordinates",
+                      "source": [
+                        {
+                          "context": "src",
+                          "condition": "(itemLatitude.answer.exists() and itemLongitude.answer.exists())"
+                        }
+                      ],
+                      "target": [
+                        {
+                          "context": "bundle",
+                          "contextType": "variable",
+                          "element": "entry",
+                          "variable": "entry"
+                        },
+                        {
+                          "context": "entry",
+                          "contextType": "variable",
+                          "element": "resource",
+                          "variable": "servicePointLocation",
+                          "transform": "create",
+                          "parameter": [
+                            {
+                              "valueString": "Location"
+                            }
+                          ]
+                        }
+                      ],
+                      "rule": [
+                        {
+                          "name": "r_loc_id",
+                          "source": [
+                            {
+                              "context": "src"
+                            }
+                          ],
+                          "target": [
+                            {
+                              "context": "servicePointLocation",
+                              "contextType": "variable",
+                              "element": "id",
+                              "transform": "uuid"
+                            }
+                          ]
+                        },
+                        {
+                          "name": "r_loc_name",
+                          "source": [
+                            {
+                              "context": "src"
+                            }
+                          ],
+                          "target": [
+                            {
+                              "context": "servicePointLocation",
+                              "contextType": "variable",
+                              "element": "name",
+                              "transform": "evaluate",
+                              "parameter": [
+                                {
+                                  "valueId": "caregiver"
+                                },
+                                {
+                                  "valueString": "$this.name[0].text + ' Location'"
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "name": "r_loc_position",
+                          "source": [
+                            {
+                              "context": "src"
+                            }
+                          ],
+                          "target": [
+                            {
+                              "context": "servicePointLocation",
+                              "contextType": "variable",
+                              "element": "position",
+                              "variable": "position",
+                              "transform": "create",
+                              "parameter": [
+                                {
+                                  "valueString": "Location_Position"
+                                }
+                              ]
+                            }
+                          ],
+                          "rule": [
+                            {
+                              "name": "r_loc_position_latitude",
+                              "source": [
+                                {
+                                  "context": "src"
+                                }
+                              ],
+                              "target": [
+                                {
+                                  "context": "position",
+                                  "contextType": "variable",
+                                  "element": "latitude",
+                                  "transform": "evaluate",
+                                  "parameter": [
+                                    {
+                                      "valueId": "src"
+                                    },
+                                    {
+                                      "valueString": "itemLatitude.answer.value"
+                                    }
+                                  ]
+                                }
+                              ]
+                            },
+                            {
+                              "name": "r_loc_position_longitude",
+                              "source": [
+                                {
+                                  "context": "src"
+                                }
+                              ],
+                              "target": [
+                                {
+                                  "context": "position",
+                                  "contextType": "variable",
+                                  "element": "longitude",
+                                  "transform": "evaluate",
+                                  "parameter": [
+                                    {
+                                      "valueId": "src"
+                                    },
+                                    {
+                                      "valueString": "itemLongitude.answer.value"
+                                    }
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "name": "r_loc_type",
+                          "source": [
+                            {
+                              "context": "src"
+                            }
+                          ],
+                          "target": [
+                            {
+                              "context": "servicePointLocation",
+                              "contextType": "variable",
+                              "element": "type",
+                              "variable": "concept",
+                              "transform": "create",
+                              "parameter": [
+                                {
+                                  "valueString": "CodeableConcept"
+                                }
+                              ]
+                            }
+                          ],
+                          "rule": [
+                            {
+                              "name": "r_loc_type_coding",
+                              "source": [
+                                {
+                                  "context": "src"
+                                }
+                              ],
+                              "target": [
+                                {
+                                  "context": "concept",
+                                  "contextType": "variable",
+                                  "element": "coding",
+                                  "variable": "coding",
+                                  "transform": "create",
+                                  "parameter": [
+                                    {
+                                      "valueString": "Coding"
+                                    }
+                                  ]
+                                }
+                              ],
+                              "rule": [
+                                {
+                                  "name": "r_loc_type_coding_system",
+                                  "source": [
+                                    {
+                                      "context": "src"
+                                    }
+                                  ],
+                                  "target": [
+                                    {
+                                      "context": "coding",
+                                      "contextType": "variable",
+                                      "element": "system",
+                                      "transform": "copy",
+                                      "parameter": [
+                                        {
+                                          "valueString": "http://terminology.hl7.org/CodeSystem/v3-RoleCode"
+                                        }
+                                      ]
+                                    }
+                                  ]
+                                },
+                                {
+                                  "name": "r_loc_type_coding_code",
+                                  "source": [
+                                    {
+                                      "context": "src"
+                                    }
+                                  ],
+                                  "target": [
+                                    {
+                                      "context": "coding",
+                                      "contextType": "variable",
+                                      "element": "code",
+                                      "transform": "copy",
+                                      "parameter": [
+                                        {
+                                          "valueString": "238497"
+                                        }
+                                      ]
+                                    }
+                                  ]
+                                },
+                                {
+                                  "name": "r_loc_type_coding_display",
+                                  "source": [
+                                    {
+                                      "context": "src"
+                                    }
+                                  ],
+                                  "target": [
+                                    {
+                                      "context": "coding",
+                                      "contextType": "variable",
+                                      "element": "display",
+                                      "transform": "copy",
+                                      "parameter": [
+                                        {
+                                          "valueString": "Caregiver Location"
+                                        }
+                                      ]
+                                    }
+                                  ]
+                                }
+                              ]
+                            },
+                            {
+                              "name": "r_loc_type_text",
+                              "source": [
+                                {
+                                  "context": "src"
+                                }
+                              ],
+                              "target": [
+                                {
+                                  "context": "concept",
+                                  "contextType": "variable",
+                                  "element": "text",
+                                  "transform": "copy",
+                                  "parameter": [
+                                    {
+                                      "valueString": "Caregiver Location"
+                                    }
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "name": "r_loc_location",
+                          "source": [
+                            {
+                              "context": "src"
+                            }
+                          ],
+                          "target": [
+                            {
+                              "context": "encounter",
+                              "contextType": "variable",
+                              "element": "location",
+                              "variable": "location",
+                              "transform": "create",
+                              "parameter": [
+                                {
+                                  "valueString": "Encounter_Location"
+                                }
+                              ]
+                            }
+                          ],
+                          "rule": [
+                            {
+                              "name": "r_loc_location_reference",
+                              "source": [
+                                {
+                                  "context": "src"
+                                }
+                              ],
+                              "target": [
+                                {
+                                  "context": "location",
+                                  "contextType": "variable",
+                                  "element": "location",
+                                  "transform": "reference",
+                                  "parameter": [
+                                    {
+                                      "valueId": "servicePointLocation"
+                                    }
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "name": "r_loc_extract_list",
+                          "source": [
+                            {
+                              "context": "src"
+                            }
+                          ],
+                          "dependent": [
+                            {
+                              "name": "ExtractList",
+                              "variable": [
+                                "src",
+                                "caregiver",
+                                "servicePointLocation",
+                                "bundle"
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "ExtractList",
+      "typeMode": "none",
+      "input": [
+        {
+          "name": "src",
+          "type": "QuestionnaireResponse",
+          "mode": "source"
+        },
+        {
+          "name": "caregiver",
+          "type": "RelatedPerson",
+          "mode": "source"
+        },
+        {
+          "name": "location",
+          "type": "Location",
+          "mode": "source"
+        },
+        {
+          "name": "bundle",
+          "type": "Bundle",
+          "mode": "target"
+        }
+      ],
+      "rule": [
+        {
+          "name": "r_list",
+          "source": [
+            {
+              "context": "src"
+            }
+          ],
+          "target": [
+            {
+              "context": "bundle",
+              "contextType": "variable",
+              "element": "entry",
+              "variable": "entry"
+            },
+            {
+              "context": "entry",
+              "contextType": "variable",
+              "element": "resource",
+              "variable": "list",
+              "transform": "create",
+              "parameter": [
+                {
+                  "valueString": "List"
+                }
+              ]
+            }
+          ],
+          "rule": [
+            {
+              "name": "r_list_static",
+              "source": [
+                {
+                  "context": "src"
+                }
+              ],
+              "target": [
+                {
+                  "context": "list",
+                  "contextType": "variable",
+                  "element": "id",
+                  "transform": "uuid"
+                },
+                {
+                  "context": "list",
+                  "contextType": "variable",
+                  "element": "status",
+                  "transform": "copy",
+                  "parameter": [
+                    {
+                      "valueString": "current"
+                    }
+                  ]
+                },
+                {
+                  "context": "list",
+                  "contextType": "variable",
+                  "element": "title",
+                  "transform": "copy",
+                  "parameter": [
+                    {
+                      "valueString": "Caregiver"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "name": "r_list_subject",
+              "source": [
+                {
+                  "context": "src"
+                }
+              ],
+              "target": [
+                {
+                  "context": "list",
+                  "contextType": "variable",
+                  "element": "subject",
+                  "transform": "reference",
+                  "parameter": [
+                    {
+                      "valueId": "location"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "name": "r_list_code",
+              "source": [
+                {
+                  "context": "src"
+                }
+              ],
+              "target": [
+                {
+                  "context": "list",
+                  "contextType": "variable",
+                  "element": "code",
+                  "variable": "concept",
+                  "transform": "create",
+                  "parameter": [
+                    {
+                      "valueString": "CodeableConcept"
+                    }
+                  ]
+                }
+              ],
+              "rule": [
+                {
+                  "name": "r_list_code_coding",
+                  "source": [
+                    {
+                      "context": "src"
+                    }
+                  ],
+                  "target": [
+                    {
+                      "context": "concept",
+                      "contextType": "variable",
+                      "element": "coding",
+                      "variable": "coding",
+                      "transform": "create",
+                      "parameter": [
+                        {
+                          "valueString": "Coding"
+                        }
+                      ]
+                    }
+                  ],
+                  "rule": [
+                    {
+                      "name": "r_list_code_coding_system",
+                      "source": [
+                        {
+                          "context": "src"
+                        }
+                      ],
+                      "target": [
+                        {
+                          "context": "coding",
+                          "contextType": "variable",
+                          "element": "system",
+                          "transform": "copy",
+                          "parameter": [
+                            {
+                              "valueString": "http://smartregister.org/"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "name": "r_list_code_coding_code",
+                      "source": [
+                        {
+                          "context": "src"
+                        }
+                      ],
+                      "target": [
+                        {
+                          "context": "coding",
+                          "contextType": "variable",
+                          "element": "code",
+                          "transform": "copy",
+                          "parameter": [
+                            {
+                              "valueString": "234234435"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "name": "r_list_code_coding_display",
+                      "source": [
+                        {
+                          "context": "src"
+                        }
+                      ],
+                      "target": [
+                        {
+                          "context": "coding",
+                          "contextType": "variable",
+                          "element": "display",
+                          "transform": "copy",
+                          "parameter": [
+                            {
+                              "valueString": "Caregivers"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "name": "r_list_code_text",
+                  "source": [
+                    {
+                      "context": "src"
+                    }
+                  ],
+                  "target": [
+                    {
+                      "context": "concept",
+                      "contextType": "variable",
+                      "element": "text",
+                      "transform": "copy",
+                      "parameter": [
+                        {
+                          "valueString": "Caregiver location"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "name": "r_list_entry",
+              "source": [
+                {
+                  "context": "src"
+                }
+              ],
+              "target": [
+                {
+                  "context": "list",
+                  "contextType": "variable",
+                  "element": "entry",
+                  "variable": "listEntry",
+                  "transform": "create",
+                  "parameter": [
+                    {
+                      "valueString": "List_Entry"
+                    }
+                  ]
+                }
+              ],
+              "rule": [
+                {
+                  "name": "r_list_entry_flag",
+                  "source": [
+                    {
+                      "context": "src"
+                    }
+                  ],
+                  "target": [
+                    {
+                      "context": "listEntry",
+                      "contextType": "variable",
+                      "element": "flag",
+                      "variable": "concept",
+                      "transform": "create",
+                      "parameter": [
+                        {
+                          "valueString": "CodeableConcept"
+                        }
+                      ]
+                    }
+                  ],
+                  "rule": [
+                    {
+                      "name": "r_list_entry_flag_coding",
+                      "source": [
+                        {
+                          "context": "src"
+                        }
+                      ],
+                      "target": [
+                        {
+                          "context": "concept",
+                          "contextType": "variable",
+                          "element": "coding",
+                          "variable": "coding",
+                          "transform": "create",
+                          "parameter": [
+                            {
+                              "valueString": "Coding"
+                            }
+                          ]
+                        }
+                      ],
+                      "rule": [
+                        {
+                          "name": "r_list_entry_flag_coding_system",
+                          "source": [
+                            {
+                              "context": "src"
+                            }
+                          ],
+                          "target": [
+                            {
+                              "context": "coding",
+                              "contextType": "variable",
+                              "element": "system",
+                              "transform": "copy",
+                              "parameter": [
+                                {
+                                  "valueString": "http://smartregister.org/"
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "name": "r_list_entry_flag_coding_code",
+                          "source": [
+                            {
+                              "context": "src"
+                            }
+                          ],
+                          "target": [
+                            {
+                              "context": "coding",
+                              "contextType": "variable",
+                              "element": "code",
+                              "transform": "copy",
+                              "parameter": [
+                                {
+                                  "valueString": "22138876"
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "name": "r_list_entry_flag_coding_display",
+                          "source": [
+                            {
+                              "context": "src"
+                            }
+                          ],
+                          "target": [
+                            {
+                              "context": "coding",
+                              "contextType": "variable",
+                              "element": "display",
+                              "transform": "copy",
+                              "parameter": [
+                                {
+                                  "valueString": "Caregivers"
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "name": "r_list_entry_flag_text",
+                      "source": [
+                        {
+                          "context": "src"
+                        }
+                      ],
+                      "target": [
+                        {
+                          "context": "concept",
+                          "contextType": "variable",
+                          "element": "text",
+                          "transform": "copy",
+                          "parameter": [
+                            {
+                              "valueString": "Caregivers"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "name": "r_list_entry_date",
+                  "source": [
+                    {
+                      "context": "src"
+                    }
+                  ],
+                  "target": [
+                    {
+                      "context": "listEntry",
+                      "contextType": "variable",
+                      "element": "date",
+                      "transform": "evaluate",
+                      "parameter": [
+                        {
+                          "valueId": "src"
+                        },
+                        {
+                          "valueString": "now()"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "name": "r_list_entry_item",
+                  "source": [
+                    {
+                      "context": "src"
+                    }
+                  ],
+                  "target": [
+                    {
+                      "context": "listEntry",
+                      "contextType": "variable",
+                      "element": "item",
+                      "transform": "reference",
+                      "parameter": [
+                        {
+                          "valueId": "caregiver"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

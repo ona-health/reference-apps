@@ -1,0 +1,923 @@
+{
+  "resourceType": "Questionnaire",
+  "id": "45bfe729-d9d9-4c69-a05c-f99cd293a1c3",
+  "meta": {
+    "versionId": "4",
+    "lastUpdated": "2024-09-18T08:37:05.398+00:00",
+    "source": "#9248d1f281e373f0",
+    "profile": [
+      "http://ehelse.no/fhir/StructureDefinition/sdf-Questionnaire"
+    ],
+    "tag": [
+      {
+        "system": "urn:ietf:bcp:47",
+        "code": "nb-NO",
+        "display": "Norsk Bokm�l",
+        "_display": {
+          "extension": [
+            {
+              "url": "http://hl7.org/fhir/StructureDefinition/translation",
+              "extension": [
+                {
+                  "url": "lang",
+                  "valueCode": "es"
+                },
+                {
+                  "url": "content",
+                  "valueString": "Norsk Bokm�l"
+                }
+              ]
+            },
+            {
+              "url": "http://hl7.org/fhir/StructureDefinition/translation",
+              "extension": [
+                {
+                  "url": "lang",
+                  "valueCode": "fr"
+                },
+                {
+                  "url": "content",
+                  "valueString": "Norsk Bokm �l"
+                }
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "system": "urn:ietf:bcp:47",
+        "code": "en-GB",
+        "display": "English",
+        "_display": {
+          "extension": [
+            {
+              "url": "http://hl7.org/fhir/StructureDefinition/translation",
+              "extension": [
+                {
+                  "url": "lang",
+                  "valueCode": "es"
+                },
+                {
+                  "url": "content",
+                  "valueString": "inglés"
+                }
+              ]
+            },
+            {
+              "url": "http://hl7.org/fhir/StructureDefinition/translation",
+              "extension": [
+                {
+                  "url": "lang",
+                  "valueCode": "fr"
+                },
+                {
+                  "url": "content",
+                  "valueString": "anglais"
+                }
+              ]
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "language": "en-GB",
+  "extension": [
+    {
+      "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-targetStructureMap",
+      "valueCanonical": "https://fhir.demo.smartregister.org/fhir/StructureMap/e6d949ee-405c-4d41-88d1-af815559cb9f"
+    },
+    {
+      "url": "http://hl7.org/fhir/StructureDefinition/variable",
+      "valueExpression": {
+        "name": "age-in-months",
+        "language": "text/fhirpath",
+        "expression": "(((%resource.descendants().where(linkId='17b7fda5-514c-4408-88e7-52313ab0ef2f').answer.value.toString().substring(0, 4).toInteger() - %resource.descendants().where(linkId='ad68508d-2bfd-400c-b3f8-4d4a01174f81').answer.value.toString().substring(0, 4).toInteger()) * 12) + (%resource.descendants().where(linkId='17b7fda5-514c-4408-88e7-52313ab0ef2f').answer.value.toString().substring(5, 2).toInteger() - %resource.descendants().where(linkId='ad68508d-2bfd-400c-b3f8-4d4a01174f81').answer.value.toString().substring(5, 2).toInteger()) + ((%resource.descendants().where(linkId='17b7fda5-514c-4408-88e7-52313ab0ef2f').answer.value.toString().substring(8, 2).toInteger() - %resource.descendants().where(linkId='ad68508d-2bfd-400c-b3f8-4d4a01174f81').answer.value.toString().substring(8, 2).toInteger()) / 12))"
+      }
+    },
+    {
+      "url": "http://hl7.org/fhir/StructureDefinition/variable",
+      "valueExpression": {
+        "name": "age-in-years",
+        "language": "text/fhirpath",
+        "expression": "((%resource.descendants().where(linkId='17b7fda5-514c-4408-88e7-52313ab0ef2f').answer.value.toString().substring(0, 4).toInteger() - %resource.descendants().where(linkId='ad68508d-2bfd-400c-b3f8-4d4a01174f81').answer.value.toString().substring(0, 4).toInteger()) + ((%resource.descendants().where(linkId='17b7fda5-514c-4408-88e7-52313ab0ef2f').answer.value.toString().substring(5, 2).toInteger() - %resource.descendants().where(linkId='ad68508d-2bfd-400c-b3f8-4d4a01174f81').answer.value.toString().substring(5, 2).toInteger()) / 12) + ((%resource.descendants().where(linkId='17b7fda5-514c-4408-88e7-52313ab0ef2f').answer.value.toString().substring(8, 2).toInteger() - %resource.descendants().where(linkId='ad68508d-2bfd-400c-b3f8-4d4a01174f81').answer.value.toString().substring(8, 2).toInteger()) / 365))"
+      }
+    },
+    {
+      "url": "http://hl7.org/fhir/StructureDefinition/variable",
+      "valueExpression": {
+        "name": "age-in-days",
+        "language": "text/fhirpath",
+        "expression": "(((%resource.descendants().where(linkId='17b7fda5-514c-4408-88e7-52313ab0ef2f').answer.value.toString().substring(0, 4).toInteger() - %resource.descendants().where(linkId='ad68508d-2bfd-400c-b3f8-4d4a01174f81').answer.value.toString().substring(0, 4).toInteger()) * 365) + ((%resource.descendants().where(linkId='17b7fda5-514c-4408-88e7-52313ab0ef2f').answer.value.toString().substring(5, 2).toInteger() - %resource.descendants().where(linkId='ad68508d-2bfd-400c-b3f8-4d4a01174f81').answer.value.toString().substring(5, 2).toInteger()) * 30.417 ) + ((%resource.descendants().where(linkId='17b7fda5-514c-4408-88e7-52313ab0ef2f').answer.value.toString().substring(8, 2).toInteger() - %resource.descendants().where(linkId='ad68508d-2bfd-400c-b3f8-4d4a01174f81').answer.value.toString().substring(8, 2).toInteger())))"
+      }
+    }
+  ],
+  "version": "0.0.2",
+  "name": "RemovePatient",
+  "title": "Remove Patient",
+  "status": "active",
+  "subjectType": [
+    "Patient"
+  ],
+  "date": "2022-03-21T00:00:00Z",
+  "publisher": "ona",
+  "contact": [
+    {
+      "name": "http://www.ona.io"
+    }
+  ],
+  "useContext": [
+    {
+      "code": {
+        "system": "http://hl7.org/fhir/ValueSet/usage-context-type",
+        "code": "focus",
+        "display": "Clinical Focus",
+        "_display": {
+          "extension": [
+            {
+              "url": "http://hl7.org/fhir/StructureDefinition/translation",
+              "extension": [
+                {
+                  "url": "lang",
+                  "valueCode": "es"
+                },
+                {
+                  "url": "content",
+                  "valueString": "Enfoque clínico"
+                }
+              ]
+            },
+            {
+              "url": "http://hl7.org/fhir/StructureDefinition/translation",
+              "extension": [
+                {
+                  "url": "lang",
+                  "valueCode": "fr"
+                },
+                {
+                  "url": "content",
+                  "valueString": "Axation clinique"
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "valueCodeableConcept": {
+        "coding": [
+          {
+            "system": "urn:oid:2.16.578.1.12.4.1.1.8655",
+            "display": "Remove Person Form",
+            "_display": {
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/translation",
+                  "extension": [
+                    {
+                      "url": "lang",
+                      "valueCode": "es"
+                    },
+                    {
+                      "url": "content",
+                      "valueString": "Eliminar formulario de persona"
+                    }
+                  ]
+                },
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/translation",
+                  "extension": [
+                    {
+                      "url": "lang",
+                      "valueCode": "fr"
+                    },
+                    {
+                      "url": "content",
+                      "valueString": "Supprimer le formulaire de personne"
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "item": [
+    {
+      "extension": [
+        {
+          "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-hidden",
+          "valueBoolean": true
+        }
+      ],
+      "linkId": "ad68508d-2bfd-400c-b3f8-4d4a01174f81",
+      "text": "birthDate",
+      "_text": {
+        "extension": [
+          {
+            "url": "http://hl7.org/fhir/StructureDefinition/translation",
+            "extension": [
+              {
+                "url": "lang",
+                "valueCode": "es"
+              },
+              {
+                "url": "content",
+                "valueString": "fecha de nacimiento"
+              }
+            ]
+          },
+          {
+            "url": "http://hl7.org/fhir/StructureDefinition/translation",
+            "extension": [
+              {
+                "url": "lang",
+                "valueCode": "fr"
+              },
+              {
+                "url": "content",
+                "valueString": "Date de naissance"
+              }
+            ]
+          }
+        ]
+      },
+      "type": "string"
+    },
+    {
+      "extension": [
+        {
+          "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-hidden",
+          "valueBoolean": true
+        }
+      ],
+      "linkId": "a11ebb0d-acb3-4038-956b-293a41acb85b",
+      "text": "patientId",
+      "_text": {
+        "extension": [
+          {
+            "url": "http://hl7.org/fhir/StructureDefinition/translation",
+            "extension": [
+              {
+                "url": "lang",
+                "valueCode": "es"
+              },
+              {
+                "url": "content",
+                "valueString": "Identificación del paciente"
+              }
+            ]
+          },
+          {
+            "url": "http://hl7.org/fhir/StructureDefinition/translation",
+            "extension": [
+              {
+                "url": "lang",
+                "valueCode": "fr"
+              },
+              {
+                "url": "content",
+                "valueString": "ID patient"
+              }
+            ]
+          }
+        ]
+      },
+      "type": "string"
+    },
+    {
+      "extension": [
+        {
+          "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+          "valueCodeableConcept": {
+            "coding": [
+              {
+                "system": "http://hl7.org/fhir/ValueSet/questionnaire-item-control",
+                "code": "radio-button"
+              }
+            ]
+          }
+        }
+      ],
+      "linkId": "f83bb7c0-dfd6-4aa8-9cb9-89d48b8040ff",
+      "text": "Reason for removal",
+      "_text": {
+        "extension": [
+          {
+            "url": "http://hl7.org/fhir/StructureDefinition/translation",
+            "extension": [
+              {
+                "url": "lang",
+                "valueCode": "es"
+              },
+              {
+                "url": "content",
+                "valueString": "Motivo de la eliminación"
+              }
+            ]
+          },
+          {
+            "url": "http://hl7.org/fhir/StructureDefinition/translation",
+            "extension": [
+              {
+                "url": "lang",
+                "valueCode": "fr"
+              },
+              {
+                "url": "content",
+                "valueString": "Raison de la suppression"
+              }
+            ]
+          }
+        ]
+      },
+      "type": "choice",
+      "required": true,
+      "answerOption": [
+        {
+          "valueCoding": {
+            "id": "b7e33fa3-1a76-415c-805a-f78c4706b1a9",
+            "system": "urn:uuid:e6b1ab13-ea28-4a53-9f92-77a10157a606",
+            "code": "moved-away",
+            "display": "Moved away",
+            "_display": {
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/translation",
+                  "extension": [
+                    {
+                      "url": "lang",
+                      "valueCode": "es"
+                    },
+                    {
+                      "url": "content",
+                      "valueString": "Se alejó"
+                    }
+                  ]
+                },
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/translation",
+                  "extension": [
+                    {
+                      "url": "lang",
+                      "valueCode": "fr"
+                    },
+                    {
+                      "url": "content",
+                      "valueString": "Éloigné"
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "valueCoding": {
+            "id": "0e7d66a2-7bd8-43c4-b46a-d11081fd9773",
+            "system": "urn:uuid:e6b1ab13-ea28-4a53-9f92-77a10157a606",
+            "code": "died",
+            "display": "Died",
+            "_display": {
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/translation",
+                  "extension": [
+                    {
+                      "url": "lang",
+                      "valueCode": "es"
+                    },
+                    {
+                      "url": "content",
+                      "valueString": "Murió"
+                    }
+                  ]
+                },
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/translation",
+                  "extension": [
+                    {
+                      "url": "lang",
+                      "valueCode": "fr"
+                    },
+                    {
+                      "url": "content",
+                      "valueString": "Décédé"
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "valueCoding": {
+            "id": "411f8687-a933-482b-d665-c46937b61aa5",
+            "system": "urn:uuid:e6b1ab13-ea28-4a53-9f92-77a10157a606",
+            "code": "wrong/double-entry",
+            "display": "Wrong/double entry",
+            "_display": {
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/translation",
+                  "extension": [
+                    {
+                      "url": "lang",
+                      "valueCode": "es"
+                    },
+                    {
+                      "url": "content",
+                      "valueString": "Entrada doble o incorrecta"
+                    }
+                  ]
+                },
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/translation",
+                  "extension": [
+                    {
+                      "url": "lang",
+                      "valueCode": "fr"
+                    },
+                    {
+                      "url": "content",
+                      "valueString": "Entrée erronée/double"
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "valueCoding": {
+            "id": "1b7b2559-c80b-496c-8c35-e512a693d8c7",
+            "system": "urn:uuid:e6b1ab13-ea28-4a53-9f92-77a10157a606",
+            "code": "other",
+            "display": "Other",
+            "_display": {
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/translation",
+                  "extension": [
+                    {
+                      "url": "lang",
+                      "valueCode": "es"
+                    },
+                    {
+                      "url": "content",
+                      "valueString": "Otro"
+                    }
+                  ]
+                },
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/translation",
+                  "extension": [
+                    {
+                      "url": "lang",
+                      "valueCode": "fr"
+                    },
+                    {
+                      "url": "content",
+                      "valueString": "Autre"
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "extension": [
+        {
+          "url": "http://ehelse.no/fhir/StructureDefinition/validationtext",
+          "valueString": "Enter a valid date. Cannot be a date in the future."
+        },
+        {
+          "url": "http://hl7.org/fhir/StructureDefinition/minValue",
+          "_valueDate": {
+            "extension": [
+              {
+                "url": "http://hl7.org/fhir/StructureDefinition/cqf-calculatedValue",
+                "valueExpression": {
+                  "language": "text/fhirpath",
+                  "expression": "today() - 9000 days"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "url": "http://hl7.org/fhir/StructureDefinition/maxValue",
+          "_valueDate": {
+            "extension": [
+              {
+                "url": "http://hl7.org/fhir/StructureDefinition/cqf-calculatedValue",
+                "valueExpression": {
+                  "language": "text/fhirpath",
+                  "expression": "today()"
+                }
+              }
+            ]
+          }
+        }
+      ],
+      "linkId": "b6c21488-87b8-4213-8cd0-d482367669c1",
+      "text": "Date moved away",
+      "_text": {
+        "extension": [
+          {
+            "url": "http://hl7.org/fhir/StructureDefinition/translation",
+            "extension": [
+              {
+                "url": "lang",
+                "valueCode": "es"
+              },
+              {
+                "url": "content",
+                "valueString": "Fecha de mudanza"
+              }
+            ]
+          },
+          {
+            "url": "http://hl7.org/fhir/StructureDefinition/translation",
+            "extension": [
+              {
+                "url": "lang",
+                "valueCode": "fr"
+              },
+              {
+                "url": "content",
+                "valueString": "Date déplacée"
+              }
+            ]
+          }
+        ]
+      },
+      "type": "date",
+      "enableWhen": [
+        {
+          "question": "f83bb7c0-dfd6-4aa8-9cb9-89d48b8040ff",
+          "operator": "=",
+          "answerCoding": {
+            "system": "urn:uuid:e6b1ab13-ea28-4a53-9f92-77a10157a606",
+            "code": "moved-away"
+          }
+        }
+      ],
+      "required": true
+    },
+    {
+      "extension": [
+        {
+          "url": "http://hl7.org/fhir/StructureDefinition/minValue",
+          "_valueDate": {
+            "extension": [
+              {
+                "url": "http://hl7.org/fhir/StructureDefinition/cqf-calculatedValue",
+                "valueExpression": {
+                  "language": "text/fhirpath",
+                  "expression": "today() - 900 days"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "url": "http://hl7.org/fhir/StructureDefinition/maxValue",
+          "_valueDate": {
+            "extension": [
+              {
+                "url": "http://hl7.org/fhir/StructureDefinition/cqf-calculatedValue",
+                "valueExpression": {
+                  "language": "text/fhirpath",
+                  "expression": "today()"
+                }
+              }
+            ]
+          }
+        }
+      ],
+      "linkId": "17b7fda5-514c-4408-88e7-52313ab0ef2f",
+      "text": "Date of death",
+      "_text": {
+        "extension": [
+          {
+            "url": "http://hl7.org/fhir/StructureDefinition/translation",
+            "extension": [
+              {
+                "url": "lang",
+                "valueCode": "es"
+              },
+              {
+                "url": "content",
+                "valueString": "Fecha de muerte"
+              }
+            ]
+          },
+          {
+            "url": "http://hl7.org/fhir/StructureDefinition/translation",
+            "extension": [
+              {
+                "url": "lang",
+                "valueCode": "fr"
+              },
+              {
+                "url": "content",
+                "valueString": "Date de décès"
+              }
+            ]
+          }
+        ]
+      },
+      "type": "date",
+      "enableWhen": [
+        {
+          "question": "f83bb7c0-dfd6-4aa8-9cb9-89d48b8040ff",
+          "operator": "=",
+          "answerCoding": {
+            "system": "urn:uuid:e6b1ab13-ea28-4a53-9f92-77a10157a606",
+            "code": "died"
+          }
+        }
+      ],
+      "required": true
+    },
+    {
+      "extension": [
+        {
+          "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-calculatedExpression",
+          "valueExpression": {
+            "language": "text/fhirpath",
+            "expression": "iif(%age-in-months >= 3 and %age-in-months < 12, (%age-in-months.toString() + ' months'), iif(%age-in-days < 90, ((%age-in-days / 7).toString() + ' weeks'), (%age-in-years.toString() + ' years'))).replaceMatches('[.]+[0-9]+', '')"
+          }
+        },
+        {
+          "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-enableWhenExpression",
+          "valueExpression": {
+            "language": "text/fhirpath",
+            "expression": "%resource.descendants().where(linkId='f83bb7c0-dfd6-4aa8-9cb9-89d48b8040ff').answer.value.code='died'"
+          }
+        }
+      ],
+      "linkId": "98ac4694-590e-4cc2-83f3-cc6455e688c5",
+      "text": "Age at death",
+      "_text": {
+        "extension": [
+          {
+            "url": "http://hl7.org/fhir/StructureDefinition/translation",
+            "extension": [
+              {
+                "url": "lang",
+                "valueCode": "es"
+              },
+              {
+                "url": "content",
+                "valueString": "Edad al morir"
+              }
+            ]
+          },
+          {
+            "url": "http://hl7.org/fhir/StructureDefinition/translation",
+            "extension": [
+              {
+                "url": "lang",
+                "valueCode": "fr"
+              },
+              {
+                "url": "content",
+                "valueString": "Âge au décès"
+              }
+            ]
+          }
+        ]
+      },
+      "type": "string",
+      "required": true,
+      "readOnly": true
+    },
+    {
+      "extension": [
+        {
+          "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+          "valueCodeableConcept": {
+            "coding": [
+              {
+                "system": "http://hl7.org/fhir/ValueSet/questionnaire-item-control",
+                "code": "radio-button"
+              }
+            ]
+          }
+        }
+      ],
+      "linkId": "cd73cfdf-6d70-4b42-8887-21e27db0b9ec",
+      "text": "Cause of death",
+      "_text": {
+        "extension": [
+          {
+            "url": "http://hl7.org/fhir/StructureDefinition/translation",
+            "extension": [
+              {
+                "url": "lang",
+                "valueCode": "es"
+              },
+              {
+                "url": "content",
+                "valueString": "Causa de muerte"
+              }
+            ]
+          },
+          {
+            "url": "http://hl7.org/fhir/StructureDefinition/translation",
+            "extension": [
+              {
+                "url": "lang",
+                "valueCode": "fr"
+              },
+              {
+                "url": "content",
+                "valueString": "Cause du décès"
+              }
+            ]
+          }
+        ]
+      },
+      "type": "choice",
+      "enableWhen": [
+        {
+          "question": "f83bb7c0-dfd6-4aa8-9cb9-89d48b8040ff",
+          "operator": "=",
+          "answerCoding": {
+            "system": "urn:uuid:e6b1ab13-ea28-4a53-9f92-77a10157a606",
+            "code": "died"
+          }
+        }
+      ],
+      "required": true,
+      "answerOption": [
+        {
+          "valueCoding": {
+            "id": "709dbddc-cf12-46c2-8a8d-a08c1495de40",
+            "system": "urn:uuid:87f8de08-706e-4e86-8064-1c407a39e102",
+            "code": "maternal-death",
+            "display": "Maternal death",
+            "_display": {
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/translation",
+                  "extension": [
+                    {
+                      "url": "lang",
+                      "valueCode": "es"
+                    },
+                    {
+                      "url": "content",
+                      "valueString": "Muerte materna"
+                    }
+                  ]
+                },
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/translation",
+                  "extension": [
+                    {
+                      "url": "lang",
+                      "valueCode": "fr"
+                    },
+                    {
+                      "url": "content",
+                      "valueString": "Décès maternel"
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "valueCoding": {
+            "id": "e127133e-ac62-43d2-bf5a-148f64c2104b",
+            "system": "urn:uuid:87f8de08-706e-4e86-8064-1c407a39e102",
+            "code": "neonatal-death",
+            "display": "Neonatal death",
+            "_display": {
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/translation",
+                  "extension": [
+                    {
+                      "url": "lang",
+                      "valueCode": "es"
+                    },
+                    {
+                      "url": "content",
+                      "valueString": "Muerte neonatal"
+                    }
+                  ]
+                },
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/translation",
+                  "extension": [
+                    {
+                      "url": "lang",
+                      "valueCode": "fr"
+                    },
+                    {
+                      "url": "content",
+                      "valueString": "Décès néonatal"
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "valueCoding": {
+            "id": "c72842cb-e5b8-4c70-8da8-87f2a2b84925",
+            "system": "urn:uuid:87f8de08-706e-4e86-8064-1c407a39e102",
+            "code": "reason-unknown",
+            "display": "Reason Unknown",
+            "_display": {
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/translation",
+                  "extension": [
+                    {
+                      "url": "lang",
+                      "valueCode": "es"
+                    },
+                    {
+                      "url": "content",
+                      "valueString": "Razón desconocida"
+                    }
+                  ]
+                },
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/translation",
+                  "extension": [
+                    {
+                      "url": "lang",
+                      "valueCode": "fr"
+                    },
+                    {
+                      "url": "content",
+                      "valueString": "Raison inconnue"
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "linkId": "8489d249-1ef3-4edb-aa99-b5713fd2cb0a",
+      "text": "Give other reasons for removal",
+      "_text": {
+        "extension": [
+          {
+            "url": "http://hl7.org/fhir/StructureDefinition/translation",
+            "extension": [
+              {
+                "url": "lang",
+                "valueCode": "es"
+              },
+              {
+                "url": "content",
+                "valueString": "Indique otros motivos para la eliminación"
+              }
+            ]
+          },
+          {
+            "url": "http://hl7.org/fhir/StructureDefinition/translation",
+            "extension": [
+              {
+                "url": "lang",
+                "valueCode": "fr"
+              },
+              {
+                "url": "content",
+                "valueString": "Donner d'autres raisons de suppression"
+              }
+            ]
+          }
+        ]
+      },
+      "type": "string",
+      "enableWhen": [
+        {
+          "question": "f83bb7c0-dfd6-4aa8-9cb9-89d48b8040ff",
+          "operator": "=",
+          "answerCoding": {
+            "system": "urn:uuid:e6b1ab13-ea28-4a53-9f92-77a10157a606",
+            "code": "other"
+          }
+        }
+      ],
+      "required": true
+    }
+  ]
+}

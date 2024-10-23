@@ -1,0 +1,64 @@
+map "https://fhir.demo.smartregister.org/fhir/StructureMap/9ad15b32-45e6-4de6-ab28-122b948af93f" = 'UnmutePatient'
+
+    uses "http://hl7.org/fhir/StructureDefinition/QuestionnaireReponse" as source
+    uses "http://hl7.org/fhir/StructureDefinition/Bundle" as target
+    uses "http://hl7.org/fhir/StructureDefinition/Encounter" as target
+    uses "http://hl7.org/fhir/StructureDefinition/Observation" as target
+
+group Main(source src: QuestionnaireResponse, target bundle: Bundle) {
+    src -> bundle.id = uuid(),
+        bundle.type = "collection" "r_bundle";
+    src then ExtractEncounter(src, bundle) "r_bundle_entry_ext_enc";
+}
+
+group ExtractEncounter(source src: QuestionnaireResponse, target bundle: Bundle) {
+    src -> bundle.entry as entry, entry.resource = create("Encounter") as encounter then {
+        src -> encounter.id = uuid() "r_enc_id";
+        src -> encounter.status = "finished" "r_enc_status";
+        src -> encounter.class = c("http://terminology.hl7.org/CodeSystem/v3-ActCode", "AMB", "ambulatory") "r_enc_class";
+        src -> encounter.serviceType = cc("http://terminology.hl7.org/CodeSystem/service-type", "335", "Facility") "r_enc_ser_type";
+
+        src then ExtractObservations(src, bundle, encounter) "r_enc_ext_cnd_call";
+    } "r_bundle_entry_enc";
+}
+
+group ExtractObservations(source src: QuestionnaireResponse, target bundle: Bundle, target encounter: Encounter) {
+    src then ExtractReactivate(src, bundle, encounter),
+        SetPatientUnMuteActiveAsTrue(src, bundle) "r_ext_cnd";
+}
+
+group ExtractReactivate(source src: QuestionnaireResponse, target bundle: Bundle, target encounter: Encounter) {
+    src.item as item where(linkId = "42475092-b61e-44cd-eaeb-630d625343dd") then {
+        src -> bundle.entry as entry, entry.resource = create("Observation") as obs then {
+            src -> obs.id = uuid() "r_item_reactivate_obs_id";
+            src -> obs.code = cc("http://ona.io/codes", "reactivate-person", "Reactivate Family Member") "r_item_reactivate_obs_code";
+
+            src -> obs.value = create("CodeableConcept")as codeableConcept then {
+                src -> codeableConcept.coding = evaluate(item, $this.answer.value.code) "r_item_reactivate_obs_value_cc_coding";
+                src -> codeableConcept.text = evaluate(item, $this.answer.value.display) "r_item_reactivate_obs_cc_display";
+            } "r_item_reactivate_obs_value";
+
+            src -> obs.subject = create("Reference")as ref then {
+                src -> ref.reference = evaluate(src, "Patient/" + $this.item.where(linkId = "patient-id").answer.value) "r_item_reactivate_obs_ref_ref";
+            } "r_item_reactivate_obs_ref";
+
+            src -> obs.encounter = reference(encounter) "r_item_reactivate_obs_enc";
+            src -> obs.category = cc("http://terminology.hl7.org/CodeSystem/observation-category", "social-history", "Social History") "r_item_reactivate_obs_cat";
+            src -> obs.effective = evaluate(src, now()) "r_item_reactivate_obs_eff";
+        } "r_item_reactivate_obs";
+    } "r_item_reactivate";
+}
+
+group SetPatientUnMuteActiveAsTrue(source src: QuestionnaireResponse, target bundle: Bundle) {
+    src.item as item where($this.linkId.where(contains('42475092-b61e-44cd-eaeb-630d625343dd')).exists() and $this.answer.value.code = "yes") then {
+        src.item as item where(linkId = "patient-id") then {
+            src -> bundle.entry as entry, entry.resource = create("Patient") as patient then {
+                src -> patient.id = create("id") as patient_id then {
+                    src -> patient_id.value = evaluate(item, $this.answer.value) "r_item_patient_id_patient_set_pat_id";
+                } "r_item_patient_id_patient_create_pat_id";
+    
+                src -> patient.active = true "r_item_patient_id_patient_active";
+            } "r_item_patient_id_patient";
+        } "r_item_patient_id";            
+    } "r_reactive_patient";
+}

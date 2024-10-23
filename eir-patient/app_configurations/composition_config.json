@@ -1,0 +1,179 @@
+{
+  "resourceType": "Composition",
+  "id": "5df00868-34c2-4765-96d1-e906e9709e1e",
+  "meta": {
+    "versionId": "22",
+    "lastUpdated": "2024-09-10T12:33:34.976+00:00"
+  },
+  "identifier": {
+    "use": "official",
+    "value": "eir-patient"
+  },
+  "status": "final",
+  "type": {
+    "coding": [
+      {
+        "system": "http://snomed.info/sct",
+        "code": "1156600005",
+        "display": "Device setting parameter"
+      }
+    ]
+  },
+  "date": "2022-09-16",
+  "title": "Device configurations",
+  "confidentiality": "L",
+  "section": [
+    {
+      "title": "Profile configurations",
+      "mode": "working",
+      "section": [
+        {
+          "title": "Child profile configuration",
+          "focus": {
+            "reference": "Binary/f2e1d0c9-b8a7-6543-2109-8765f4e3d2c1",
+            "identifier": {
+              "value": "childProfile"
+            }
+          }
+        },
+        {
+          "title": "Child Past Encounters profile configuration",
+          "focus": {
+            "reference": "Binary/a1b2c3d4-e5f6-7890-1234-5678g9h0i1j2",
+            "identifier": {
+              "value": "childpastencountersProfile"
+            }
+          }
+        },
+        {
+          "title": "Child Upcoming Encounters profile configuration",
+          "focus": {
+            "reference": "Binary/k3l4m5n6-o7p8-q9r0-s1t2-u3v4w5x6y7z8",
+            "identifier": {
+              "value": "childupcomingencountersProfile"
+            }
+          }
+        },
+        {
+          "title": "Child adverse reactions profile configuration",
+          "focus": {
+            "reference": "Binary/b2c3d4e5-f6g7-h8i9-j0k1-l2m3n4o5p6q7",
+            "identifier": {
+              "value": "childadversereactionsProfile"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "title": "Register configurations",
+      "mode": "working",
+      "section": [
+        {
+          "title": "Children register configuration",
+          "focus": {
+            "reference": "Binary/r8s9t0u1-v2w3-x4y5-z6a7-b8c9d0e1f2g3",
+            "identifier": {
+              "value": "childRegister"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "title": "Translation configurations",
+      "mode": "working",
+      "section": [
+        {
+          "title": "Translation English",
+          "focus": {
+            "reference": "Binary/h4i5j6k7-l8m9-n0o1-p2q3-r4s5t6u7v8w9",
+            "identifier": {
+              "value": "strings"
+            }
+          }
+        },
+        {
+          "title": "Translation Spanish",
+          "focus": {
+            "reference": "Binary/x0y1z2a3-b4c5-d6e7-f8g9-h0i1j2k3l4m5",
+            "identifier": {
+              "value": "stringsEs"
+            }
+          }
+        },
+        {
+          "title": "Translation French",
+          "focus": {
+            "reference": "Binary/n6o7p8q9-r0s1-t2u3-v4w5-x6y7z8a9b0c1",
+            "identifier": {
+              "value": "stringsFr"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "title": "Application configuration",
+      "focus": {
+        "reference": "Binary/d2e3f4g5-h6i7-j8k9-l0m1-n2o3p4q5r6s7",
+        "identifier": {
+          "value": "application"
+        }
+      },
+      "mode": "working"
+    },
+    {
+      "title": "Navigation configuration",
+      "focus": {
+        "reference": "Binary/t8u9v0w1-x2y3-z4a5-b6c7-d8e9f0g1h2i3",
+        "identifier": {
+          "value": "navigation"
+        }
+      },
+      "mode": "working"
+    },
+    {
+      "title": "Sync configuration",
+      "focus": {
+        "reference": "Binary/j4k5l6m7-n8o9-p0q1-r2s3-t4u5v6w7x8y9",
+        "identifier": {
+          "value": "sync"
+        }
+      },
+      "mode": "working"
+    },
+    {
+      "title": "Questionnaires",
+      "mode": "working",
+      "section": [
+        {
+          "title": "Add Child",
+          "focus": {
+            "reference": "Questionnaire/7cd88e5a-f553-4d6e-9c78-d533b99d54bd",
+            "identifier": {
+              "value": "add-child"
+            }
+          },
+          "mode": "working"
+        }
+      ]
+    },
+    {
+      "title": "StructureMaps",
+      "mode": "working",
+      "section": [
+        {
+          "title": "Child Registration",
+          "focus": {
+            "reference": "StructureMap/dc80c875-95ea-4cc7-923e-73c41e0312d6",
+            "identifier": {
+              "value": "child-registration"
+            }
+          },
+          "mode": "working"
+        }
+      ]
+    }
+  ]
+}
