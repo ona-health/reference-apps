@@ -31,14 +31,7 @@
       "menuIconConfig": {
         "type": "local",
         "reference": "ic_user"
-      },
-      "actions": [
-        {
-          "trigger": "ON_CLICK",
-          "workflow": "",
-          "id": ""
-        }
-      ]
+      }
     },
     {
       "id": "settings",
