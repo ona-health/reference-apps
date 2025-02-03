@@ -7,11 +7,19 @@ REFERENCE_APP_REPO_URL="https://github.com/ona-health/reference-apps.git"
 FHIRCORE_REPO_DIR="$HOME/test_setup/fhircore"
 REFERENCE_APP_REPO_DIR="$HOME/test_setup/reference-apps"
 REF_APP_NAME=eir-chw
+LOCAL_PROPERTIES="$FHIRCORE_REPO_DIR/android/local.properties"
+OAUTH_BASE_URL="https://keycloak-stage.smartregister.org/auth/realms/FHIR_Android/"
+OAUTH_CLIENT_ID="provide client id"
+FHIR_BASE_URL="https://fhir.labs.smartregister.org/fhir/"
+
 
 install_dependencies(){
-  echo "Installing dependencies..."
-  sudo apt update
-  sudo apt install -y wget unzip git openjdk-11-jdk
+  if grep -q "Ubuntu" /etc/os-release; then
+      echo "Ubuntu system detected..."
+      echo "Installing dependencies..."
+      sudo apt update
+      sudo apt install -y wget unzip git openjdk-11-jdk
+  fi
 }
 
 check_android_studio_installed(){
@@ -61,6 +69,23 @@ setup_reference_app(){
   ln -s "$REFERENCE_APP_REPO_DIR"/$REF_APP_NAME/app_configurations "$FHIRCORE_REPO_DIR"/android/quest/src/$REF_APP_NAME/assets/configs
 }
 
+setup_local_properties(){
+  if [ -f "$LOCAL_PROPERTIES" ]; then
+    echo "local.properties already exists. Skipping setup"
+  else
+    cat <<EOF > "$LOCAL_PROPERTIES"
+#oauth configurations
+OAUTH_BASE_URL=$OAUTH_BASE_URL
+OAUTH_CLIENT_ID=$OAUTH_CLIENT_ID
+OAUTH_SCOPE=openid
+
+#fhir store base url
+FHIR_BASE_URL=$FHIR_BASE_URL
+EOF
+    echo "local.properties created successfully"
+  fi
+}
+
 open_repo_in_android_studio() {
   echo "Opening FHIR Core in Android Studio..."
   "$INSTALL_DIR"/bin/studio.sh "$FHIRCORE_REPO_DIR" &
@@ -82,6 +107,7 @@ main(){
     clone_repo "$FHIRCORE_REPO_URL" "$FHIRCORE_REPO_DIR"
   fi
   setup_reference_app
+  setup_local_properties
   open_repo_in_android_studio
 
   echo "Setup complete! Android Studio should now be open with your project."
