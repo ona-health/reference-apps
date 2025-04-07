@@ -1,11 +1,6 @@
 {
     "resourceType": "Location",
     "id": "c3eb59b0-40a5-4538-b308-7256770399ca",
-    "meta": {
-        "versionId": "2",
-        "lastUpdated": "2024-04-23T13:12:00.510+00:00",
-        "source": "#1a980b316f1cee88"
-    },
     "identifier": [
         {
             "use": "official",
