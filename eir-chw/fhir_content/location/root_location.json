@@ -1,0 +1,41 @@
+{
+    "resourceType": "Location",
+    "id": "c3eb59b0-40a5-4538-b308-7256770399ca",
+    "meta": {
+        "versionId": "2",
+        "lastUpdated": "2024-04-23T13:12:00.510+00:00",
+        "source": "#1a980b316f1cee88"
+    },
+    "identifier": [
+        {
+            "use": "official",
+            "value": "c3eb59b0-40a5-4538-b308-7256770399ca"
+        }
+    ],
+    "status": "active",
+    "name": "Root FHIR Location",
+    "alias": [
+        "Root Location"
+    ],
+    "description": "This is the Root Location that all other locations are part of. Any locations that are directly part of this should be displayed as the root location.",
+    "type": [
+        {
+            "coding": [
+                {
+                    "system": "https://smartregister.org/codes/administrative-level",
+                    "code": "0",
+                    "display": "Level 0"
+                }
+            ]
+        }
+    ],
+    "physicalType": {
+        "coding": [
+            {
+                "system": "http://terminology.hl7.org/CodeSystem/location-physical-type",
+                "code": "jdn",
+                "display": "Jurisdiction"
+            }
+        ]
+    }
+}
