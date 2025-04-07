@@ -29,7 +29,7 @@
     ]
   },
   "partOf": {
-    "reference": "Location/109209",
-    "display": "EIR Reference Apps"
+    "reference": "Location/c3eb59b0-40a5-4538-b308-7256770399ca",
+    "display": "Root Location"
   }
 }
