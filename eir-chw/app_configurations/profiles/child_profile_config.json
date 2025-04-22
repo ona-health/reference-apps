@@ -431,7 +431,7 @@
                   "visible": "@{hasComorbidities}",
                   "resources": [
                     {
-                      "id": "availableConditions",
+                      "id": "availableCondition",
                       "relatedResourceId": "availableConditions",
                       "resourceType": "Condition",
                       "conditionalFhirPathExpression": "Condition.where(clinicalStatus.coding.where(code = 'active').exists()).exists()"
@@ -447,7 +447,7 @@
                         "name": "conditionTitle",
                         "condition": "true",
                         "actions": [
-                          "data.put('conditionTitle', fhirPath.extractValue(Condition, \"Condition.where(clinicalStatus.coding.where(code = 'active').exists()).code.text\"))"
+                          "data.put('conditionTitle', fhirPath.extractValue(availableCondition, \"Condition.where(clinicalStatus.coding.where(code = 'active').exists()).code.text\"))"
                         ]
                       }
                     ],
@@ -586,7 +586,7 @@
               "id": "atBirthTaskList",
               "resources": [
                 {
-                  "id": "availableTasks",
+                  "id": "atBirthTask",
                   "relatedResourceId": "availableTasks",
                   "resourceType": "Task",
                   "conditionalFhirPathExpression": " Task.code.coding.code='VAC001' and (Task.status = 'ready' or Task.status = 'failed' or Task.status = 'cancelled' or Task.status = 'completed') and Task.groupIdentifier.value = '0_d'",
@@ -613,21 +613,21 @@
                     "name": "taskStatus",
                     "condition": "true",
                     "actions": [
-                      "data.put('taskStatus', fhirPath.extractValue(Task, 'Task.status'))"
+                      "data.put('taskStatus', fhirPath.extractValue(atBirthTask, 'Task.status'))"
                     ]
                   },
                   {
                     "name": "taskStatusColorCode",
                     "condition": "true",
                     "actions": [
-                      "data.put('taskStatusColorCode', service.generateTaskServiceStatus(Task))"
+                      "data.put('taskStatusColorCode', service.generateTaskServiceStatus(atBirthTask))"
                     ]
                   },
                   {
                     "name": "taskExecutionStartDate",
                     "condition": "true",
                     "actions": [
-                      "data.put('taskExecutionStartDate', fhirPath.extractValue(Task, 'Task.executionPeriod.start'))"
+                      "data.put('taskExecutionStartDate', fhirPath.extractValue(atBirthTask, 'Task.executionPeriod.start'))"
                     ]
                   },
                   {
@@ -641,7 +641,7 @@
                     "name": "taskDescription",
                     "condition": "true",
                     "actions": [
-                      "data.put('taskDescription', fhirPath.extractValue(Task, 'Task.description'))"
+                      "data.put('taskDescription', fhirPath.extractValue(atBirthTask, 'Task.description'))"
                     ]
                   },
                   {
@@ -688,49 +688,49 @@
                     "name": "taskId",
                     "condition": "true",
                     "actions": [
-                      "data.put('taskId', fhirPath.extractValue(Task, 'Task.id'))"
+                      "data.put('taskId', fhirPath.extractValue(atBirthTask, 'Task.id'))"
                     ]
                   },
                   {
                     "name": "logicalTaskId",
                     "condition": "true",
                     "actions": [
-                      "data.put('logicalTaskId', fhirPath.extractValue(Task, 'Task.id').replace(\"Task/\",\"\").split(\"/\").get(0))"
+                      "data.put('logicalTaskId', fhirPath.extractValue(atBirthTask, 'Task.id').replace(\"Task/\",\"\").split(\"/\").get(0))"
                     ]
                   },
                   {
                     "name": "taskFor",
                     "condition": "true",
                     "actions": [
-                      "data.put('taskFor', fhirPath.extractValue(Task, 'Task.for.reference'))"
+                      "data.put('taskFor', fhirPath.extractValue(atBirthTask, 'Task.for.reference'))"
                     ]
                   },
                   {
                     "name": "taskQuestionnaireId",
                     "condition": "true",
                     "actions": [
-                      "data.put('taskQuestionnaireId', fhirPath.extractValue(Task, 'Task.reasonReference.reference'))"
+                      "data.put('taskQuestionnaireId', fhirPath.extractValue(atBirthTask, 'Task.reasonReference.reference'))"
                     ]
                   },
                   {
                     "name": "taskName",
                     "condition": "true",
                     "actions": [
-                      "data.put('taskName', fhirPath.extractValue(Task, 'Task.reasonCode.coding.display'))"
+                      "data.put('taskName', fhirPath.extractValue(atBirthTask, 'Task.reasonCode.coding.display'))"
                     ]
                   },
                   {
                     "name": "taskCode",
                     "condition": "true",
                     "actions": [
-                      "data.put('taskCode', fhirPath.extractValue(Task, 'Task.reasonCode.coding.code'))"
+                      "data.put('taskCode', fhirPath.extractValue(atBirthTask, 'Task.reasonCode.coding.code'))"
                     ]
                   },
                   {
                     "name": "vaccineDoseNumber",
                     "condition": "true",
                     "actions": [
-                      "data.put('vaccineDoseNumber', fhirPath.extractValue(Task, \"Task.input.where(type.coding.select(code) = '260911001').value\"))"
+                      "data.put('vaccineDoseNumber', fhirPath.extractValue(atBirthTask, \"Task.input.where(type.coding.select(code) = '260911001').value\"))"
                     ]
                   },
                   {
@@ -890,7 +890,7 @@
               "id": "at6WeeksTaskList",
               "resources": [
                 {
-                  "id": "availableTasks",
+                  "id": "at6WeeksTask",
                   "relatedResourceId": "availableTasks",
                   "resourceType": "Task",
                   "conditionalFhirPathExpression": " Task.code.coding.code='VAC001' and (Task.status = 'ready' or Task.status = 'failed' or Task.status = 'cancelled' or Task.status = 'completed') and Task.groupIdentifier.value = '6_wk'",
@@ -917,21 +917,21 @@
                     "name": "taskStatus",
                     "condition": "true",
                     "actions": [
-                      "data.put('taskStatus', fhirPath.extractValue(Task, 'Task.status'))"
+                      "data.put('taskStatus', fhirPath.extractValue(at6WeeksTask, 'Task.status'))"
                     ]
                   },
                   {
                     "name": "taskStatusColorCode",
                     "condition": "true",
                     "actions": [
-                      "data.put('taskStatusColorCode', service.generateTaskServiceStatus(Task))"
+                      "data.put('taskStatusColorCode', service.generateTaskServiceStatus(at6WeeksTask))"
                     ]
                   },
                   {
                     "name": "taskExecutionStartDate",
                     "condition": "true",
                     "actions": [
-                      "data.put('taskExecutionStartDate', fhirPath.extractValue(Task, 'Task.executionPeriod.start'))"
+                      "data.put('taskExecutionStartDate', fhirPath.extractValue(at6WeeksTask, 'Task.executionPeriod.start'))"
                     ]
                   },
                   {
@@ -952,7 +952,7 @@
                     "name": "taskDescription",
                     "condition": "true",
                     "actions": [
-                      "data.put('taskDescription', fhirPath.extractValue(Task, 'Task.description'))"
+                      "data.put('taskDescription', fhirPath.extractValue(at6WeeksTask, 'Task.description'))"
                     ]
                   },
                   {
@@ -999,49 +999,49 @@
                     "name": "taskId",
                     "condition": "true",
                     "actions": [
-                      "data.put('taskId', fhirPath.extractValue(Task, 'Task.id'))"
+                      "data.put('taskId', fhirPath.extractValue(at6WeeksTask, 'Task.id'))"
                     ]
                   },
                   {
                     "name": "logicalTaskId",
                     "condition": "true",
                     "actions": [
-                      "data.put('logicalTaskId', fhirPath.extractValue(Task, 'Task.id').replace(\"Task/\",\"\").split(\"/\").get(0))"
+                      "data.put('logicalTaskId', fhirPath.extractValue(at6WeeksTask, 'Task.id').replace(\"Task/\",\"\").split(\"/\").get(0))"
                     ]
                   },
                   {
                     "name": "taskFor",
                     "condition": "true",
                     "actions": [
-                      "data.put('taskFor', fhirPath.extractValue(Task, 'Task.for.reference'))"
+                      "data.put('taskFor', fhirPath.extractValue(at6WeeksTask, 'Task.for.reference'))"
                     ]
                   },
                   {
                     "name": "taskQuestionnaireId",
                     "condition": "true",
                     "actions": [
-                      "data.put('taskQuestionnaireId', fhirPath.extractValue(Task, 'Task.reasonReference.reference'))"
+                      "data.put('taskQuestionnaireId', fhirPath.extractValue(at6WeeksTask, 'Task.reasonReference.reference'))"
                     ]
                   },
                   {
                     "name": "taskName",
                     "condition": "true",
                     "actions": [
-                      "data.put('taskName', fhirPath.extractValue(Task, 'Task.reasonCode.coding.display'))"
+                      "data.put('taskName', fhirPath.extractValue(at6WeeksTask, 'Task.reasonCode.coding.display'))"
                     ]
                   },
                   {
                     "name": "taskCode",
                     "condition": "true",
                     "actions": [
-                      "data.put('taskCode', fhirPath.extractValue(Task, 'Task.reasonCode.coding.code'))"
+                      "data.put('taskCode', fhirPath.extractValue(at6WeeksTask, 'Task.reasonCode.coding.code'))"
                     ]
                   },
                   {
                     "name": "vaccineDoseNumber",
                     "condition": "true",
                     "actions": [
-                      "data.put('vaccineDoseNumber', fhirPath.extractValue(Task, \"Task.input.where(type.coding.select(code) = '260911001').value\"))"
+                      "data.put('vaccineDoseNumber', fhirPath.extractValue(at6WeeksTask, \"Task.input.where(type.coding.select(code) = '260911001').value\"))"
                     ]
                   },
                   {
@@ -1201,7 +1201,7 @@
               "id": "at10WeeksTaskList",
               "resources": [
                 {
-                  "id": "availableTasks",
+                  "id": "at10WeeksTask",
                   "relatedResourceId": "availableTasks",
                   "resourceType": "Task",
                   "conditionalFhirPathExpression": " Task.code.coding.code='VAC001' and (Task.status = 'ready' or Task.status = 'failed' or Task.status = 'cancelled' or Task.status = 'completed') and Task.groupIdentifier.value = '10_wk'",
@@ -1228,21 +1228,21 @@
                     "name": "taskStatus",
                     "condition": "true",
                     "actions": [
-                      "data.put('taskStatus', fhirPath.extractValue(Task, 'Task.status'))"
+                      "data.put('taskStatus', fhirPath.extractValue(at10WeeksTask, 'Task.status'))"
                     ]
                   },
                   {
                     "name": "taskStatusColorCode",
                     "condition": "true",
                     "actions": [
-                      "data.put('taskStatusColorCode', service.generateTaskServiceStatus(Task))"
+                      "data.put('taskStatusColorCode', service.generateTaskServiceStatus(at10WeeksTask))"
                     ]
                   },
                   {
                     "name": "taskExecutionStartDate",
                     "condition": "true",
                     "actions": [
-                      "data.put('taskExecutionStartDate', fhirPath.extractValue(Task, 'Task.executionPeriod.start'))"
+                      "data.put('taskExecutionStartDate', fhirPath.extractValue(at10WeeksTask, 'Task.executionPeriod.start'))"
                     ]
                   },
                   {
@@ -1256,7 +1256,7 @@
                     "name": "taskDescription",
                     "condition": "true",
                     "actions": [
-                      "data.put('taskDescription', fhirPath.extractValue(Task, 'Task.description'))"
+                      "data.put('taskDescription', fhirPath.extractValue(at10WeeksTask, 'Task.description'))"
                     ]
                   },
                   {
@@ -1303,49 +1303,49 @@
                     "name": "taskId",
                     "condition": "true",
                     "actions": [
-                      "data.put('taskId', fhirPath.extractValue(Task, 'Task.id'))"
+                      "data.put('taskId', fhirPath.extractValue(at10WeeksTask, 'Task.id'))"
                     ]
                   },
                   {
                     "name": "logicalTaskId",
                     "condition": "true",
                     "actions": [
-                      "data.put('logicalTaskId', fhirPath.extractValue(Task, 'Task.id').replace(\"Task/\",\"\").split(\"/\").get(0))"
+                      "data.put('logicalTaskId', fhirPath.extractValue(at10WeeksTask, 'Task.id').replace(\"Task/\",\"\").split(\"/\").get(0))"
                     ]
                   },
                   {
                     "name": "taskFor",
                     "condition": "true",
                     "actions": [
-                      "data.put('taskFor', fhirPath.extractValue(Task, 'Task.for.reference'))"
+                      "data.put('taskFor', fhirPath.extractValue(at10WeeksTask, 'Task.for.reference'))"
                     ]
                   },
                   {
                     "name": "taskQuestionnaireId",
                     "condition": "true",
                     "actions": [
-                      "data.put('taskQuestionnaireId', fhirPath.extractValue(Task, 'Task.reasonReference.reference'))"
+                      "data.put('taskQuestionnaireId', fhirPath.extractValue(at10WeeksTask, 'Task.reasonReference.reference'))"
                     ]
                   },
                   {
                     "name": "taskName",
                     "condition": "true",
                     "actions": [
-                      "data.put('taskName', fhirPath.extractValue(Task, 'Task.reasonCode.coding.display'))"
+                      "data.put('taskName', fhirPath.extractValue(at10WeeksTask, 'Task.reasonCode.coding.display'))"
                     ]
                   },
                   {
                     "name": "taskCode",
                     "condition": "true",
                     "actions": [
-                      "data.put('taskCode', fhirPath.extractValue(Task, 'Task.reasonCode.coding.code'))"
+                      "data.put('taskCode', fhirPath.extractValue(at10WeeksTask, 'Task.reasonCode.coding.code'))"
                     ]
                   },
                   {
                     "name": "vaccineDoseNumber",
                     "condition": "true",
                     "actions": [
-                      "data.put('vaccineDoseNumber', fhirPath.extractValue(Task, \"Task.input.where(type.coding.select(code) = '260911001').value\"))"
+                      "data.put('vaccineDoseNumber', fhirPath.extractValue(at10WeeksTask, \"Task.input.where(type.coding.select(code) = '260911001').value\"))"
                     ]
                   },
                   {
@@ -1505,7 +1505,7 @@
               "id": "at12WeeksTaskList",
               "resources": [
                 {
-                  "id": "availableTasks",
+                  "id": "at12WeeksTask",
                   "relatedResourceId": "availableTasks",
                   "resourceType": "Task",
                   "conditionalFhirPathExpression": " Task.code.coding.code='VAC001' and (Task.status = 'ready' or Task.status = 'failed' or Task.status = 'cancelled' or Task.status = 'completed') and Task.groupIdentifier.value = '12_wk'",
@@ -1532,7 +1532,7 @@
                     "name": "taskStatus",
                     "condition": "true",
                     "actions": [
-                      "data.put('taskStatus', fhirPath.extractValue(Task, 'Task.status'))"
+                      "data.put('taskStatus', fhirPath.extractValue(at12WeeksTask, 'Task.status'))"
                     ]
                   },
                   {
@@ -1560,7 +1560,7 @@
                     "name": "taskDescription",
                     "condition": "true",
                     "actions": [
-                      "data.put('taskDescription', fhirPath.extractValue(Task, 'Task.description'))"
+                      "data.put('taskDescription', fhirPath.extractValue(at12WeeksTask, 'Task.description'))"
                     ]
                   },
                   {
@@ -1607,49 +1607,49 @@
                     "name": "taskId",
                     "condition": "true",
                     "actions": [
-                      "data.put('taskId', fhirPath.extractValue(Task, 'Task.id'))"
+                      "data.put('taskId', fhirPath.extractValue(at12WeeksTask, 'Task.id'))"
                     ]
                   },
                   {
                     "name": "logicalTaskId",
                     "condition": "true",
                     "actions": [
-                      "data.put('logicalTaskId', fhirPath.extractValue(Task, 'Task.id').replace(\"Task/\",\"\").split(\"/\").get(0))"
+                      "data.put('logicalTaskId', fhirPath.extractValue(at12WeeksTask, 'Task.id').replace(\"Task/\",\"\").split(\"/\").get(0))"
                     ]
                   },
                   {
                     "name": "taskFor",
                     "condition": "true",
                     "actions": [
-                      "data.put('taskFor', fhirPath.extractValue(Task, 'Task.for.reference'))"
+                      "data.put('taskFor', fhirPath.extractValue(at12WeeksTask, 'Task.for.reference'))"
                     ]
                   },
                   {
                     "name": "taskQuestionnaireId",
                     "condition": "true",
                     "actions": [
-                      "data.put('taskQuestionnaireId', fhirPath.extractValue(Task, 'Task.reasonReference.reference'))"
+                      "data.put('taskQuestionnaireId', fhirPath.extractValue(at12WeeksTask, 'Task.reasonReference.reference'))"
                     ]
                   },
                   {
                     "name": "taskName",
                     "condition": "true",
                     "actions": [
-                      "data.put('taskName', fhirPath.extractValue(Task, 'Task.reasonCode.coding.display'))"
+                      "data.put('taskName', fhirPath.extractValue(at12WeeksTask, 'Task.reasonCode.coding.display'))"
                     ]
                   },
                   {
                     "name": "taskCode",
                     "condition": "true",
                     "actions": [
-                      "data.put('taskCode', fhirPath.extractValue(Task, 'Task.reasonCode.coding.code'))"
+                      "data.put('taskCode', fhirPath.extractValue(at12WeeksTask, 'Task.reasonCode.coding.code'))"
                     ]
                   },
                   {
                     "name": "vaccineDoseNumber",
                     "condition": "true",
                     "actions": [
-                      "data.put('vaccineDoseNumber', fhirPath.extractValue(Task, \"Task.input.where(type.coding.select(code) = '260911001').value\"))"
+                      "data.put('vaccineDoseNumber', fhirPath.extractValue(at12WeeksTask, \"Task.input.where(type.coding.select(code) = '260911001').value\"))"
                     ]
                   },
                   {
@@ -1809,7 +1809,7 @@
               "id": "at14WeeksTaskList",
               "resources": [
                 {
-                  "id": "availableTasks",
+                  "id": "at14WeeksTask",
                   "relatedResourceId": "availableTasks",
                   "resourceType": "Task",
                   "conditionalFhirPathExpression": " Task.code.coding.code='VAC001' and (Task.status = 'ready' or Task.status = 'failed' or Task.status = 'cancelled' or Task.status = 'completed') and Task.groupIdentifier.value = '14_wk'",
@@ -1836,21 +1836,21 @@
                     "name": "taskStatus",
                     "condition": "true",
                     "actions": [
-                      "data.put('taskStatus', fhirPath.extractValue(Task, 'Task.status'))"
+                      "data.put('taskStatus', fhirPath.extractValue(at14WeeksTask, 'Task.status'))"
                     ]
                   },
                   {
                     "name": "taskStatusColorCode",
                     "condition": "true",
                     "actions": [
-                      "data.put('taskStatusColorCode', service.generateTaskServiceStatus(Task))"
+                      "data.put('taskStatusColorCode', service.generateTaskServiceStatus(at14WeeksTask))"
                     ]
                   },
                   {
                     "name": "taskExecutionStartDate",
                     "condition": "true",
                     "actions": [
-                      "data.put('taskExecutionStartDate', fhirPath.extractValue(Task, 'Task.executionPeriod.start'))"
+                      "data.put('taskExecutionStartDate', fhirPath.extractValue(at14WeeksTask, 'Task.executionPeriod.start'))"
                     ]
                   },
                   {
@@ -1871,7 +1871,7 @@
                     "name": "taskDescription",
                     "condition": "true",
                     "actions": [
-                      "data.put('taskDescription', fhirPath.extractValue(Task, 'Task.description'))"
+                      "data.put('taskDescription', fhirPath.extractValue(at14WeeksTask, 'Task.description'))"
                     ]
                   },
                   {
@@ -1918,49 +1918,49 @@
                     "name": "taskId",
                     "condition": "true",
                     "actions": [
-                      "data.put('taskId', fhirPath.extractValue(Task, 'Task.id'))"
+                      "data.put('taskId', fhirPath.extractValue(at14WeeksTask, 'Task.id'))"
                     ]
                   },
                   {
                     "name": "logicalTaskId",
                     "condition": "true",
                     "actions": [
-                      "data.put('logicalTaskId', fhirPath.extractValue(Task, 'Task.id').replace(\"Task/\",\"\").split(\"/\").get(0))"
+                      "data.put('logicalTaskId', fhirPath.extractValue(at14WeeksTask, 'Task.id').replace(\"Task/\",\"\").split(\"/\").get(0))"
                     ]
                   },
                   {
                     "name": "taskFor",
                     "condition": "true",
                     "actions": [
-                      "data.put('taskFor', fhirPath.extractValue(Task, 'Task.for.reference'))"
+                      "data.put('taskFor', fhirPath.extractValue(at14WeeksTask, 'Task.for.reference'))"
                     ]
                   },
                   {
                     "name": "taskQuestionnaireId",
                     "condition": "true",
                     "actions": [
-                      "data.put('taskQuestionnaireId', fhirPath.extractValue(Task, 'Task.reasonReference.reference'))"
+                      "data.put('taskQuestionnaireId', fhirPath.extractValue(at14WeeksTask, 'Task.reasonReference.reference'))"
                     ]
                   },
                   {
                     "name": "taskName",
                     "condition": "true",
                     "actions": [
-                      "data.put('taskName', fhirPath.extractValue(Task, 'Task.reasonCode.coding.display'))"
+                      "data.put('taskName', fhirPath.extractValue(at14WeeksTask, 'Task.reasonCode.coding.display'))"
                     ]
                   },
                   {
                     "name": "taskCode",
                     "condition": "true",
                     "actions": [
-                      "data.put('taskCode', fhirPath.extractValue(Task, 'Task.reasonCode.coding.code'))"
+                      "data.put('taskCode', fhirPath.extractValue(at14WeeksTask, 'Task.reasonCode.coding.code'))"
                     ]
                   },
                   {
                     "name": "vaccineDoseNumber",
                     "condition": "true",
                     "actions": [
-                      "data.put('vaccineDoseNumber', fhirPath.extractValue(Task, \"Task.input.where(type.coding.select(code) = '260911001').value\"))"
+                      "data.put('vaccineDoseNumber', fhirPath.extractValue(at14WeeksTask, \"Task.input.where(type.coding.select(code) = '260911001').value\"))"
                     ]
                   },
                   {
@@ -2120,7 +2120,7 @@
               "id": "at9MonthsTaskList",
               "resources": [
                 {
-                  "id": "availableTasks",
+                  "id": "at9MonthsTask",
                   "relatedResourceId": "availableTasks",
                   "resourceType": "Task",
                   "conditionalFhirPathExpression": " Task.code.coding.code='VAC001' and (Task.status = 'ready' or Task.status = 'failed' or Task.status = 'cancelled' or Task.status = 'completed') and Task.groupIdentifier.value = '9_mo'",
@@ -2147,21 +2147,21 @@
                     "name": "taskStatus",
                     "condition": "true",
                     "actions": [
-                      "data.put('taskStatus', fhirPath.extractValue(Task, 'Task.status'))"
+                      "data.put('taskStatus', fhirPath.extractValue(at9MonthsTask, 'Task.status'))"
                     ]
                   },
                   {
                     "name": "taskStatusColorCode",
                     "condition": "true",
                     "actions": [
-                      "data.put('taskStatusColorCode', service.generateTaskServiceStatus(Task))"
+                      "data.put('taskStatusColorCode', service.generateTaskServiceStatus(at9MonthsTask))"
                     ]
                   },
                   {
                     "name": "taskExecutionStartDate",
                     "condition": "true",
                     "actions": [
-                      "data.put('taskExecutionStartDate', fhirPath.extractValue(Task, 'Task.executionPeriod.start'))"
+                      "data.put('taskExecutionStartDate', fhirPath.extractValue(at9MonthsTask, 'Task.executionPeriod.start'))"
                     ]
                   },
                   {
@@ -2175,7 +2175,7 @@
                     "name": "taskDescription",
                     "condition": "true",
                     "actions": [
-                      "data.put('taskDescription', fhirPath.extractValue(Task, 'Task.description'))"
+                      "data.put('taskDescription', fhirPath.extractValue(at9MonthsTask, 'Task.description'))"
                     ]
                   },
                   {
@@ -2222,49 +2222,49 @@
                     "name": "taskId",
                     "condition": "true",
                     "actions": [
-                      "data.put('taskId', fhirPath.extractValue(Task, 'Task.id'))"
+                      "data.put('taskId', fhirPath.extractValue(at9MonthsTask, 'Task.id'))"
                     ]
                   },
                   {
                     "name": "logicalTaskId",
                     "condition": "true",
                     "actions": [
-                      "data.put('logicalTaskId', fhirPath.extractValue(Task, 'Task.id').replace(\"Task/\",\"\").split(\"/\").get(0))"
+                      "data.put('logicalTaskId', fhirPath.extractValue(at9MonthsTask, 'Task.id').replace(\"Task/\",\"\").split(\"/\").get(0))"
                     ]
                   },
                   {
                     "name": "taskFor",
                     "condition": "true",
                     "actions": [
-                      "data.put('taskFor', fhirPath.extractValue(Task, 'Task.for.reference'))"
+                      "data.put('taskFor', fhirPath.extractValue(at9MonthsTask, 'Task.for.reference'))"
                     ]
                   },
                   {
                     "name": "taskQuestionnaireId",
                     "condition": "true",
                     "actions": [
-                      "data.put('taskQuestionnaireId', fhirPath.extractValue(Task, 'Task.reasonReference.reference'))"
+                      "data.put('taskQuestionnaireId', fhirPath.extractValue(at9MonthsTask, 'Task.reasonReference.reference'))"
                     ]
                   },
                   {
                     "name": "taskName",
                     "condition": "true",
                     "actions": [
-                      "data.put('taskName', fhirPath.extractValue(Task, 'Task.reasonCode.coding.display'))"
+                      "data.put('taskName', fhirPath.extractValue(at9MonthsTask, 'Task.reasonCode.coding.display'))"
                     ]
                   },
                   {
                     "name": "taskCode",
                     "condition": "true",
                     "actions": [
-                      "data.put('taskCode', fhirPath.extractValue(Task, 'Task.reasonCode.coding.code'))"
+                      "data.put('taskCode', fhirPath.extractValue(at9MonthsTask, 'Task.reasonCode.coding.code'))"
                     ]
                   },
                   {
                     "name": "vaccineDoseNumber",
                     "condition": "true",
                     "actions": [
-                      "data.put('vaccineDoseNumber', fhirPath.extractValue(Task, \"Task.input.where(type.coding.select(code) = '260911001').value\"))"
+                      "data.put('vaccineDoseNumber', fhirPath.extractValue(at9MonthsTask, \"Task.input.where(type.coding.select(code) = '260911001').value\"))"
                     ]
                   },
                   {
@@ -2424,7 +2424,7 @@
               "id": "at18MonthsTaskList",
               "resources": [
                 {
-                  "id": "availableTasks",
+                  "id": "at18MonthsTask",
                   "relatedResourceId": "availableTasks",
                   "resourceType": "Task",
                   "conditionalFhirPathExpression": " Task.code.coding.code='VAC001' and (Task.status = 'ready' or Task.status = 'failed' or Task.status = 'cancelled' or Task.status = 'completed') and Task.groupIdentifier.value = '18_mo'",
@@ -2451,21 +2451,21 @@
                     "name": "taskStatus",
                     "condition": "true",
                     "actions": [
-                      "data.put('taskStatus', fhirPath.extractValue(Task, 'Task.status'))"
+                      "data.put('taskStatus', fhirPath.extractValue(at18MonthsTask, 'Task.status'))"
                     ]
                   },
                   {
                     "name": "taskStatusColorCode",
                     "condition": "true",
                     "actions": [
-                      "data.put('taskStatusColorCode', service.generateTaskServiceStatus(Task))"
+                      "data.put('taskStatusColorCode', service.generateTaskServiceStatus(at18MonthsTask))"
                     ]
                   },
                   {
                     "name": "taskExecutionStartDate",
                     "condition": "true",
                     "actions": [
-                      "data.put('taskExecutionStartDate', fhirPath.extractValue(Task, 'Task.executionPeriod.start'))"
+                      "data.put('taskExecutionStartDate', fhirPath.extractValue(at18MonthsTask, 'Task.executionPeriod.start'))"
                     ]
                   },
                   {
@@ -2479,7 +2479,7 @@
                     "name": "taskDescription",
                     "condition": "true",
                     "actions": [
-                      "data.put('taskDescription', fhirPath.extractValue(Task, 'Task.description'))"
+                      "data.put('taskDescription', fhirPath.extractValue(at18MonthsTask, 'Task.description'))"
                     ]
                   },
                   {
@@ -2526,49 +2526,49 @@
                     "name": "taskId",
                     "condition": "true",
                     "actions": [
-                      "data.put('taskId', fhirPath.extractValue(Task, 'Task.id'))"
+                      "data.put('taskId', fhirPath.extractValue(at18MonthsTask, 'Task.id'))"
                     ]
                   },
                   {
                     "name": "logicalTaskId",
                     "condition": "true",
                     "actions": [
-                      "data.put('logicalTaskId', fhirPath.extractValue(Task, 'Task.id').replace(\"Task/\",\"\").split(\"/\").get(0))"
+                      "data.put('logicalTaskId', fhirPath.extractValue(at18MonthsTask, 'Task.id').replace(\"Task/\",\"\").split(\"/\").get(0))"
                     ]
                   },
                   {
                     "name": "taskFor",
                     "condition": "true",
                     "actions": [
-                      "data.put('taskFor', fhirPath.extractValue(Task, 'Task.for.reference'))"
+                      "data.put('taskFor', fhirPath.extractValue(at18MonthsTask, 'Task.for.reference'))"
                     ]
                   },
                   {
                     "name": "taskQuestionnaireId",
                     "condition": "true",
                     "actions": [
-                      "data.put('taskQuestionnaireId', fhirPath.extractValue(Task, 'Task.reasonReference.reference'))"
+                      "data.put('taskQuestionnaireId', fhirPath.extractValue(at18MonthsTask, 'Task.reasonReference.reference'))"
                     ]
                   },
                   {
                     "name": "taskName",
                     "condition": "true",
                     "actions": [
-                      "data.put('taskName', fhirPath.extractValue(Task, 'Task.reasonCode.coding.display'))"
+                      "data.put('taskName', fhirPath.extractValue(at18MonthsTask, 'Task.reasonCode.coding.display'))"
                     ]
                   },
                   {
                     "name": "taskCode",
                     "condition": "true",
                     "actions": [
-                      "data.put('taskCode', fhirPath.extractValue(Task, 'Task.reasonCode.coding.code'))"
+                      "data.put('taskCode', fhirPath.extractValue(at18MonthsTask, 'Task.reasonCode.coding.code'))"
                     ]
                   },
                   {
                     "name": "vaccineDoseNumber",
                     "condition": "true",
                     "actions": [
-                      "data.put('vaccineDoseNumber', fhirPath.extractValue(Task, \"Task.input.where(type.coding.select(code) = '260911001').value\"))"
+                      "data.put('vaccineDoseNumber', fhirPath.extractValue(at18MonthsTask, \"Task.input.where(type.coding.select(code) = '260911001').value\"))"
                     ]
                   },
                   {
@@ -2728,7 +2728,7 @@
               "id": "at9YearsTaskList",
               "resources": [
                 {
-                  "id": "availableTasks",
+                  "id": "at9YearsTask",
                   "relatedResourceId": "availableTasks",
                   "resourceType": "Task",
                   "conditionalFhirPathExpression": " Task.code.coding.code='VAC001' and (Task.status = 'ready' or Task.status = 'failed' or Task.status = 'cancelled' or Task.status = 'completed') and (Task.groupIdentifier.value = '108_mo' or Task.groupIdentifier.value = '3420_d')",
@@ -2755,21 +2755,21 @@
                     "name": "taskStatus",
                     "condition": "true",
                     "actions": [
-                      "data.put('taskStatus', fhirPath.extractValue(Task, 'Task.status'))"
+                      "data.put('taskStatus', fhirPath.extractValue(at9YearsTask, 'Task.status'))"
                     ]
                   },
                   {
                     "name": "taskStatusColorCode",
                     "condition": "true",
                     "actions": [
-                      "data.put('taskStatusColorCode', service.generateTaskServiceStatus(Task))"
+                      "data.put('taskStatusColorCode', service.generateTaskServiceStatus(at9YearsTask))"
                     ]
                   },
                   {
                     "name": "taskExecutionStartDate",
                     "condition": "true",
                     "actions": [
-                      "data.put('taskExecutionStartDate', fhirPath.extractValue(Task, 'Task.executionPeriod.start'))"
+                      "data.put('taskExecutionStartDate', fhirPath.extractValue(at9YearsTask, 'Task.executionPeriod.start'))"
                     ]
                   },
                   {
@@ -2783,7 +2783,7 @@
                     "name": "taskDescription",
                     "condition": "true",
                     "actions": [
-                      "data.put('taskDescription', fhirPath.extractValue(Task, 'Task.description'))"
+                      "data.put('taskDescription', fhirPath.extractValue(at9YearsTask, 'Task.description'))"
                     ]
                   },
                   {
@@ -2830,49 +2830,49 @@
                     "name": "taskId",
                     "condition": "true",
                     "actions": [
-                      "data.put('taskId', fhirPath.extractValue(Task, 'Task.id'))"
+                      "data.put('taskId', fhirPath.extractValue(at9YearsTask, 'Task.id'))"
                     ]
                   },
                   {
                     "name": "logicalTaskId",
                     "condition": "true",
                     "actions": [
-                      "data.put('logicalTaskId', fhirPath.extractValue(Task, 'Task.id').replace(\"Task/\",\"\").split(\"/\").get(0))"
+                      "data.put('logicalTaskId', fhirPath.extractValue(at9YearsTask, 'Task.id').replace(\"Task/\",\"\").split(\"/\").get(0))"
                     ]
                   },
                   {
                     "name": "taskFor",
                     "condition": "true",
                     "actions": [
-                      "data.put('taskFor', fhirPath.extractValue(Task, 'Task.for.reference'))"
+                      "data.put('taskFor', fhirPath.extractValue(at9YearsTask, 'Task.for.reference'))"
                     ]
                   },
                   {
                     "name": "taskQuestionnaireId",
                     "condition": "true",
                     "actions": [
-                      "data.put('taskQuestionnaireId', fhirPath.extractValue(Task, 'Task.reasonReference.reference'))"
+                      "data.put('taskQuestionnaireId', fhirPath.extractValue(at9YearsTask, 'Task.reasonReference.reference'))"
                     ]
                   },
                   {
                     "name": "taskName",
                     "condition": "true",
                     "actions": [
-                      "data.put('taskName', fhirPath.extractValue(Task, 'Task.reasonCode.coding.display'))"
+                      "data.put('taskName', fhirPath.extractValue(at9YearsTask, 'Task.reasonCode.coding.display'))"
                     ]
                   },
                   {
                     "name": "taskCode",
                     "condition": "true",
                     "actions": [
-                      "data.put('taskCode', fhirPath.extractValue(Task, 'Task.reasonCode.coding.code'))"
+                      "data.put('taskCode', fhirPath.extractValue(at9YearsTask, 'Task.reasonCode.coding.code'))"
                     ]
                   },
                   {
                     "name": "vaccineDoseNumber",
                     "condition": "true",
                     "actions": [
-                      "data.put('vaccineDoseNumber', fhirPath.extractValue(Task, \"Task.input.where(type.coding.select(code) = '260911001').value\"))"
+                      "data.put('vaccineDoseNumber', fhirPath.extractValue(at9YearsTask, \"Task.input.where(type.coding.select(code) = '260911001').value\"))"
                     ]
                   },
                   {
@@ -2998,7 +2998,7 @@
               "id": "readyTasksList",
               "resources": [
                 {
-                  "id": "availableTasks",
+                  "id": "readyTask",
                   "relatedResourceId": "availableTasks",
                   "resourceType": "Task",
                   "conditionalFhirPathExpression": "(Task.code.coding.code='33879012' and (Task.status = 'ready' or Task.status = 'cancelled' or Task.status = 'failed' or Task.status = 'completed'))",
@@ -3018,21 +3018,21 @@
                     "name": "taskStatus",
                     "condition": "true",
                     "actions": [
-                      "data.put('taskStatus', fhirPath.extractValue(Task, 'Task.status'))"
+                      "data.put('taskStatus', fhirPath.extractValue(readyTask, 'Task.status'))"
                     ]
                   },
                   {
                     "name": "taskStatusColorCode",
                     "condition": "true",
                     "actions": [
-                      "data.put('taskStatusColorCode', service.generateTaskServiceStatus(Task))"
+                      "data.put('taskStatusColorCode', service.generateTaskServiceStatus(readyTask))"
                     ]
                   },
                   {
                     "name": "taskExecutionStartDate",
                     "condition": "true",
                     "actions": [
-                      "data.put('taskExecutionStartDate', fhirPath.extractValue(Task, 'Task.executionPeriod.start'))"
+                      "data.put('taskExecutionStartDate', fhirPath.extractValue(readyTask, 'Task.executionPeriod.start'))"
                     ]
                   },
                   {
@@ -3046,14 +3046,14 @@
                     "name": "taskDescription",
                     "condition": "true",
                     "actions": [
-                      "data.put('taskDescription', fhirPath.extractValue(Task, 'Task.description'))"
+                      "data.put('taskDescription', fhirPath.extractValue(readyTask, 'Task.description'))"
                     ]
                   },
                   {
                     "name": "immunizationDate",
                     "condition": "true",
                     "actions": [
-                      "data.put('immunizationDate', service.formatDate(fhirPath.extractValue(Task, \"Task.output.where(type.coding.select(code) = '35123003').value\"), \"yyyy-MM-dd\", \"dd MMM yyyy\"))"
+                      "data.put('immunizationDate', service.formatDate(fhirPath.extractValue(readyTask, \"Task.output.where(type.coding.select(code) = '35123003').value\"), \"yyyy-MM-dd\", \"dd MMM yyyy\"))"
                     ]
                   },
                   {
@@ -3076,42 +3076,42 @@
                     "name": "taskId",
                     "condition": "true",
                     "actions": [
-                      "data.put('taskId', fhirPath.extractValue(Task, 'Task.id'))"
+                      "data.put('taskId', fhirPath.extractValue(readyTask, 'Task.id'))"
                     ]
                   },
                   {
                     "name": "logicalTaskId",
                     "condition": "true",
                     "actions": [
-                      "data.put('logicalTaskId', fhirPath.extractValue(Task, 'Task.id').replace(\"Task/\",\"\").split(\"/\").get(0))"
+                      "data.put('logicalTaskId', fhirPath.extractValue(readyTask, 'Task.id').replace(\"Task/\",\"\").split(\"/\").get(0))"
                     ]
                   },
                   {
                     "name": "taskFor",
                     "condition": "true",
                     "actions": [
-                      "data.put('taskFor', fhirPath.extractValue(Task, 'Task.for.reference'))"
+                      "data.put('taskFor', fhirPath.extractValue(readyTask, 'Task.for.reference'))"
                     ]
                   },
                   {
                     "name": "taskQuestionnaireId",
                     "condition": "true",
                     "actions": [
-                      "data.put('taskQuestionnaireId', fhirPath.extractValue(Task, 'Task.reasonReference.reference'))"
+                      "data.put('taskQuestionnaireId', fhirPath.extractValue(readyTask, 'Task.reasonReference.reference'))"
                     ]
                   },
                   {
                     "name": "taskName",
                     "condition": "true",
                     "actions": [
-                      "data.put('taskName', fhirPath.extractValue(Task, 'Task.reasonCode.coding.display'))"
+                      "data.put('taskName', fhirPath.extractValue(readyTask, 'Task.reasonCode.coding.display'))"
                     ]
                   },
                   {
                     "name": "taskCode",
                     "condition": "true",
                     "actions": [
-                      "data.put('taskCode', fhirPath.extractValue(Task, 'Task.reasonCode.coding.code'))"
+                      "data.put('taskCode', fhirPath.extractValue(readyTask, 'Task.reasonCode.coding.code'))"
                     ]
                   },
                   {
