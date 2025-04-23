@@ -50,7 +50,7 @@
       "id": "previousScreeningsList",
       "resources": [
         {
-          "id": "previousScreeningTask",
+          "id": "previousScreeningTasks",
           "relatedResourceId": "availableTasks",
           "resourceType": "Task",
           "conditionalFhirPathExpression": "((Task.status = 'completed') or (Task.status = 'failed') or (Task.status = 'cancelled'))"
@@ -65,21 +65,21 @@
             "name": "taskStatus",
             "condition": "true",
             "actions": [
-              "data.put('taskStatus', fhirPath.extractValue(previousScreeningTask, 'Task.status'))"
+              "data.put('taskStatus', fhirPath.extractValue(previousScreeningTasks, 'Task.status'))"
             ]
           },
           {
             "name": "taskStatusColorCode",
             "condition": "true",
             "actions": [
-              "data.put('taskStatusColorCode', service.generateTaskServiceStatus(previousScreeningTask))"
+              "data.put('taskStatusColorCode', service.generateTaskServiceStatus(previousScreeningTasks))"
             ]
           },
           {
             "name": "taskExecutionStartDate",
             "condition": "true",
             "actions": [
-              "data.put('taskExecutionStartDate', fhirPath.extractValue(previousScreeningTask, 'Task.executionPeriod.start'))"
+              "data.put('taskExecutionStartDate', fhirPath.extractValue(previousScreeningTasks, 'Task.executionPeriod.start'))"
             ]
           },
           {
@@ -93,14 +93,14 @@
             "name": "taskDescription",
             "condition": "true",
             "actions": [
-              "data.put('taskDescription', fhirPath.extractValue(previousScreeningTask, 'Task.description'))"
+              "data.put('taskDescription', fhirPath.extractValue(previousScreeningTasks, 'Task.description'))"
             ]
           },
           {
             "name": "taskGroupIdentifier",
             "condition": "true",
             "actions": [
-              "data.put('taskGroupIdentifier', fhirPath.extractValue(previousScreeningTask, 'Task.groupIdentifier.value'))"
+              "data.put('taskGroupIdentifier', fhirPath.extractValue(previousScreeningTasks, 'Task.groupIdentifier.value'))"
             ]
           },
           {
@@ -115,7 +115,7 @@
             "name": "immunizationDate",
             "condition": "true",
             "actions": [
-              "data.put('immunizationDate', service.formatDate(fhirPath.extractValue(previousScreeningTask, \"Task.output.where(type.coding.select(code) = '35123003').value\"), \"yyyy-MM-dd\", \"dd MMM yyyy\"))"
+              "data.put('immunizationDate', service.formatDate(fhirPath.extractValue(previousScreeningTasks, \"Task.output.where(type.coding.select(code) = '35123003').value\"), \"yyyy-MM-dd\", \"dd MMM yyyy\"))"
             ]
           },
           {
@@ -138,21 +138,21 @@
             "name": "taskId",
             "condition": "true",
             "actions": [
-              "data.put('taskId', fhirPath.extractValue(previousScreeningTask, 'Task.id'))"
+              "data.put('taskId', fhirPath.extractValue(previousScreeningTasks, 'Task.id'))"
             ]
           },
           {
             "name": "taskFor",
             "condition": "true",
             "actions": [
-              "data.put('taskFor', fhirPath.extractValue(previousScreeningTask, 'Task.for.reference'))"
+              "data.put('taskFor', fhirPath.extractValue(previousScreeningTasks, 'Task.for.reference'))"
             ]
           },
           {
             "name": "taskQuestionnaireId",
             "condition": "true",
             "actions": [
-              "data.put('taskQuestionnaireId', fhirPath.extractValue(previousScreeningTask, 'Task.reasonReference.reference'))"
+              "data.put('taskQuestionnaireId', fhirPath.extractValue(previousScreeningTasks, 'Task.reasonReference.reference'))"
             ]
           },
           {

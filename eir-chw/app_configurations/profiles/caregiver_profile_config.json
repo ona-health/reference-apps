@@ -305,7 +305,7 @@
               "viewType": "LIST",
               "resources": [
                 {
-                  "id": "availableChild",
+                  "id": "availableChildren",
                   "relatedResourceId": "availableChildren",
                   "resourceType": "Patient",
                   "conditionalFhirPathExpression": "Patient.active = 'true' or Patient.active = 'false'",
@@ -331,28 +331,28 @@
                     "name": "patientFirstName",
                     "condition": "true",
                     "actions": [
-                      "data.put('patientFirstName', fhirPath.extractValue(availableChild, \"Patient.name.where(use='official').given.first()\"))"
+                      "data.put('patientFirstName', fhirPath.extractValue(availableChildren, \"Patient.name.where(use='official').given.first()\"))"
                     ]
                   },
                   {
                     "name": "patientLastName",
                     "condition": "true",
                     "actions": [
-                      "data.put('patientLastName', fhirPath.extractValue(availableChild, \"Patient.name.where(use='official').family\"))"
+                      "data.put('patientLastName', fhirPath.extractValue(availableChildren, \"Patient.name.where(use='official').family\"))"
                     ]
                   },
                   {
                     "name": "patientAge",
                     "condition": "true",
                     "actions": [
-                      "data.put('patientAge', service.extractAge(availableChild))"
+                      "data.put('patientAge', service.extractAge(availableChildren))"
                     ]
                   },
                   {
                     "name": "patientGender",
                     "condition": "true",
                     "actions": [
-                      "data.put('patientGender', service.extractGender(availableChild))"
+                      "data.put('patientGender', service.extractGender(availableChildren))"
                     ]
                   },
                   {
@@ -367,7 +367,7 @@
                     "name": "patientId",
                     "condition": "true",
                     "actions": [
-                      "data.put('patientId', fhirPath.extractValue(availableChild, 'Patient.identifier[0].value'))"
+                      "data.put('patientId', fhirPath.extractValue(availableChildren, 'Patient.identifier[0].value'))"
                     ]
                   },
                   {

@@ -56,7 +56,7 @@
           "showDivider": false,
           "resources": [
             {
-              "id": "availableAdverseEvent",
+              "id": "availableAdverseEvents",
               "relatedResourceId": "availableAdverseEvents",
               "resourceType": "AdverseEvent",
               "relatedResources": [
@@ -83,7 +83,7 @@
                 "condition": "true",
                 "priority": 1,
                 "actions": [
-                  "data.put('recordedDate', fhirPath.extractValue(availableAdverseEvent, 'AdverseEvent.recordedDate'))"
+                  "data.put('recordedDate', fhirPath.extractValue(availableAdverseEvents, 'AdverseEvent.recordedDate'))"
                 ]
               },
               {
@@ -123,7 +123,7 @@
                 "condition": "true",
                 "priority": 1,
                 "actions": [
-                  "data.put('typeOfReaction', fhirPath.extractValue(availableAdverseEvent, 'AdverseEvent.suspectEntity.causality.assessment.text'))"
+                  "data.put('typeOfReaction', fhirPath.extractValue(availableAdverseEvents, 'AdverseEvent.suspectEntity.causality.assessment.text'))"
                 ]
               },
               {
@@ -131,7 +131,7 @@
                 "condition": "true",
                 "priority": 1,
                 "actions": [
-                  "data.put('reactionOutcome', fhirPath.extractValue(availableAdverseEvent, 'AdverseEvent.severity.text'))"
+                  "data.put('reactionOutcome', fhirPath.extractValue(availableAdverseEvents, 'AdverseEvent.severity.text'))"
                 ]
               },
               {
@@ -139,7 +139,7 @@
                 "condition": "true",
                 "priority": 1,
                 "actions": [
-                  "data.put('conditionId', fhirPath.extractValue(availableAdverseEvent, 'AdverseEvent.resultingCondition.reference').replace('Condition/', ''))"
+                  "data.put('conditionId', fhirPath.extractValue(availableAdverseEvents, 'AdverseEvent.resultingCondition.reference').replace('Condition/', ''))"
                 ]
               },
               {
